@@ -10,7 +10,7 @@ public class BuildingManager : MonoBehaviour
     GameManager Gm;
 
 
-    [FormerlySerializedAs("UnitPrefabs")] [SerializeField] private List<Unit> _unitPrefabs;
+    [SerializeField] private List<Unit> _unitPrefabs;
     private Dictionary<Tile, BuildingData> _buildingTileData;
     [SerializeField] private BuildingData[] _buildingDatas;
 

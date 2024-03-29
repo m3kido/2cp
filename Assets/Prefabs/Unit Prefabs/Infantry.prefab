@@ -92,6 +92,12 @@ MonoBehaviour:
   Owner: 1
   Type: 0
   IsMoving: 0
-  _minRange: 0
-  _maxRange: 0
+  _weapons:
+  - _damageList: 370000002d00000005000000010000000f0000000f000000190000000000000000000000000000000000000000000000
+    _ammo: 999
+    _weaponType: 2
+    _ammoPerAttack: 0
+    _minRange: 1
+    _maxRange: 2
   _ammo: 0a00000010270000
+  CurrentWeaponIndex: 0

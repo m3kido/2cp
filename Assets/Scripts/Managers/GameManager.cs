@@ -5,15 +5,18 @@ using UnityEngine;
 //this handles the game logic
 public class GameManager : MonoBehaviour
 {
-    
+
+    public static event Action OnSave;
+
     public int PlayerTurn = 0;
     public int Day = 1;
     public List<Player> Players;
     public static event Action OnStateChange;
     private EGameStates _gameState;
-    public EGameStates GameState { 
-        get { return _gameState; } 
-        set {  _gameState = value;OnStateChange?.Invoke(); LastState = _gameState; }
+    public EGameStates GameState
+    {
+        get { return _gameState; }
+        set { _gameState = value; OnStateChange?.Invoke(); LastState = _gameState; }
     }
     public EGameStates LastState;
 
@@ -26,13 +29,14 @@ public class GameManager : MonoBehaviour
             new("Andrew",EPlayerColors.Amber, ETeams.A, null),
             new("Freya",EPlayerColors.Azure, ETeams.B, null)
         };
-        
+
     }
 
     private void Update()
     {
         // Handle input for turn end
         if (Input.GetKeyDown(KeyCode.C)) EndTurn();
+        if (Input.GetKeyDown(KeyCode.S)) OnSave.Invoke();
     }
 
     // Declare turn end and day end events
@@ -48,5 +52,5 @@ public class GameManager : MonoBehaviour
         Day++;
         OnDayEnd?.Invoke();
     }
-    
+
 }

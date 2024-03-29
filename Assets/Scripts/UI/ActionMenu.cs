@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Mathematics;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +10,7 @@ public class ActionMenu : MonoBehaviour
     GameManager Gm;
     UnitManager Um;
     BuildingManager Bm;
-    AttackManager Am; 
+    AttackManager Am;
 
     public Sprite Cursor;
     public GameObject Options;
@@ -27,7 +25,7 @@ public class ActionMenu : MonoBehaviour
     private GameObject WaitOptionInstance;
     private GameObject AttackOptionInstance;
 
-    private AttackingUnit attacker; 
+    private AttackingUnit attacker;
     //public GameObject FireOption;
     //public GameObject CaptureOption;
     private void Awake()
@@ -54,7 +52,7 @@ public class ActionMenu : MonoBehaviour
     }
     private void OnDisable()
     {
-        if(OptionsList.Count == 0) { return; }
+        if (OptionsList.Count == 0) { return; }
         OptionsList[SelectedOption].transform.GetChild(0).GetComponent<Image>().color = Color.clear;
         foreach (GameObject option in OptionsList) { option.SetActive(false); }
         OptionsList.Clear();
@@ -81,14 +79,15 @@ public class ActionMenu : MonoBehaviour
                 Gm.GameState = EGameStates.Idle;
             }
             //Logique to do when the player choose to attack 
-            else if (OptionsList[SelectedOption].name.Contains("Attack")) {
+            else if (OptionsList[SelectedOption].name.Contains("Attack"))
+            {
 
                 if (Um.SelectedUnit is AttackingUnit)
                 {
                     attacker = Um.SelectedUnit as AttackingUnit;
-                    attacker.Attacked = true;
+                    attacker.HasAttacked = true;
                     StartCoroutine(EndMoveAfterDelay(1.0f));
-                    
+
                 }
 
                 ;
@@ -103,7 +102,7 @@ public class ActionMenu : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             OptionsList[SelectedOption].transform.GetChild(0).GetComponent<Image>().color = Color.clear;
-            SelectedOption = (SelectedOption + 1 ) % OptionsList.Count;
+            SelectedOption = (SelectedOption + 1) % OptionsList.Count;
             OptionsList[SelectedOption].transform.GetChild(0).GetComponent<Image>().color = Color.white;
         }
 
@@ -128,7 +127,7 @@ public class ActionMenu : MonoBehaviour
         if (OptionsList.Count > 0)
         {
             SelectedOption = 0;
-            OptionsList[SelectedOption].transform.GetChild(0).GetComponent<Image>().color = Color.white; 
+            OptionsList[SelectedOption].transform.GetChild(0).GetComponent<Image>().color = Color.white;
 
         }
 
@@ -144,21 +143,20 @@ public class ActionMenu : MonoBehaviour
 
         if (Um.SelectedUnit is AttackingUnit)
         {
-             attacker = Um.SelectedUnit as AttackingUnit;
-             if(attacker = null) {
-                Debug.Log("Attacker is null"); 
-                }
-             else
+            attacker = Um.SelectedUnit as AttackingUnit;
+            if (attacker == null)
             {
-                if(Am.UnitCanAttack(attacker , 0))
+                Debug.Log("Attacker is null");
+            }
+            else
+            {
+                if (Am == null) Debug.Log("ONIICHAAAAAAAAAN");
+                if (Am.UnitCanAttack(attacker))
                 {
                     AttackOptionInstance.SetActive(true);
                     OptionsList.Add(AttackOptionInstance);
                 }
             }
-           
-               
-            
         }
         else
         {
