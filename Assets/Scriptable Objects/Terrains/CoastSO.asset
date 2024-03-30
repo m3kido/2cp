@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d30cbf5745505244a41e91f1a72a22c, type: 3}
+  m_Name: CoastSO
+  m_EditorClassIdentifier: 
+  _terrainType: 5
+  _terrainsOfSameType:
+  - {fileID: 11400000, guid: 2ffa8a8ec3bb1be40a6b95775c3b8a46, type: 2}
+  - {fileID: 11400000, guid: 49281a455d0a39040a6240f3e8ad89df, type: 2}
+  - {fileID: 11400000, guid: ee1953c8155bb504192d44c54a7f1b98, type: 2}
+  - {fileID: 11400000, guid: 746fae008fe6af34d890cc7106c3d64b, type: 2}
+  - {fileID: 11400000, guid: 94296f45b9e84984dba44cd6947278ec, type: 2}
+  - {fileID: 11400000, guid: 53af5cd1af0ddf141965dd81a68e2282, type: 2}
+  - {fileID: 11400000, guid: ad8861ae489b46744b131df1184489eb, type: 2}
+  - {fileID: 11400000, guid: f1baf6e4bb49f8b4f82a5d59ded19fa3, type: 2}
+  - {fileID: 11400000, guid: 4c4a98a4ee8847b4e8e428a533e36f8c, type: 2}
+  - {fileID: 11400000, guid: 58c0d701071f2484aa079ec6be61f6d1, type: 2}
+  - {fileID: 11400000, guid: e39a9965242e2004cbb04dbfe8916a51, type: 2}
+  - {fileID: 11400000, guid: 2168b5310285c22439332729d0326f0c, type: 2}
+  - {fileID: 11400000, guid: c0290cf04c2b90f4d8c4195a61e51abd, type: 2}
+  - {fileID: 11400000, guid: f2f5778b1c15b164e90f8799788769c7, type: 2}
+  - {fileID: 11400000, guid: d3526ebf80fe615419c4852547f54f93, type: 2}
+  - {fileID: 11400000, guid: fd08e8b2fcba86b4a93b91c67f1ad5a9, type: 2}
+  - {fileID: 11400000, guid: ab0fb5e0ff0869c439c15aa14324bb5f, type: 2}
+  - {fileID: 11400000, guid: b688860e91a8b7e40a816150ca64cd14, type: 2}
+  - {fileID: 11400000, guid: 25484dd4673be834c9a68ac2c3508193, type: 2}
+  - {fileID: 11400000, guid: fc36921efd4f7f944ba480a27f19679a, type: 2}
+  - {fileID: 11400000, guid: e1059801438cf2741a4e3fa19a2712dd, type: 2}
+  - {fileID: 11400000, guid: e375ebbb82d5c884796d78d48f837ef1, type: 2}
+  - {fileID: 11400000, guid: 42f3a2e043db29a4d80b5970715442f0, type: 2}
+  - {fileID: 11400000, guid: b0fe1b983e2e58b4fb34d885346f5140, type: 2}
+  - {fileID: 11400000, guid: 329cc336e35bf714ba6a07bd55cd7581, type: 2}
+  - {fileID: 11400000, guid: 1b12cf9760976d946a00de37eba55ab5, type: 2}
+  - {fileID: 11400000, guid: 1eac8a81b11a5144ba7ed96553ba6683, type: 2}
+  - {fileID: 11400000, guid: c73cd0a388f7702449dbd12857659c40, type: 2}
+  - {fileID: 11400000, guid: 4e8d04a7733a4fb4783a760bfb47150c, type: 2}
+  - {fileID: 11400000, guid: 042fd505108d68d46ace1871ccc57aca, type: 2}
+  - {fileID: 11400000, guid: f58761af8f18da345a21a833c18df4e2, type: 2}
+  - {fileID: 11400000, guid: 9e6d5500c251b974a971062bc0761205, type: 2}
+  - {fileID: 11400000, guid: 412d7f0092e05dd41930199162619d74, type: 2}
+  - {fileID: 11400000, guid: 5b98938bb06143b46a4f3ce7ae7fda60, type: 2}
+  - {fileID: 11400000, guid: ccf1e09eaa59ab442b2d66f3c06e547d, type: 2}
+  - {fileID: 11400000, guid: 0ea0ed2842d172741bc5e1182d2bdf57, type: 2}
+  - {fileID: 11400000, guid: 3cb4f16dd17a12045a655a66e663bf70, type: 2}
+  - {fileID: 11400000, guid: 8bcf7d66314fe684e9f95df69ebc7bf0, type: 2}
+  - {fileID: 11400000, guid: fd8bee181c2495a47821d476637ac44b, type: 2}
+  - {fileID: 11400000, guid: cdede1c681be24a4b951afe8a5ea4b36, type: 2}
+  _provisionsCost: 1
+  _defenceStars: 0

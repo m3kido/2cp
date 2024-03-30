@@ -12,10 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d30cbf5745505244a41e91f1a72a22c, type: 3}
   m_Name: GrassSO
   m_EditorClassIdentifier: 
-  _terrainType: 2
+  _terrainType: 1
   _terrainsOfSameType:
-  - {fileID: 11400000, guid: 245f870947496ae43a6f86c45157a84c, type: 2}
-  - {fileID: 11400000, guid: c2a3123aaf2019c4e902b668d136a91a, type: 2}
-  - {fileID: 11400000, guid: 5b74f17baf08f064c90aa029148b3c39, type: 2}
+  - {fileID: 11400000, guid: 30fdffc3b39d4b94e82d5af6c7c1222c, type: 2}
+  - {fileID: 11400000, guid: 653df9ffa88e52940a9c370f31483a69, type: 2}
+  - {fileID: 11400000, guid: 0bed0d0fdcd235b44bef888f58fa5840, type: 2}
+  - {fileID: 11400000, guid: 1af779215c5359548ae3b9f21478d6cd, type: 2}
+  - {fileID: 11400000, guid: 6b78f05fdda19e24b83cc9c8079f33b3, type: 2}
+  - {fileID: 11400000, guid: 4151d598565423c4fb38e8d20be74274, type: 2}
+  - {fileID: 11400000, guid: 953d8e9c553897544a9848acb24ad998, type: 2}
+  - {fileID: 11400000, guid: d96fa69867b32774a980e3f2bdec1a3f, type: 2}
+  - {fileID: 11400000, guid: 7ebb82916b072234bad7def1e9f8daaa, type: 2}
+  - {fileID: 11400000, guid: acc1587246e91894a86dc6532ba1c07e, type: 2}
+  - {fileID: 11400000, guid: 390fc3c3d72b16d4f8f7a2a567da987d, type: 2}
+  - {fileID: 11400000, guid: 148f36c73b6d16d4f882dd06f46299d7, type: 2}
+  - {fileID: 11400000, guid: 6ed0716a3eed6b4439fa6daa42b809be, type: 2}
+  - {fileID: 11400000, guid: 2874d86882293e849957cac58d2f77a7, type: 2}
+  - {fileID: 11400000, guid: cfb4df1111796044794160693cea5ca4, type: 2}
   _provisionsCost: 1
   _defenceStars: 1

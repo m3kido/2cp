@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: AzureCastleSO
   m_EditorClassIdentifier: 
   _buildingType: 0
-  _color: 1
-  _buildingTile: {fileID: 11400000, guid: fc340f26843474f4da6fa1a1b4b608e9, type: 2}
+  _color: 2
+  _buildingTile: {fileID: 11400000, guid: 8c2b237e773f7e84bb8661e7138760d4, type: 2}

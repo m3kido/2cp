@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d30cbf5745505244a41e91f1a72a22c, type: 3}
   m_Name: MountainSO
   m_EditorClassIdentifier: 
-  _terrainType: 4
+  _terrainType: 3
   _terrainsOfSameType:
-  - {fileID: 11400000, guid: ead029083f059c84580e97d05ebbb787, type: 2}
+  - {fileID: 11400000, guid: dec7cfc6fbc39904cb877e63b0e4dddc, type: 2}
   _provisionsCost: 2
   _defenceStars: 3
