@@ -14,9 +14,9 @@ public class Unit : MonoBehaviour
     public UnitDataSO Data => _data; // Readonly property for the _data field
 
     // Auto-properties (the compiler automatically creates private fields for them)
-    public int Health;// { get; set; }
+    public int Health; // { get; set; }
     public int Provisions { get; set; }
-    public bool IsSelected;// { get; set; }
+    public bool IsSelected; // { get; set; }
     public bool IsMoving { get; set; }
 
     [SerializeField] private int _owner; // Serialization is temporary (just for tests)
@@ -55,7 +55,7 @@ public class Unit : MonoBehaviour
     void Awake()
     {
         _rend = GetComponent<SpriteRenderer>();
-        Health = 10;
+        Health = 100;
         Provisions = _data.MaxProvisions;
         _hasMoved = false;
     }

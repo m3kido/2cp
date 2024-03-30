@@ -15,7 +15,7 @@ public class Building
         BuildingType = buildingType;
         Position = position;
         Owner = owner;
-        Health = 20;
+        Health = 200;
     }
 }
 
