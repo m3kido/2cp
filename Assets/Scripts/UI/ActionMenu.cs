@@ -22,7 +22,6 @@ public class ActionMenu : MonoBehaviour
     [SerializeField] private GameObject _captureOption;
     // public GameObject FireOption;
 
-
     private GameObject _waitOptionInstance;
     private GameObject _captureOptionInstance;
 
@@ -42,7 +41,6 @@ public class ActionMenu : MonoBehaviour
 
         _captureOptionInstance = Instantiate(_captureOption, _options.transform);
         _captureOptionInstance.SetActive(false);
-
     }
 
     private void OnEnable()
@@ -58,7 +56,6 @@ public class ActionMenu : MonoBehaviour
             if (_rect.localPosition.x < 0)
             {
                 _rect.localPosition = new Vector3(-1 * _rect.localPosition.x + _rect.rect.width, _rect.localPosition.y, _rect.localPosition.z);
-
             }
         }
         else
@@ -67,10 +64,8 @@ public class ActionMenu : MonoBehaviour
             if (_rect.localPosition.x > 0)
             {
                 _rect.localPosition = new Vector3(-1 * _rect.localPosition.x + _rect.rect.width, _rect.localPosition.y, _rect.localPosition.z);
-
             }
         }
-
         CalculateOptions();
     }
 
@@ -96,7 +91,6 @@ public class ActionMenu : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Space))
         {
-
             if (_optionsList[_selectedOption] == _waitOptionInstance)
             {
                 _um.EndMove();
@@ -132,15 +126,12 @@ public class ActionMenu : MonoBehaviour
 
     private void CalculateOptions()
     {
-
         // CheckFire();// if is an attacking unit
         //CheckLoad // if loading unit
         CheckAbility();
 
         _selectedOption = 0;
         _optionsList[_selectedOption].transform.GetChild(0).GetComponent<Image>().color = Color.white;
-
-
     }
 
     /* private void CheckFire()
@@ -153,7 +144,6 @@ public class ActionMenu : MonoBehaviour
 
     private void CheckAbility()
     {
-        
         var building = _bm.BuildingFromPosition.ContainsKey(_cm.HoveredOverTile) ? _bm.BuildingFromPosition[_cm.HoveredOverTile] : null;
         if (building != null)
         {
@@ -170,12 +160,9 @@ public class ActionMenu : MonoBehaviour
             {
                 //heal
             }
-            
-           
         }
        
         _waitOptionInstance.SetActive(true);
         _optionsList.Add(_waitOptionInstance);
-        
     }
 }

@@ -26,9 +26,7 @@ public class UIManager : MonoBehaviour
 
     void Awake()
     {
-        _gm=FindAnyObjectByType<GameManager>();
-        
-        
+        _gm = FindAnyObjectByType<GameManager>();
     }
 
     private void Start()
@@ -48,6 +46,5 @@ public class UIManager : MonoBehaviour
             case EPlayerStates.InActionsMenu: {  _actionMenu.SetActive(true); break; }
             default: { break; }
         }
-       
     }
 }
