@@ -399,7 +399,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Um: {fileID: 2109399941}
   Mm: {fileID: 1694422649}
-  UmSaveData: []
+  Infantry: {fileID: 6837706023741137502, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
 --- !u!4 &292001917
 Transform:
   m_ObjectHideFlags: 0
@@ -3791,18 +3791,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2109399940}
     m_Modifications:
-    - target: {fileID: -8392252582679079715, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
-      propertyPath: fuel
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: -8392252582679079715, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
-      propertyPath: TeamSide
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8392252582679079715, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
-      propertyPath: moveRange
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 2330572529859379085, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
       propertyPath: m_Name
       value: Infantry
@@ -3846,38 +3834,6 @@ PrefabInstance:
     - target: {fileID: 3294983261654783976, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5833795191632274733, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
-      propertyPath: m_UpdateMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8090770256088663198, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
-      propertyPath: Owner
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8267132482223208449, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
-      propertyPath: m_Color.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8267132482223208449, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8267132482223208449, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8267132482223208449, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8267132482223208449, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
-      propertyPath: m_SortingOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8267132482223208449, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
-      propertyPath: m_SpriteSortPoint
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

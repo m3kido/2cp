@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
 
     public static event Action OnSave;
+    public static event Action OnLoad;
 
     public int PlayerTurn = 0;
     public int Day = 1;
@@ -37,6 +38,7 @@ public class GameManager : MonoBehaviour
         // Handle input for turn end
         if (Input.GetKeyDown(KeyCode.C)) EndTurn();
         if (Input.GetKeyDown(KeyCode.S)) OnSave.Invoke();
+        if (Input.GetKeyDown(KeyCode.D)) OnLoad.Invoke();
     }
 
     // Declare turn end and day end events

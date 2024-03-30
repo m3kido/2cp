@@ -1,48 +1,82 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
-using System;
-
 // WATCH FRIEREN
-public class SaveManager : MonoBehaviour 
+public class SaveManager : MonoBehaviour
 {
     [SerializeField] UnitManager Um;
     [SerializeField] MapManager Mm;
-    [SerializeField] List<UnitSaveData> UmSaveData=new();
+    [SerializeField] Infantry Infantry;
+    //TODO: make a dictionary <unit type,prefabs>
 
-    private void Start()
+
+    private void OnEnable()
     {
-        GameManager.OnSave += SerializeUnitManager;
+        GameManager.OnSave += SaveUnits;
+        GameManager.OnLoad += LoadUnits;
     }
 
-    public void SerializeUnitManager()
+    private void OnDisable()
     {
-        var str = JsonUtility.ToJson(ExtractUnitManager(),true);
+        GameManager.OnSave -= SaveUnits;
+        GameManager.OnLoad -= LoadUnits;
+    }
+
+    public void SaveUnits() // press S
+    {
+        var str = JsonUtility.ToJson(ExtractUnitManager(), true);
         print(str);
+        var path = $"{Application.persistentDataPath}/save.json";
+        File.WriteAllText(path, str);
+
+        //------TEST------
+        foreach (var unit in FindObjectsOfType<AttackingUnit>())
+        {
+            Destroy(unit.gameObject);
+        }
     }
+
+    public void LoadUnits() // press D (not L)
+    {
+        var path = $"{Application.persistentDataPath}/save.json";
+        var str = File.ReadAllText(path);
+        print(str);
+        var unitManager = JsonUtility.FromJson<UnitManagerData>(str);
+
+        //------TEST------
+        foreach (var unitSave in unitManager.AttackingUnits)
+        {
+            var unit = Instantiate(Infantry, Mm.Map.CellToWorld(unitSave.Position),Quaternion.identity);
+            unit.SetSaveData(unitSave);
+        }
+    }
+
 
     public UnitManagerData ExtractUnitManager()
     {
-        foreach (var unit in Um.Units)
+        List<AttackingUnitSaveData> attackingUnitSaves = new();
+        foreach (var unit in FindObjectsOfType<AttackingUnit>())
         {
-            UmSaveData.Add(ExtractUnitData(unit));
+            attackingUnitSaves.Add(unit.GetSaveData());
         }
 
-        return new UnitManagerData(UmSaveData);
+        List<LoadingUnitSaveData> loadingUnitSaves = new();
+        foreach (var unit in FindObjectsOfType<LoadingUnit>())
+        {
+            loadingUnitSaves.Add(unit.GetSaveData());
+        }
+
+        return new UnitManagerData(attackingUnitSaves, loadingUnitSaves);
 
     }
 
-    public UnitSaveData ExtractUnitData(Unit unit)
-    {
-        var pos = Mm.Map.WorldToCell(unit.transform.position);
-        return new UnitSaveData(unit.Health, unit.Fuel, unit.Owner, unit.Type, unit.HasMoved,pos);
-    }
-    
 
 }
 
 [Serializable]
-public struct UnitSaveData
+public struct AttackingUnitSaveData
 {
     public int Health;
     public int Fuel;
@@ -51,26 +85,53 @@ public struct UnitSaveData
     public EUnitType Type;
 
     public bool HasMoved;
+
+    public Weapon CurrentWeapon;
+    public int CurrentWeaponIndex;
+    public bool HasAttacked;
+
     public Vector3Int Position;
 
-    public UnitSaveData(int health, int fuel, int owner, EUnitType type, bool hasMoved, Vector3Int position)
+    public AttackingUnitSaveData(int health, int fuel, int owner, EUnitType type, bool hasMoved, Weapon currentWeapon, int currentWeaponIndex, bool hasAttacked, Vector3Int position)
     {
         Health = health;
         Fuel = fuel;
         Owner = owner;
         Type = type;
         HasMoved = hasMoved;
+        CurrentWeapon = currentWeapon;
+        CurrentWeaponIndex = currentWeaponIndex;
+        HasAttacked = hasAttacked;
         Position = position;
     }
+
 }
 
 [Serializable]
-public struct UnitManagerData
+public struct LoadingUnitSaveData
 {
-    public List<UnitSaveData> UnitManagerDatas;
+    public int Health;
+    public int Fuel;
+    public int Owner;
 
-    public UnitManagerData(List<UnitSaveData> unitManagerDatas)
+    public EUnitType Type;
+
+    public bool HasMoved;
+
+    public AttackingUnitSaveData LoadedUnitSaveData; // obviously a loading unit cant load another loading unit
+
+    // to be continued 
+
+    public Vector3Int Position;
+
+    public LoadingUnitSaveData(int health, int fuel, int owner, EUnitType type, bool hasMoved, AttackingUnitSaveData loadedUnitSaveData, Vector3Int position)
     {
-        UnitManagerDatas = unitManagerDatas;
+        Health = health;
+        Fuel = fuel;
+        Owner = owner;
+        Type = type;
+        HasMoved = hasMoved;
+        LoadedUnitSaveData = loadedUnitSaveData;
+        Position = position;
     }
 }
