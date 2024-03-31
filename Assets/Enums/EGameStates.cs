@@ -4,6 +4,8 @@ public enum  EGameStates
     Selecting,
     BuildingMenu,
     ActionMenu,
+    Attacking,
+    Animating,
     finished
 
 }

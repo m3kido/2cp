@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class AttackingUnit : Unit
@@ -8,8 +9,8 @@ public class AttackingUnit : Unit
 
     public List<Weapon> Weapons { get => _weapons; set => _weapons = value; }
     public int CurrentWeaponIndex = 0;
-
-    private bool _hasAttacked = false;
+    public bool isAttacking = false;
+    public bool _hasAttacked = false;
 
     private void OnEnable()
     {
@@ -64,23 +65,11 @@ public class AttackingUnit : Unit
         return totalDamage;
     }
 
-    void ApplyDamage(Unit target, AttackingUnit attacker)
-    {
-        var damage = CalculateDamage(target, attacker);
-
-        target.Health -= (int)damage;
-        if (target != null)
-        {
-            damage = CalculateDamage(target, attacker);
-            attacker.Health -= (int)damage;
-        }
-
-
-    }
+    
 
     // scans area for targets in an Intervall [ min range, max range[
     // Assumed that every unit can be in one tile which can be in one grid position
-    List<Unit> ScanTargets(AttackingUnit attacker)
+    public List<Unit> ScanTargets(AttackingUnit attacker)
     {
         if (attacker == null || attacker.transform == null || Mm == null)
         {
@@ -115,6 +104,7 @@ public class AttackingUnit : Unit
     public void HighlightTargets(AttackingUnit attacker)
     {
         List<Unit> targets = ScanTargets(attacker);
+        Debug.Log("You can attack " + targets.Count + " enemies");
         foreach (var target in targets)
         {
             // Change the material color of the target to red
@@ -122,7 +112,22 @@ public class AttackingUnit : Unit
             {
                 MaterialPropertyBlock propBlock = new();
                 renderer.GetPropertyBlock(propBlock);
-                propBlock.SetColor("_Color", Color.red); // Set the color to red
+                propBlock.SetColor("_Color", Color.blue); // Set the color to red
+                renderer.SetPropertyBlock(propBlock);
+            }
+        }
+    }
+    public void UnHighlightTargets(AttackingUnit attacker)
+    {
+        List<Unit> targets = ScanTargets(attacker);
+        foreach (var target in targets)
+        {
+            // Change the material color of the target to red
+            if (target.TryGetComponent<Renderer>(out var renderer))
+            {
+                MaterialPropertyBlock propBlock = new();
+                renderer.GetPropertyBlock(propBlock);
+                propBlock.SetColor("_Color", Color.white); // Set the color to red
                 renderer.SetPropertyBlock(propBlock);
             }
         }
@@ -130,13 +135,27 @@ public class AttackingUnit : Unit
 
     public bool CanAttack(AttackingUnit attacker)
     {
-        // Return true if there are targets available, otherwise return false
+        List<Unit> targets = ScanTargets(attacker);
         if (attacker == null)
         {
             Debug.LogWarning("Attacker is null. Unable to check if it can attack.");
             return false;
         }
-        return ScanTargets(attacker).Count > 0;
+        if (targets == null)
+    {
+        Debug.LogWarning("Targets list is null. Unable to check if attacker can attack.");
+        return false;
+    }
+
+    // Now, check if the attacker has any valid targets to attack
+    if (targets.Count > 0)
+    {
+            return true;
+    }
+    else
+    {
+            return false; 
+    }
     }
 
     public void MoveToNextWeapon()
@@ -149,6 +168,24 @@ public class AttackingUnit : Unit
     {
         CurrentWeaponIndex = 0;
     }
+
+    public void InitiateTargetSelection()
+    {
+        Debug.Log("Initiating target selection from the AU");
+        AttackManager.Instance.InitiateTargetSelection(this);
+    }
+
+    // Method to handle keyboard input for navigating through targets
+    private void HandleTargetSelectionInput()
+    {
+        AttackManager.Instance.HandleTargetSelectionInput();
+    }
+
+    // Update method to handle target selection input
+    //private void Update()
+    //{
+    //    HandleTargetSelectionInput();
+    //}
 
 
 }

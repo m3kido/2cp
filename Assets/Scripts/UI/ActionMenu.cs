@@ -26,6 +26,7 @@ public class ActionMenu : MonoBehaviour
     private GameObject AttackOptionInstance;
 
     private AttackingUnit attacker;
+
     //public GameObject FireOption;
     //public GameObject CaptureOption;
     private void Awake()
@@ -85,8 +86,22 @@ public class ActionMenu : MonoBehaviour
                 if (Um.SelectedUnit is AttackingUnit)
                 {
                     attacker = Um.SelectedUnit as AttackingUnit;
+                    Gm.GameState = EGameStates.Attacking;
+                    Am.attacker = attacker;
+                    //attacker.HighlightTargets(attacker);
                     attacker.HasAttacked = true;
-                    StartCoroutine(EndMoveAfterDelay(1.0f));
+                    Debug.Log("We're attacking");
+                    Am.InitiateAttack(attacker);
+                    Gm.GameState = EGameStates.ActionMenu;
+                    //BEFORE RESETING UNIT NEED TO 
+                    //SELECT THE TARGET => A FUNCTION TO SELECT TARGET : Unit target = SelectTarget(attacker);
+                    //SHOW AN ATTACKING SCENE => ShowAttackingScene(attacker, target);
+                    //APPLY DAMMAGE => attacker.ApplyDamage(target, attacker); 
+
+
+                    StartCoroutine(EndMoveAfterDelay(1.0f, attacker));
+                    
+                       
 
                 }
 
@@ -109,10 +124,12 @@ public class ActionMenu : MonoBehaviour
 
 
     }
-    private IEnumerator EndMoveAfterDelay(float delay)
+    private IEnumerator EndMoveAfterDelay(float delay , AttackingUnit attacker ) 
     {
         yield return new WaitForSeconds(delay);
+
         Um.EndMove();
+        attacker.UnHighlightTargets(attacker); 
         Gm.GameState = EGameStates.Idle;
     }
     private void CalculateOptions()
@@ -121,8 +138,7 @@ public class ActionMenu : MonoBehaviour
 
         CheckAttackOption();
         CheckCapture();
-        AttackOptionInstance.SetActive(true);
-        OptionsList.Add(AttackOptionInstance);
+        
 
         if (OptionsList.Count > 0)
         {
@@ -132,7 +148,6 @@ public class ActionMenu : MonoBehaviour
         }
 
     }
-    //hna ncheki ida n9der nattacki ()9awed :)
     private void CheckAttackOption()
     {
         if (Um.SelectedUnit == null)
@@ -151,7 +166,7 @@ public class ActionMenu : MonoBehaviour
             else
             {
                 if (Am == null) Debug.Log("ONIICHAAAAAAAAAN");
-                if (Am.UnitCanAttack(attacker))
+                if (attacker.CanAttack(attacker) )
                 {
                     AttackOptionInstance.SetActive(true);
                     OptionsList.Add(AttackOptionInstance);

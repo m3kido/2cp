@@ -1,3 +1,4 @@
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -135,43 +136,71 @@ public class CursorController : MonoBehaviour
     // Handle Space click
     private void SpaceClicked()
     {
-        Unit refUnit = Um.FindUnit(HoverTile);
+        // Check if the game state is in attacking phase and selecting a target
+        //if (Gm.GameState == EGameStates.Attacking)
+        //{
+        //    // Check if there is a unit on the hovered tile
+        //    Unit targetUnit = Um.FindUnit(HoverTile);
 
-        // If there is a unit on the hovered tile
-        if (refUnit != null)
-        {
-            // Can't select an another unit when one is selected 
-            if (Um.SelectedUnit != null)
-            {
-                if (Um.SelectedUnit == refUnit) {  StartCoroutine(Um.MoveUnit());  }
-                return;
-            }
-            // Can't select an enemy unit
-            if (refUnit.Owner != Gm.PlayerTurn) { return; }
+        //    // If there is a unit on the hovered tile
+        //    if (targetUnit != null)
+        //    {
+        //        // Check if the hovered unit belongs to the opponent
+        //        if (targetUnit.Owner != Gm.PlayerTurn)
+        //        {
+        //            //JUST HIGHLITING THIS UNIT SO IKK EVRYTHING IS WORKING 
+        //            if (targetUnit.TryGetComponent<Renderer>(out var renderer))
+        //            {
+        //                MaterialPropertyBlock propBlock = new();
+        //                renderer.GetPropertyBlock(propBlock);
+        //                propBlock.SetColor("_Color", Color.blue); // Set the color to blue or any desired color
+        //                renderer.SetPropertyBlock(propBlock);
+        //            }
+        //            Gm.GameState = EGameStates.Idle;
+        //        }
+        //    }
+        //}
+        // Check if the game state is in selecting unit phase
+        
+            // Check if there is a unit on the hovered tile
+            Unit refUnit = Um.FindUnit(HoverTile);
 
-            // Can't select a unit that has already moved
-            if (refUnit.HasMoved) { return; }
-            SaveTile = HoverTile;
-            Um.SelectUnit(refUnit);
-        }
-        else
-        {
-            if (Um.SelectedUnit != null)
+            // If there is a unit on the hovered tile
+            if (refUnit != null)
             {
-                
-                // Move towards the selected tile
-                StartCoroutine(Um.MoveUnit());
-             
+                // Can't select another unit when one is already selected
+                if (Um.SelectedUnit != null && Um.SelectedUnit == refUnit)
+                {
+                    StartCoroutine(Um.MoveUnit());
+                }
+                // Check if the hovered unit belongs to the current player and hasn't moved yet
+                else if (refUnit.Owner == Gm.PlayerTurn && !refUnit.HasMoved)
+                {
+                    SaveTile = HoverTile;
+                    Um.SelectUnit(refUnit);
+                }
             }
+            // If there is no unit on the hovered tile
             else
             {
-                if (Bm.Buildings.ContainsKey(HoverTile))
+                // Check if a unit is already selected
+                if (Um.SelectedUnit != null)
                 {
-                    Bm.SpawnUnit(EUnitType.Infantry, Bm.Buildings[HoverTile], Gm.PlayerTurn);
+                    // Move the selected unit towards the hovered tile
+                    StartCoroutine(Um.MoveUnit());
+                }
+                else
+                {
+                    // Check if the hovered tile contains a building and spawn a unit if it does
+                    if (Bm.Buildings.ContainsKey(HoverTile))
+                    {
+                        Bm.SpawnUnit(EUnitType.Infantry, Bm.Buildings[HoverTile], Gm.PlayerTurn);
+                    }
                 }
             }
         }
-    }
- 
-   
+    
+
+
+
 }
