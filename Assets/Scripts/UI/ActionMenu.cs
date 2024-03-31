@@ -156,7 +156,7 @@ public class ActionMenu : MonoBehaviour
             return;
         }
 
-        if (Um.SelectedUnit is AttackingUnit && Um.SelectedUnit != null)
+        if (Um.SelectedUnit is AttackingUnit)
         {
             attacker = Um.SelectedUnit as AttackingUnit;
             if (attacker == null)

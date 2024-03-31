@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
+[Serializable]
 public class AttackingUnit : Unit
 {
     // List of damages that this attacking unit can apply to other units using each weapon 
@@ -11,16 +13,6 @@ public class AttackingUnit : Unit
     public int CurrentWeaponIndex = 0;
     public bool isAttacking = false;
     public bool _hasAttacked = false;
-
-    private void OnEnable()
-    {
-        Weapon.OnAmmoRanOut += MoveToNextWeapon;
-    }
-
-    private void OnDisable()
-    {
-        Weapon.OnAmmoRanOut -= MoveToNextWeapon;
-    }
 
     public bool HasAttacked
     {
@@ -42,6 +34,37 @@ public class AttackingUnit : Unit
         }
     }
 
+    private void OnEnable()
+    {
+        Weapon.OnAmmoRanOut += MoveToNextWeapon;
+    }
+
+    private void OnDisable()
+    {
+        Weapon.OnAmmoRanOut -= MoveToNextWeapon;
+    }
+
+    /// <summary>
+    /// Sets the loaded Data
+    /// </summary>
+    public void SetSaveData(AttackingUnitSaveData saveData)
+    {
+        Health = saveData.Health;
+        Fuel = saveData.Fuel;
+        Owner = saveData.Owner;
+        Type = saveData.Type;
+        HasMoved = saveData.HasMoved;
+        CurrentWeaponIndex = saveData.CurrentWeaponIndex;
+        Weapons[CurrentWeaponIndex] = saveData.CurrentWeapon;
+        HasAttacked = saveData.HasAttacked;
+    }
+
+    /// <summary></summary>
+    /// <returns>Data to be loaded</returns>
+    public AttackingUnitSaveData GetSaveData()
+    {
+        return new AttackingUnitSaveData(Health, Fuel, Owner, Type, HasMoved, Weapons[CurrentWeaponIndex], CurrentWeaponIndex, HasAttacked, GetGridPosition());
+    }
 
     public float CalculateDamage(Unit target, AttackingUnit attacker)
     {
@@ -96,7 +119,7 @@ public class AttackingUnit : Unit
                 targets.Add(unit);
             }
         }
-        
+
         return targets;
     }
 

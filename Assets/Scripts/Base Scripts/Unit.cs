@@ -186,6 +186,10 @@ public class Unit : MonoBehaviour
         return Mathf.Abs(A.x - B.x) + Mathf.Abs(A.y - B.y) + Mathf.Abs(A.z - B.z);
     }
 
+    public Vector3Int GetGridPosition()
+    {
+        return Mm.Map.WorldToCell(transform.position);
+    }
 
 }
 
