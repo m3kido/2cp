@@ -14,6 +14,8 @@ public class UIManager : MonoBehaviour
     
     [SerializeField] private GameObject _actionMenu;
 
+    [SerializeField] private GameObject _settingMenu;
+
     private void OnEnable()
     {
         GameManager.OnStateChange += ChangeActiveUI;
@@ -32,6 +34,7 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         _actionMenu.SetActive(false);
+        _settingMenu.SetActive(false);
     }
 
     private void ChangeActiveUI()
@@ -39,11 +42,13 @@ public class UIManager : MonoBehaviour
         switch (_gm.LastStateOfPlayer)
         {
             case EPlayerStates.InActionsMenu: { _actionMenu.SetActive(false); break; }
+            case EPlayerStates.InSettingsMenu: { _settingMenu.SetActive(false); break; }
             default: { break; }
         }
         switch (_gm.CurrentStateOfPlayer)
         {
             case EPlayerStates.InActionsMenu: {  _actionMenu.SetActive(true); break; }
+            case EPlayerStates.InSettingsMenu: { _settingMenu.SetActive(true); break; }
             default: { break; }
         }
     }

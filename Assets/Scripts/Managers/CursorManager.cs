@@ -171,6 +171,10 @@ public class CursorManager : MonoBehaviour
                 {
                     _bm.SpawnUnit(EUnits.Infantry, _bm.BuildingFromPosition[HoveredOverTile], _gm.PlayerTurn);
                 }
+                else
+                {
+                    _gm.CurrentStateOfPlayer = EPlayerStates.InSettingsMenu;
+                }
             }
         }
     }

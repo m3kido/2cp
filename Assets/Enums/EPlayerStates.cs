@@ -2,7 +2,7 @@ public enum EPlayerStates
 {
     Idle,
     Selecting,
-    InOptionsMenu,
+    InSettingsMenu,
     InActionsMenu,
     InBuildingMenu,
     EndedTurn

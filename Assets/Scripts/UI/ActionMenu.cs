@@ -15,7 +15,7 @@ public class ActionMenu : MonoBehaviour
 
     [SerializeField] private Sprite _cursor;
     [SerializeField] private GameObject _options;
-    public List<GameObject> _optionsList;
+    private List<GameObject> _optionsList;
     private int _selectedOption;
 
     [SerializeField] private GameObject _waitOption;
