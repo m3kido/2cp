@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
     public static event Action OnDayEnd;
 
     // Method to end a turn
-    private void EndTurn()
+    public void EndTurn()
     {
         PlayerTurn = (PlayerTurn + 1) % Players.Count;
         OnTurnEnd?.Invoke();

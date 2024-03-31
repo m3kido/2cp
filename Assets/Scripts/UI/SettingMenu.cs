@@ -52,6 +52,23 @@ public class SettingMenu : MonoBehaviour
         {
             _gm.CurrentStateOfPlayer = EPlayerStates.Idle;
         }
+        else if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (_settingsList[_selectedSetting] == SaveSetting)
+            {
+                
+            }
+            else if (_settingsList[_selectedSetting] == OptionsSetting)
+            {
+               
+            }
+            else if (_settingsList[_selectedSetting] == EndSetting)
+            {
+                _gm.EndTurn();
+                
+            }
+            _gm.CurrentStateOfPlayer = EPlayerStates.Idle;
+        }
         //change selected option
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
