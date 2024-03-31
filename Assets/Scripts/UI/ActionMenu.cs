@@ -15,15 +15,23 @@ public class ActionMenu : MonoBehaviour
 
     [SerializeField] private Sprite _cursor;
     [SerializeField] private GameObject _options;
-    private List<GameObject> _optionsList;
+    public List<GameObject> _optionsList;
     private int _selectedOption;
 
     [SerializeField] private GameObject _waitOption;
     [SerializeField] private GameObject _captureOption;
+    [SerializeField] private GameObject _attackOption;
+    [SerializeField] private GameObject _loadOption;
+    [SerializeField] private GameObject _dropOption;
+    [SerializeField] private GameObject _refillOption;
     // public GameObject FireOption;
 
     private GameObject _waitOptionInstance;
     private GameObject _captureOptionInstance;
+    private GameObject _attackOptionInstance;
+    private GameObject _loadOptionInstance;
+    private GameObject _dropOptionInstance;
+    private GameObject _refillOptionInstance;
 
     private void Awake()
     {
@@ -41,6 +49,18 @@ public class ActionMenu : MonoBehaviour
 
         _captureOptionInstance = Instantiate(_captureOption, _options.transform);
         _captureOptionInstance.SetActive(false);
+
+        _attackOptionInstance = Instantiate(_attackOption, _options.transform);
+        _attackOptionInstance.SetActive(false);
+
+        _loadOptionInstance = Instantiate(_loadOption, _options.transform);
+        _loadOptionInstance.SetActive(false);
+
+        _dropOptionInstance = Instantiate(_dropOption, _options.transform);
+        _dropOptionInstance.SetActive(false);
+
+        _refillOptionInstance = Instantiate(_refillOption, _options.transform);
+        _refillOptionInstance.SetActive(false);
     }
 
     private void OnEnable()
@@ -72,7 +92,7 @@ public class ActionMenu : MonoBehaviour
     private void OnDisable()
     {
         if (_optionsList.Count == 0) { return; }
-        _optionsList[_selectedOption].transform.GetChild(0).GetComponent<Image>().color = Color.clear;
+        _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(false);
         foreach (GameObject option in _optionsList) { option.SetActive(false); }
         _optionsList.Clear();
     }
@@ -107,20 +127,20 @@ public class ActionMenu : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             //getting the cursor image and  hiding it
-            _optionsList[_selectedOption].transform.GetChild(0).GetComponent<Image>().color = Color.clear;
+            _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(false);
 
             _selectedOption = (_selectedOption - 1 + _optionsList.Count) % _optionsList.Count;
 
             //getting the cursor image and  showing it
-            _optionsList[_selectedOption].transform.GetChild(0).GetComponent<Image>().color = Color.white;
+            _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(true);
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            _optionsList[_selectedOption].transform.GetChild(0).GetComponent<Image>().color = Color.clear;
+            _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(false);
 
             _selectedOption = (_selectedOption + 1) % _optionsList.Count;
 
-            _optionsList[_selectedOption].transform.GetChild(0).GetComponent<Image>().color = Color.white;
+            _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(true);
         }
     }
 
@@ -128,10 +148,18 @@ public class ActionMenu : MonoBehaviour
     {
         // CheckFire();// if is an attacking unit
         //CheckLoad // if loading unit
+       
         CheckAbility();
+        //<testing>
+        _captureOptionInstance.SetActive(true);
+        _optionsList.Add(_captureOptionInstance);
 
+        _attackOptionInstance.SetActive(true);
+        _optionsList.Add(_attackOptionInstance);
+
+        //</testing>
         _selectedOption = 0;
-        _optionsList[_selectedOption].transform.GetChild(0).GetComponent<Image>().color = Color.white;
+        _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(true);
     }
 
     /* private void CheckFire()

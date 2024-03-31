@@ -55,13 +55,13 @@ public class BuildingManager : MonoBehaviour
     private void OnEnable()
     {
         // GetGoldFromBuildings subscribes to day end event
-        GameManager.OnDayEnd += GetGoldFromBuildings;
+       // GameManager.OnDayEnd += GetGoldFromBuildings;
     }
 
     private void OnDisable()
     {
         // GetGoldFromBuildings unsubscribes from day end event
-        GameManager.OnDayEnd -= GetGoldFromBuildings;
+      //  GameManager.OnDayEnd -= GetGoldFromBuildings;
     }
 
     // Scan the map and put all the buldings in the Buildings dictionary
