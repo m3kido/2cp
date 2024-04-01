@@ -2,27 +2,28 @@ using UnityEngine;
 using System;
 using System.IO;
 
-public class FileDataHandler 
+public class FileDataHandler
 {
-    private string _dataDirPath = "";
-    private string _dataFileName = "";
-    private bool _useEncryption = false;
+    private string dataDirPath = "";
+    private string dataFileName = "";
+    private bool useEncryption = false;
     private readonly string encryptionCodeWord = "medieval";
 
     public FileDataHandler(string dataDirPath, string dataFileName, bool useEncryption)
     {
-        _dataDirPath = dataDirPath;
-        _dataFileName = dataFileName;
-        _useEncryption = useEncryption;
+        this.dataDirPath = dataDirPath;
+        this.dataFileName = dataFileName;
+        this.useEncryption = useEncryption;
     }
     public GameData Load()
     {
-        string fullPath = Path.Combine(_dataDirPath, _dataFileName);
+        string fullPath = Path.Combine(dataDirPath, dataFileName);
         GameData loadedData = null;
         if (File.Exists(fullPath))
         {
             try
             {
+                // load the serialized data from the file
                 string dataToLoad = "";
                 using (FileStream stream = new FileStream(fullPath, FileMode.Open))
                 {
@@ -32,11 +33,15 @@ public class FileDataHandler
                     }
                 }
 
-                if (_useEncryption)
+
+                // decrypt the data (optional)
+                if (useEncryption)
+
                 {
                     dataToLoad = EncryptDecrypt(dataToLoad);
                 }
 
+                // deserialize the data from Json back into a GameData object
                 loadedData = JsonUtility.FromJson<GameData>(dataToLoad);
             }
             catch (Exception e)
@@ -49,18 +54,26 @@ public class FileDataHandler
 
     public void Save(GameData data)
     {
-        string fullPath = Path.Combine(_dataDirPath, _dataFileName);
+        string fullPath = Path.Combine(dataDirPath, dataFileName);
         try
         {
+            // create the directory if it doesn't exist
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
 
+            //serialize the c# GameData object into Json
             string dataToStore = JsonUtility.ToJson(data, true);
 
-            if (_useEncryption)
+
+            // encrypt the data (optional)
+            if (useEncryption)
+
+            if (useEncryption)
+
             {
                 dataToStore = EncryptDecrypt(dataToStore);
             }
 
+            // write the serialized data to the file
             using (FileStream stream = new FileStream(fullPath, FileMode.Create))
             {
                 using (StreamWriter writer = new StreamWriter(stream))
@@ -75,6 +88,7 @@ public class FileDataHandler
         }
     }
 
+    // encryption and decryption
     private string EncryptDecrypt(string data)
     {
         string modifiedData = "";
