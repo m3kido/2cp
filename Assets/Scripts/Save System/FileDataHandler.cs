@@ -1,26 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-<<<<<<< HEAD
 using System;
 using System.IO;
 
 public class FileDataHandler 
 {
-    private string dataDirPath = "";
-    private string dataFileName = "";
-    private bool useEncryption = false;
+    private string _dataDirPath = "";
+    private string _dataFileName = "";
+    private bool _useEncryption = false;
     private readonly string encryptionCodeWord = "medieval";
 
     public FileDataHandler(string dataDirPath, string dataFileName, bool useEncryption)
     {
-        this.dataDirPath = dataDirPath;
-        this.dataFileName = dataFileName;
-        this.useEncryption = useEncryption;
+        _dataDirPath = dataDirPath;
+        _dataFileName = dataFileName;
+        _useEncryption = useEncryption;
     }
     public GameData Load()
     {
-        string fullPath = Path.Combine(dataDirPath, dataFileName);
+        string fullPath = Path.Combine(_dataDirPath, _dataFileName);
         GameData loadedData = null;
         if (File.Exists(fullPath))
         {
@@ -35,7 +32,7 @@ public class FileDataHandler
                     }
                 }
 
-                if (useEncryption)
+                if (_useEncryption)
                 {
                     dataToLoad = EncryptDecrypt(dataToLoad);
                 }
@@ -52,14 +49,14 @@ public class FileDataHandler
 
     public void Save(GameData data)
     {
-        string fullPath = Path.Combine(dataDirPath, dataFileName);
+        string fullPath = Path.Combine(_dataDirPath, _dataFileName);
         try
         {
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
 
             string dataToStore = JsonUtility.ToJson(data, true);
 
-            if (useEncryption)
+            if (_useEncryption)
             {
                 dataToStore = EncryptDecrypt(dataToStore);
             }
@@ -86,20 +83,5 @@ public class FileDataHandler
             modifiedData += (char)(data[i] ^ encryptionCodeWord[i % encryptionCodeWord.Length]);
         }
         return modifiedData;
-=======
-
-public class FileDataHandler : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
->>>>>>> 13d9ebf8a77db3d10e3b3126d7dd30b089350ee8
     }
 }

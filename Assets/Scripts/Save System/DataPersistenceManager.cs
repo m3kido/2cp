@@ -1,22 +1,6 @@
-<<<<<<< HEAD
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-
-public class NewBehaviourScript : MonoBehaviour
-{
-    [Header("File Storage Config")]
-    [SerializeField] private string fileName;
-
-    private FileDataHandler dataHandler;
-
-    private void Start()
-    {
-        this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
-=======
-using UnityEngine;
 using System.Linq;
-using System.Collections.Generic;
+using UnityEngine;
 
 public class DataPersistenceManager : MonoBehaviour
 {
@@ -86,6 +70,5 @@ public class DataPersistenceManager : MonoBehaviour
             .OfType<IDataPersistence>();
 
         return new List<IDataPersistence>(dataPersistenceObjects);
->>>>>>> 13d9ebf8a77db3d10e3b3126d7dd30b089350ee8
     }
 }
