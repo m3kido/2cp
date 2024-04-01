@@ -38,6 +38,7 @@ public class BuildingManager : MonoBehaviour
             // Put the Building tile as a key, and the building data as a value
             _buildingDataFromTile.Add(buildingData.BuildingTile, buildingData);
         }
+        
     }
 
     void Start()
@@ -50,6 +51,7 @@ public class BuildingManager : MonoBehaviour
 
         // Scan the map and put all the buldings in the Buildings dictionary
         ScanMapForBuildings();
+        
     }
 
     private void OnEnable()
@@ -83,7 +85,7 @@ public class BuildingManager : MonoBehaviour
     {
         foreach(var SO in _buildingDatas)
         {
-            if(SO.Color == _gm.Players[_gm.PlayerTurn].Color) {
+            if(SO.Color == _gm.Players[_gm.PlayerTurn].Color && SO.BuildingType==building.BuildingType) {
                 _mm.Map.SetTile(building.Position, SO.BuildingTile);
             }
         }

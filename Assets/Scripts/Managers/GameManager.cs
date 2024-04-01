@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         CurrentStateOfPlayer = EPlayerStates.Idle;
-
+        LastStateOfPlayer = EPlayerStates.Idle;
         // Initialize players
         Players = new List<Player>
         {

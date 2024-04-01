@@ -1,5 +1,7 @@
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System;
 
 // Class to manage the cursor
 public class CursorManager : MonoBehaviour
@@ -9,17 +11,24 @@ public class CursorManager : MonoBehaviour
     private MapManager _mm;
     private BuildingManager _bm;
     private GameManager _gm;
+    private Camera _camera;
 
+    public static event Action OnCursorMove;
     // This is a property that holds the tile which the cursor is hovering over
     public Vector3Int HoveredOverTile
     {
         get => _mm.Map.WorldToCell(transform.position);
-        set => transform.position = value;
+        set 
+        { 
+            transform.position = new Vector3Int( math.clamp( value.x,_mm.Map.cellBounds.xMin, _mm.Map.cellBounds.xMax-1), math.clamp(value.y, _mm.Map.cellBounds.yMin, _mm.Map.cellBounds.yMax-1),value.z); 
+            
+        }
     }
 
     // Auto-property (the compiler automatically creates a private field for it)
     public Vector3Int SaveTile { get; set; }
-
+    public Vector3 SaveCamera { get; set; }
+    
     void Start()
     {
         // Get the unit, map, game and building managers from the hierarchy
@@ -27,6 +36,8 @@ public class CursorManager : MonoBehaviour
         _mm = FindAnyObjectByType<MapManager>();
         _gm = FindAnyObjectByType<GameManager>();
         _bm = FindAnyObjectByType<BuildingManager>();
+        _camera = Camera.main;
+       
     }
 
     void Update()
@@ -122,6 +133,8 @@ public class CursorManager : MonoBehaviour
             _um.DrawPath();
         }
         HoveredOverTile += offset;
+        MoveCamera(offset);
+        OnCursorMove?.Invoke();
     }
 
     // Handle X Click
@@ -156,6 +169,7 @@ public class CursorManager : MonoBehaviour
             // Can't select a unit that has already moved
             if (refUnit.HasMoved) { return; }
             SaveTile = HoveredOverTile;
+            SaveCamera = _camera.transform.position;
             _um.SelectUnit(refUnit);
         }
         else
@@ -178,4 +192,17 @@ public class CursorManager : MonoBehaviour
             }
         }
     }
+    private void MoveCamera(Vector3Int offset)
+    {
+        var bounds = _mm.Map.cellBounds;
+        var xdistance = HoveredOverTile.x - _camera.transform.position.x;
+        var ydistance = HoveredOverTile.y - _camera.transform.position.y;
+        //if we hit a certain tile move the camera with it
+        if ((xdistance>5 && offset.x>0)||( xdistance < -6 && offset.x < 0) ||( ydistance > 2 && offset.y > 0 )|| (ydistance< -3 && offset.y < 0))
+        {
+        //move the camera and make sure to not go out of bounds
+        _camera.transform.position = new Vector3(math.clamp( _camera.transform.position.x + offset.x,bounds.xMin+9,bounds.xMax-9), math.clamp(_camera.transform.position.y + offset.y, bounds.yMin+5, bounds.yMax-5), _camera.transform.position.z);
+        }
+    }
+    
 }
