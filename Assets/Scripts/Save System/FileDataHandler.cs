@@ -23,6 +23,7 @@ public class FileDataHandler
         {
             try
             {
+                // load the serialized data from the file
                 string dataToLoad = "";
                 using (FileStream stream = new FileStream(fullPath, FileMode.Open))
                 {
@@ -31,12 +32,13 @@ public class FileDataHandler
                         dataToLoad = reader.ReadToEnd();
                     }
                 }
-
+                
+                // decrypt the data (optional)
                 if (_useEncryption)
                 {
                     dataToLoad = EncryptDecrypt(dataToLoad);
                 }
-
+                // deserialize the data from Json back into a GameData object
                 loadedData = JsonUtility.FromJson<GameData>(dataToLoad);
             }
             catch (Exception e)
@@ -52,15 +54,19 @@ public class FileDataHandler
         string fullPath = Path.Combine(_dataDirPath, _dataFileName);
         try
         {
+            // create the directory if it doesn't exist
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
 
+            //serialize the GameData object into Json
             string dataToStore = JsonUtility.ToJson(data, true);
 
+            // encrypt the data (optional)
             if (_useEncryption)
             {
                 dataToStore = EncryptDecrypt(dataToStore);
             }
 
+            // write the serialized data to the file
             using (FileStream stream = new FileStream(fullPath, FileMode.Create))
             {
                 using (StreamWriter writer = new StreamWriter(stream))
