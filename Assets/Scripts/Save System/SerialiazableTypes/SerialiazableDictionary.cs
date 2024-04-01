@@ -29,7 +29,7 @@ public class SerialiazableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, I
 
         if (keys.Count != values.Count)
         {
-            Debug.LogError("Error when trying to deserialize a SerializableDictionary")
+            Debug.LogError("Error when trying to deserialize a SerializableDictionary");
         }
 
         for (int i = 0; i < keys.Count; i++)
