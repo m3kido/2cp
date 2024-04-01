@@ -15,10 +15,12 @@ public class FileDataHandler
         _dataFileName = dataFileName;
         _useEncryption = useEncryption;
     }
+    
     public GameData Load()
     {
         string fullPath = Path.Combine(_dataDirPath, _dataFileName);
         GameData loadedData = null;
+        
         if (File.Exists(fullPath))
         {
             try
@@ -81,6 +83,7 @@ public class FileDataHandler
         }
     }
 
+    // encryption and decryption
     private string EncryptDecrypt(string data)
     {
         string modifiedData = "";
