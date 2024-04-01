@@ -6,17 +6,19 @@ using UnityEngine.Tilemaps;
 public class Unit : MonoBehaviour
 {
     // Managers will be needed
-    private MapManager _mm;
-    private UnitManager _um;
-    private SpriteRenderer _rend;
+    public GameManager Gm;
+    public MapManager Mm;
+    public UnitManager Um;
+    public SpriteRenderer Rend;
 
     [SerializeField] private UnitDataSO _data;
-    public UnitDataSO Data => _data; // Readonly property for the _data field
+    public UnitDataSO Data => _data;
+    public EUnits UnitType;
 
     // Auto-properties (the compiler automatically creates private fields for them)
-    public int Health; // { get; set; }
+    public int Health { get; set; }
     public int Provisions { get; set; }
-    public bool IsSelected; // { get; set; }
+    public bool IsSelected { get; set; }
     public bool IsMoving { get; set; }
 
     [SerializeField] private int _owner; // Serialization is temporary (just for tests)
@@ -35,11 +37,11 @@ public class Unit : MonoBehaviour
             _hasMoved = value;
             if (_hasMoved)
             {
-                _rend.color = Color.gray;
+                Rend.color = Color.gray;
             }
             else
             {
-                _rend.color = Color.white;
+                Rend.color = Color.white;
             }
         }
     }
@@ -54,7 +56,7 @@ public class Unit : MonoBehaviour
 
     void Awake()
     {
-        _rend = GetComponent<SpriteRenderer>();
+        Rend = GetComponent<SpriteRenderer>();
         Health = 100;
         Provisions = _data.MaxProvisions;
         _hasMoved = false;
@@ -62,9 +64,9 @@ public class Unit : MonoBehaviour
 
     private void Start()
     {
-        // Get map and unit manager from the hierarchy
-        _mm = FindAnyObjectByType<MapManager>();
-        _um = FindAnyObjectByType<UnitManager>();
+        Gm = FindAnyObjectByType<GameManager>();
+        Mm = FindAnyObjectByType<MapManager>();
+        Um = FindAnyObjectByType<UnitManager>();
     }
 
     // Highlight the accessible tiles to the unit
@@ -76,7 +78,7 @@ public class Unit : MonoBehaviour
         _validTiles.Clear();
 
         // WorlToCell takes a float postion and converts it to grid position
-        Vector3Int startPos = _mm.Map.WorldToCell(transform.position);
+        Vector3Int startPos = Mm.Map.WorldToCell(transform.position);
 
         // You can find SeekTile() just below
         SeekTile(startPos, -1);
@@ -85,8 +87,8 @@ public class Unit : MonoBehaviour
         {
             if (_validTiles[pos] <= Provisions)
             {
-                _mm.Map.SetTileFlags(pos, TileFlags.None);
-                _mm.HighlightTile(pos);
+                Mm.Map.SetTileFlags(pos, TileFlags.None);
+                Mm.HighlightTile(pos);
             }
             else
             {
@@ -101,7 +103,7 @@ public class Unit : MonoBehaviour
         IsSelected = false;
         foreach (var pos in _validTiles.Keys)
         {
-            _mm.UnHighlightTile(pos);
+            Mm.UnHighlightTile(pos);
         }
         _validTiles.Clear();
     }
@@ -110,7 +112,7 @@ public class Unit : MonoBehaviour
     private bool InBounds(Vector3Int pos)
     {
         // Manhattan distance : |x1 - x2| + |y1 - y2|
-        if (Mathf.Abs(_mm.Map.WorldToCell(transform.position).x - pos.x) + Mathf.Abs(_mm.Map.WorldToCell(transform.position).y - pos.y) <= _data.MoveRange)
+        if (Mathf.Abs(Mm.Map.WorldToCell(transform.position).x - pos.x) + Mathf.Abs(Mm.Map.WorldToCell(transform.position).y - pos.y) <= _data.MoveRange)
         {
             return true;
         }
@@ -122,7 +124,7 @@ public class Unit : MonoBehaviour
     private void SeekTile(Vector3Int currentPosition, int currentProvisions)
     {
         // Access the current tile
-        Tile currTile = _mm.Map.GetTile<Tile>(currentPosition);
+        Tile currTile = Mm.Map.GetTile<Tile>(currentPosition);
         if (currTile == null) { return; }
 
         if (currentProvisions < 0)
@@ -133,13 +135,13 @@ public class Unit : MonoBehaviour
         else
         {
             // Add the current tile fuel cost to the current fuel
-            currentProvisions += _mm.GetTileData(currTile).ProvisionsCost;
+            currentProvisions += Mm.GetTileData(currTile).ProvisionsCost;
         }
 
         if (currentProvisions > Provisions) { return; }
 
         // If the current tile is not an obstacle and falls into the move range of the unit
-        if (!_um.IsObstacle(currentPosition, this) && InBounds(currentPosition))
+        if (!Um.IsObstacle(currentPosition, this) && InBounds(currentPosition))
         {
             if (!_validTiles.ContainsKey(currentPosition))
             {
@@ -169,5 +171,15 @@ public class Unit : MonoBehaviour
         SeekTile(down, currentProvisions);
         SeekTile(left, currentProvisions);
         SeekTile(right, currentProvisions);
+    }
+
+    public static float L1Distance(Vector3 A, Vector3 B)
+    {
+        return Mathf.Abs(A.x - B.x) + Mathf.Abs(A.y - B.y) + Mathf.Abs(A.z - B.z);
+    }
+
+    public Vector3Int GetGridPosition()
+    {
+        return Mm.Map.WorldToCell(transform.position);
     }
 }
