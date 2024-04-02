@@ -5,11 +5,9 @@ using UnityEngine;
 [Serializable]
 public class AttackingUnit : Unit
 {
-    // List of damages that this attacking unit can apply to other units using each weapon 
-    [SerializeField] List<Weapon> _weapons;
-
+    [SerializeField] List<Weapon> _weapons = new();
+    public List<Weapon> Weapons { get; set; }
     public int EnergyOrbs;
-    public List<Weapon> Weapons { get => _weapons; set => _weapons = value; }
     public int CurrentWeaponIndex;
     public bool isAttacking;
     private bool _hasAttacked;
@@ -36,48 +34,25 @@ public class AttackingUnit : Unit
 
     private void OnEnable()
     {
-        Weapon.OnAmmoRanOut += MoveToNextWeapon;
+        Weapon.OnEnergyRanOut += MoveToNextWeapon;
     }
 
     private void OnDisable()
     {
-        Weapon.OnAmmoRanOut -= MoveToNextWeapon;
-    }
-
-    /// <summary></summary>
-    /// <returns>Data to be loaded</returns>
-    public AttackingUnitSaveData GetDataToSave()
-    {
-        return new AttackingUnitSaveData(UnitType, Health, Provisions, Owner, HasMoved, EnergyOrbs, Weapons[CurrentWeaponIndex], CurrentWeaponIndex, HasAttacked, GetGridPosition());
-    }
-
-    /// <summary>
-    /// Sets the loaded Data
-    /// </summary>
-    public void SetSavedData(AttackingUnitSaveData saveData)
-    {
-        Health = saveData.Health;
-        Provisions = saveData.Provisions;
-        Owner = saveData.Owner;
-        UnitType = saveData.UnitType;
-        HasMoved = saveData.HasMoved;
-        CurrentWeaponIndex = saveData.CurrentWeaponIndex;
-        Weapons[CurrentWeaponIndex] = saveData.CurrentWeapon;
-        HasAttacked = saveData.HasAttacked;
+        Weapon.OnEnergyRanOut -= MoveToNextWeapon;
     }
 
     public float CalculateDamage(Unit target, AttackingUnit attacker)
     {
-
         int baseDamage = _weapons[CurrentWeaponIndex].DamageList[(int)target.UnitType];
-        Player attackerPlayer = Gm.Players[attacker.Owner];
+        PlayerInGame attackerPlayer = Gm.InGamePlayers[attacker.Owner];
         Captain attackerCaptain = attackerPlayer.PlayerCaptain;
         int celesteAttack = attackerPlayer.IsCPActivated ? attackerCaptain.CelesteDefense : 0;
         float attackDamage = baseDamage * (1 + attackerCaptain.PassiveAttack) * (1 + celesteAttack);
 
 
         int terrainStars = Mm.GetTileData(Mm.Map.WorldToCell(target.transform.position)).DefenceStars;
-        Player targetPlayer = Gm.Players[attacker.Owner];
+        PlayerInGame targetPlayer = Gm.InGamePlayers[attacker.Owner];
         Captain targetCaptain = targetPlayer.PlayerCaptain;
         int celesteDefense = targetPlayer.IsCPActivated ? targetCaptain.CelesteDefense : 0;
         float defenseDamage = (1 - terrainStars * target.Health / 1000) * (1 - targetCaptain.PassiveDefense) * (1 - celesteDefense);
@@ -121,7 +96,6 @@ public class AttackingUnit : Unit
         return targets;
     }
 
-
     public void HighlightTargets(AttackingUnit attacker)
     {
         List<Unit> targets = ScanTargets(attacker);
@@ -138,6 +112,7 @@ public class AttackingUnit : Unit
             }
         }
     }
+
     public void UnHighlightTargets(AttackingUnit attacker)
     {
         List<Unit> targets = ScanTargets(attacker);
@@ -209,7 +184,28 @@ public class AttackingUnit : Unit
     } 
     */
 
+    /// <summary></summary>
+    /// <returns>Data to be loaded</returns>
+    public AttackingUnitSaveData GetDataToSave()
+    {
+        return new AttackingUnitSaveData(UnitType, Health, Provisions, Owner, HasMoved, EnergyOrbs,
+            null, CurrentWeaponIndex, HasAttacked, GetGridPosition());
+    }
 
+    /// <summary>
+    /// Sets the loaded Data
+    /// </summary>
+    public void SetSavedData(AttackingUnitSaveData saveData)
+    {
+        Health = saveData.Health;
+        Provisions = saveData.Provisions;
+        Owner = saveData.Owner;
+        UnitType = saveData.UnitType;
+        HasMoved = saveData.HasMoved;
+        CurrentWeaponIndex = saveData.CurrentWeaponIndex;
+        Weapons[CurrentWeaponIndex] = saveData.CurrentWeapon;
+        HasAttacked = saveData.HasAttacked;
+    }
 }
 
 

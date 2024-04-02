@@ -4,5 +4,5 @@ using System.Collections.Generic;
 public class Team
 {
     // Auto-property (the compiler automatically creates a private field to it)
-    public List<Player> TeamMates { get; set; }
+    public List<PlayerInGame> TeamMates { get; set; }
 }

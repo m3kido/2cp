@@ -6,10 +6,10 @@ using UnityEngine.Tilemaps;
 public class Unit : MonoBehaviour
 {
     // Managers will be needed
-    public GameManager Gm;
-    public MapManager Mm;
-    public UnitManager Um;
-    public SpriteRenderer Rend;
+    protected GameManager Gm;
+    protected MapManager Mm;
+    protected UnitManager Um;
+    protected SpriteRenderer Rend;
 
     [SerializeField] private UnitDataSO _data;
     public UnitDataSO Data => _data;

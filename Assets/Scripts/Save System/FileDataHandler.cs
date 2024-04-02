@@ -7,7 +7,7 @@ public class FileDataHandler
     private string dataDirPath = "";
     private string dataFileName = "";
     private bool useEncryption = false;
-    private readonly string encryptionCodeWord = "medieval";
+    private readonly string encryptionCodeWord = "zqI8UqfDdR";
 
     public FileDataHandler(string dataDirPath, string dataFileName, bool useEncryption)
     {
@@ -15,10 +15,10 @@ public class FileDataHandler
         this.dataFileName = dataFileName;
         this.useEncryption = useEncryption;
     }
-    public GameData Load()
+    public SaveData Load()
     {
         string fullPath = Path.Combine(dataDirPath, dataFileName);
-        GameData loadedData = null;
+        SaveData loadData = null;
         if (File.Exists(fullPath))
         {
             try
@@ -33,47 +33,45 @@ public class FileDataHandler
                     }
                 }
 
-
                 // decrypt the data (optional)
                 if (useEncryption)
-
                 {
                     dataToLoad = EncryptDecrypt(dataToLoad);
                 }
 
                 // deserialize the data from Json back into a GameData object
-                loadedData = JsonUtility.FromJson<GameData>(dataToLoad);
+                loadData = JsonUtility.FromJson<SaveData>(dataToLoad);
             }
             catch (Exception e)
             {
                 Debug.LogError("Error when trying to load data from file: " + fullPath + "\n" + e);
             }
         }
-        return loadedData;
+        return loadData;
     }
 
-    public void Save(GameData data)
+    public void Save(SaveData data)
     {
         string fullPath = Path.Combine(dataDirPath, dataFileName);
         try
         {
-            // create the directory if it doesn't exist
+            // Create the directory if it doesn't exist
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
 
-            //serialize the c# GameData object into Json
+            data.PrintDebugInfo();
+
+            // Serialize the C# GameSaveData object into Json
             string dataToStore = JsonUtility.ToJson(data, true);
 
+            Debug.Log("Serialized data: " + dataToStore);
 
-            // encrypt the data (optional)
+            // Encrypt the data
             if (useEncryption)
-
-            if (useEncryption)
-
             {
                 dataToStore = EncryptDecrypt(dataToStore);
             }
 
-            // write the serialized data to the file
+            // Write the serialized data to the file
             using (FileStream stream = new FileStream(fullPath, FileMode.Create))
             {
                 using (StreamWriter writer = new StreamWriter(stream))

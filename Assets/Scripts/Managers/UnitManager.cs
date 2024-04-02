@@ -7,12 +7,12 @@ using UnityEngine;
 // keeps track of units and the path drawn by the cursor
 public class UnitManager : MonoBehaviour
 {
-    // Managers will be needed
     private GameManager _gm;
     private MapManager _mm;
 
     // Auto-properties (the compiler automatically creates private fields for them)
     public List<Unit> Units { get; set; }
+    public GameObject[] UnitPrefabs;
     public Unit SelectedUnit { get; set; }
     public Vector3Int SaveTile { get; set; }
     public List<Vector3Int> Path { get; set; } = new();
@@ -20,11 +20,10 @@ public class UnitManager : MonoBehaviour
 
     void Start()
     {
-        // Get map and game managers from the hierarchy
         _mm = FindAnyObjectByType<MapManager>();
         _gm = FindAnyObjectByType<GameManager>();
 
-        // Seek for units in the hierarchy
+        // Seek for units in the scene
         Units = FindObjectsOfType<Unit>().ToList();
     }
 
@@ -57,7 +56,7 @@ public class UnitManager : MonoBehaviour
     {
         Unit tileUnit = FindUnit(pos);
         if (!unit.Data.IsWalkable(_mm.GetTileData(pos).TerrainType)) { return true; }
-        if (tileUnit != null && _gm.Players[tileUnit.Owner].TeamSide != _gm.Players[unit.Owner].TeamSide) { return true; }
+        if (tileUnit != null && _gm.InGamePlayers[tileUnit.Owner].TeamSide != _gm.InGamePlayers[unit.Owner].TeamSide) { return true; }
         return false;
     }
 

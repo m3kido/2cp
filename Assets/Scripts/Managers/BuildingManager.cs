@@ -83,10 +83,10 @@ public class BuildingManager : MonoBehaviour
     //change the sprite
     private void ChangeBuildingOwner(Building building,int owner)
     {
-        foreach(var SO in _buildingDatas)
+        foreach(var buildingSO in _buildingDatas)
         {
-            if(SO.Color == _gm.Players[_gm.PlayerTurn].Color && SO.BuildingType==building.BuildingType) {
-                _mm.Map.SetTile(building.Position, SO.BuildingTile);
+            if(buildingSO.Color == _gm.InGamePlayers[_gm.PlayerTurn].Color && buildingSO.BuildingType == building.BuildingType) {
+                _mm.Map.SetTile(building.Position, buildingSO.BuildingTile);
             }
         }
         building.Owner = owner;
@@ -127,7 +127,7 @@ public class BuildingManager : MonoBehaviour
             // MODIFICATION NEEDED : We have to check whether the building can provide gold or not (only villages can)
             if (building.Owner < 4)
             {
-                _gm.Players[building.Owner].Gold += 1000;
+                _gm.InGamePlayers[building.Owner].Gold += 1000;
             }
         }
     }

@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     // Auto-properties (the compiler automatically creates private fields for them)
     public int PlayerTurn { get; set; }
     public int Day { get; set; } = 1;
-    public List<Player> Players { get; set; }
+    public List<PlayerInGame> InGamePlayers { get; set; }
     public EPlayerStates LastStateOfPlayer { get; set; }
 
     private EPlayerStates _currentStateOfPlayer;
@@ -26,10 +26,10 @@ public class GameManager : MonoBehaviour
         CurrentStateOfPlayer = EPlayerStates.Idle;
         LastStateOfPlayer = EPlayerStates.Idle;
         // Initialize players
-        Players = new List<Player>
+        InGamePlayers = new List<PlayerInGame>
         {
-            new("Mohamed", ETeamColors.Amber, ETeams.A, null),
-            new("Oussama", ETeamColors.Azure, ETeams.B, null)
+            new("", 1, ETeamColors.Amber, ETeams.A, null),
+            new("", 2, ETeamColors.Azure, ETeams.B, null)
         };
     }
 
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
     // Method to end a turn
     public void EndTurn()
     {
-        PlayerTurn = (PlayerTurn + 1) % Players.Count;
+        PlayerTurn = (PlayerTurn + 1) % InGamePlayers.Count;
         OnTurnEnd?.Invoke();
         if (PlayerTurn != 0) return;
         Day++;
