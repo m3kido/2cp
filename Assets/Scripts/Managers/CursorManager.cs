@@ -39,11 +39,7 @@ public class CursorManager : MonoBehaviour
         _camera = Camera.main;
         HoveredOverTile = _mm.Map.WorldToCell(transform.position);
     }
-    void Start()
-    {
-        
-        
-    }
+   
 
     void Update()
     {
@@ -149,6 +145,7 @@ public class CursorManager : MonoBehaviour
         {
             // Cancel selection
             HoveredOverTile = _mm.Map.WorldToCell(_um.SelectedUnit.transform.position);
+            Camera.main.transform.position = SaveCamera;
             _um.DeselectUnit();       
         }
     }

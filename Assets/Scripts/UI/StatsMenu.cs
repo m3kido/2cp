@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
-
+using UnityEngine.Animations;
 public class StatsMenu : MonoBehaviour
 {
     GameManager _gm;
@@ -14,6 +14,8 @@ public class StatsMenu : MonoBehaviour
     RectTransform _rect;
     RectTransform _unitRect;
     RectTransform _tileRect;
+
+    private Animator _anim;
 
     [SerializeField] private GameObject _unitStats;
     [SerializeField] private GameObject _TileStats;
@@ -45,6 +47,7 @@ public class StatsMenu : MonoBehaviour
         _unitRect = _unitStats.GetComponent<RectTransform>();
         _tileRect = _TileStats.GetComponent<RectTransform>();
 
+        _anim = GetComponent<Animator>();
     }
 
     private void OnEnable()
@@ -72,6 +75,7 @@ public class StatsMenu : MonoBehaviour
                 var save = _unitRect.localPosition;
                 _unitRect.localPosition = _tileRect.localPosition;
                 _tileRect.localPosition = save;
+                _anim.SetTrigger("Replay");
             }
         }
         else
@@ -83,6 +87,7 @@ public class StatsMenu : MonoBehaviour
                 var save = _unitRect.localPosition;
                 _unitRect.localPosition = _tileRect.localPosition;
                 _tileRect.localPosition = save;
+                _anim.SetTrigger("Replay");
             }
         }
 

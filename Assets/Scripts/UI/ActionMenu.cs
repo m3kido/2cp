@@ -103,6 +103,7 @@ public class ActionMenu : MonoBehaviour
         {
             _gm.CurrentStateOfPlayer = EPlayerStates.Selecting;
             _um.SelectedUnit.transform.position = _cm.SaveTile;
+            
             if (_um.Path.Count != 0)
             {
                 _cm.HoveredOverTile = _um.Path.Last();

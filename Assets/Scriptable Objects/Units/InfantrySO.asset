@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: InfantrySO
   m_EditorClassIdentifier: 
   _unitType: 0
-  _moveRange: 3
+  _moveRange: 9
   _maxProvisions: 99
   _lineOfSight: 0
   _cost: 0
