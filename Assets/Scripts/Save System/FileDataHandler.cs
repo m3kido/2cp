@@ -2,19 +2,23 @@ using UnityEngine;
 using System;
 using System.IO;
 
+// This class is responsible of writing the SaveData class into a file
 public class FileDataHandler
 {
     private string dataDirPath = "";
     private string dataFileName = "";
-    private bool useEncryption = false;
-    private readonly string encryptionCodeWord = "zqI8UqfDdR";
+    private bool useEncryption = false; // For security. Can be disabled
+    private readonly string encryptionCodeWord = "zqI8UqfDdR"; // I chose a random key, even more secure
 
+    // Constructor
     public FileDataHandler(string dataDirPath, string dataFileName, bool useEncryption)
     {
         this.dataDirPath = dataDirPath;
         this.dataFileName = dataFileName;
         this.useEncryption = useEncryption;
     }
+
+    // Load SaveData from the file
     public SaveData Load()
     {
         string fullPath = Path.Combine(dataDirPath, dataFileName);
@@ -50,6 +54,7 @@ public class FileDataHandler
         return loadData;
     }
 
+    // Write SaveData in the file
     public void Save(SaveData data)
     {
         string fullPath = Path.Combine(dataDirPath, dataFileName);
@@ -86,7 +91,7 @@ public class FileDataHandler
         }
     }
 
-    // encryption and decryption
+    // Encryption and decryption function (XOR Method)
     private string EncryptDecrypt(string data)
     {
         string modifiedData = "";

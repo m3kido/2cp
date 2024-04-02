@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Equivalent name : SaveManager
 public class DataPersistenceManager : MonoBehaviour
 {
-    private SaveData _saveData;
+    private SaveData _saveData; // Data that will be saved
     private GameManager _gm;
     private MapManager _mm;
     private UnitManager _um;
-    private FileDataHandler _dataHandler;
+    private FileDataHandler _dataHandler; // Class to handle writing in the file
 
     [Header("File storage configuartion.")]
     [SerializeField] private string _fileName;
@@ -48,6 +49,7 @@ public class DataPersistenceManager : MonoBehaviour
             NewGame();
         } else
         {
+            // Load everything
             LoadGameData();
             LoadPlayers();
             LoadUnits();
@@ -58,12 +60,12 @@ public class DataPersistenceManager : MonoBehaviour
 
     public void SaveGame() // Method to save a game
     {
+        // Put all data of the game in _saveData
         ExtractGameData();
         ExtractPlayersData();
         ExtractUnitsData();
 
-        _saveData.PrintDebugInfo();
-        _dataHandler.Save(_saveData);
+        _dataHandler.Save(_saveData); // Write _saveData in the file
 
         Debug.Log("Game Saved.");
     }
@@ -73,22 +75,24 @@ public class DataPersistenceManager : MonoBehaviour
         SaveGame();
     }
 
+    // Put the game data in _saveData
     public void ExtractGameData()
     {
-        _saveData.Day = _gm.Day;
-        _saveData.PlayerTurn = _gm.PlayerTurn;
+        _saveData.GameLogicSaveData = new GameSaveData(_gm.Day, _gm.PlayerTurn);
 
         Debug.Log("Extracted game data.");
     }
 
+    // Load data from _saveData to game
     public void LoadGameData()
     {
-        _gm.Day = _saveData.Day;
-        _gm.PlayerTurn = _saveData.PlayerTurn;
+        _gm.Day = _saveData.GameLogicSaveData.Day;
+        _gm.PlayerTurn = _saveData.GameLogicSaveData.PlayerTurn;
 
         Debug.Log("Game data loaded.");
     }
 
+    // Put the players data in _saveData
     public void ExtractPlayersData()
     {
         List<PlayerSaveData> playerSaves = new();
@@ -102,6 +106,7 @@ public class DataPersistenceManager : MonoBehaviour
         Debug.Log("Extracted player datas.");
     }
 
+    // Load data from _saveData to players
     public void LoadPlayers()
     {
         foreach(var playerSave in _saveData.PlayerSaveDatas)
@@ -118,6 +123,7 @@ public class DataPersistenceManager : MonoBehaviour
         Debug.Log("Players loaded.");
     }
 
+    // Put the units data in _saveData
     public void ExtractUnitsData()
     {
         List<AttackingUnitSaveData> attackingUnitSaves = new();
@@ -138,6 +144,7 @@ public class DataPersistenceManager : MonoBehaviour
         Debug.Log("Extracted unit datas.");
     }
 
+    // Load data from _saveData to units
     public void LoadUnits()
     {
         foreach (var attackingUnitSave in _saveData.AttackingUnitSaveDatas)
@@ -186,6 +193,7 @@ public class DataPersistenceManager : MonoBehaviour
         Debug.Log("Units loaded.");
     }
 
+    // Gets unit prefab from unit type (used to create unit object based on the saved data)
     public GameObject GetPrefabFromUnitType(EUnits unitType)
     {
         if (_um.UnitPrefabs[(int)unitType] != null)

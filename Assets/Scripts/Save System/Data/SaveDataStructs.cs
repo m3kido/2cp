@@ -1,18 +1,41 @@
 using System;
 using UnityEngine;
 
+// Struct for game data to save
+[Serializable]
+public struct GameSaveData
+{
+    public int Day;
+    public int PlayerTurn;
+
+    // Constructor
+    public GameSaveData(int day, int playerTurn)
+    {
+        Day = day;
+        PlayerTurn = playerTurn;
+    }
+}
+
+// Struct for player data to save
 [Serializable]
 public struct PlayerSaveData
 {
-    public string PlayerID;
-    public int PlayerNumber;
+    public string PlayerID; /*
+    We need to store players' IDs so that when we load a game, we know "who" was playing.
+    If we do not save IDs, then we can't know who was player one, was it ComputaKilla99 or SweetSneeze_0
+    */
+    public int PlayerNumber; /*
+    This is the player's number in the game {1, 2, 3 ,4}
+    This one's saved so we know which one's turn it is
+    */
     public ETeamColors Color;
     public ETeams Team;
     public Captain PlayerCaptain;
-    public float CPCharge;
+    public float CPCharge; // Celestial Power charge
     public bool IsCPActivated;
     public int Gold;
 
+    // Constructor
     public PlayerSaveData(string playerID, int playerNumber, ETeamColors color, ETeams team, Captain playerCaptain,
         float cPCharge, bool isCPActivated, int gold)
     {
@@ -27,13 +50,15 @@ public struct PlayerSaveData
     }
 }
 
+// Struct for attacking unit data to save
 [Serializable]
 public struct AttackingUnitSaveData
 {
+    // These obviously need to be saved
+    public EUnits UnitType;
     public int Health;
     public int Provisions;
     public int Owner;
-    public EUnits UnitType;
     public bool HasMoved;
     public int EnergyOrbs;
     public Weapon CurrentWeapon;
@@ -41,6 +66,7 @@ public struct AttackingUnitSaveData
     public bool HasAttacked;
     public Vector3Int Position;
 
+    // Constructor
     public AttackingUnitSaveData(EUnits unitType, int health, int provisions, int owner, bool hasMoved,
         int energyOrbs, Weapon currentWeapon, int currentWeaponIndex, bool hasAttacked, Vector3Int position)
     {
@@ -57,6 +83,7 @@ public struct AttackingUnitSaveData
     }
 }
 
+// Struct for loading unit data to save
 [Serializable]
 public struct LoadingUnitSaveData
 {
@@ -68,6 +95,7 @@ public struct LoadingUnitSaveData
     public AttackingUnitSaveData LoadedUnitSaveData;
     public Vector3Int Position;
 
+    // Constructor
     public LoadingUnitSaveData(EUnits unitType, int health, int provisions, int owner, bool hasMoved,
         AttackingUnitSaveData loadedUnitSaveData, Vector3Int position)
     {
@@ -81,6 +109,7 @@ public struct LoadingUnitSaveData
     }
 }
 
+// Struct for building data to be saved
 [Serializable]
 public struct BuildingSaveData
 {
@@ -89,6 +118,7 @@ public struct BuildingSaveData
     public int Health;
     public int Owner;
 
+    // Constructor
     public BuildingSaveData(EBuildings buildingType, Vector3Int position, int health, int owner)
     {
         BuildingType = buildingType;

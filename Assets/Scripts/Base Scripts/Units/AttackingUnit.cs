@@ -188,6 +188,7 @@ public class AttackingUnit : Unit
     /// <returns>Data to be loaded</returns>
     public AttackingUnitSaveData GetDataToSave()
     {
+        // HERE!!! : i put set weapon at null because there's an error, try passing Weapons[CurrentWeaponIndex]
         return new AttackingUnitSaveData(UnitType, Health, Provisions, Owner, HasMoved, EnergyOrbs,
             null, CurrentWeaponIndex, HasAttacked, GetGridPosition());
     }
