@@ -28,8 +28,8 @@ public class CursorManager : MonoBehaviour
     // Auto-property (the compiler automatically creates a private field for it)
     public Vector3Int SaveTile { get; set; }
     public Vector3 SaveCamera { get; set; }
-    
-    void Start()
+
+    private void Awake()
     {
         // Get the unit, map, game and building managers from the hierarchy
         _um = FindAnyObjectByType<UnitManager>();
@@ -37,7 +37,12 @@ public class CursorManager : MonoBehaviour
         _gm = FindAnyObjectByType<GameManager>();
         _bm = FindAnyObjectByType<BuildingManager>();
         _camera = Camera.main;
-       
+        HoveredOverTile = _mm.Map.WorldToCell(transform.position);
+    }
+    void Start()
+    {
+        
+        
     }
 
     void Update()

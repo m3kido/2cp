@@ -18,7 +18,7 @@ public class UnitManager : MonoBehaviour
     public List<Vector3Int> Path { get; set; } = new();
     public int PathCost { get; set; }
 
-    void Start()
+    private void Awake()
     {
         // Get map and game managers from the hierarchy
         _mm = FindAnyObjectByType<MapManager>();
