@@ -8,9 +8,8 @@ public class Weapon
     [SerializeField] EWeapons _weaponType;
     [SerializeField] List<int> _damageList;
     [SerializeField] int _energyOrbs;
-    [SerializeField] int _energyPerAttack;
-    [SerializeField] int _minRange;
-    [SerializeField] int _maxRange;
+    [SerializeField] int _minAttackRange;
+    [SerializeField] int _maxAttackRange;
 
     public List<int> DamageList { get; set; }
     public int EnergyOrbs { get; set; }
@@ -22,7 +21,7 @@ public class Weapon
 
     public void DecrementEnergyOrbs()
     {
-        EnergyOrbs -= _energyPerAttack;
+        EnergyOrbs--;
         if (_energyOrbs < 0) { OnEnergyRanOut?.Invoke(); }
     }
 }

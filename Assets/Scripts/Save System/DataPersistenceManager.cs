@@ -10,7 +10,7 @@ public class DataPersistenceManager : MonoBehaviour
     private UnitManager _um;
     private FileDataHandler _dataHandler; // Class to handle writing in the file
 
-    [Header("File storage configuartion.")]
+    [Header("File Storage Configuartion")]
     [SerializeField] private string _fileName;
     [SerializeField] private bool _useEncryption;
 
@@ -32,11 +32,16 @@ public class DataPersistenceManager : MonoBehaviour
         _mm = FindAnyObjectByType<MapManager>();
         _um = FindAnyObjectByType<UnitManager>();
         _dataHandler = new FileDataHandler(Application.persistentDataPath, _fileName, _useEncryption);
+
+        LoadGame();
     }
+
 
     public void NewGame() // Method to initialize a new game
     {
         _saveData = new SaveData();
+
+        Debug.Log("Initialized new game.");
     }
 
     public void LoadGame() // Method to load a game
@@ -109,8 +114,10 @@ public class DataPersistenceManager : MonoBehaviour
     // Load data from _saveData to players
     public void LoadPlayers()
     {
+        // Get saved players
         foreach(var playerSave in _saveData.PlayerSaveDatas)
         {
+            // Create a new player object and assign the saved data to it
             PlayerInGame player = new(playerSave.PlayerID, playerSave.PlayerNumber, playerSave.Color,
                 playerSave.Team, playerSave.PlayerCaptain)
             {
@@ -118,6 +125,7 @@ public class DataPersistenceManager : MonoBehaviour
                 IsCPActivated = playerSave.IsCPActivated,
                 Gold = playerSave.Gold
             };
+            // Add it to the game
             _gm.InGamePlayers.Add(player);
         }
         Debug.Log("Players loaded.");
@@ -147,15 +155,19 @@ public class DataPersistenceManager : MonoBehaviour
     // Load data from _saveData to units
     public void LoadUnits()
     {
+        // Get attacking unit saves
         foreach (var attackingUnitSave in _saveData.AttackingUnitSaveDatas)
         {
+            // Create prefab based of each saved unit type
             GameObject unitPrefab = GetPrefabFromUnitType(attackingUnitSave.UnitType);
             if (unitPrefab != null)
             {
+                // Instantiate it in the right saved position
                 GameObject unitObject = Instantiate(unitPrefab, _mm.Map.CellToWorld(attackingUnitSave.Position),
                     Quaternion.identity);
                 if (unitObject.TryGetComponent<AttackingUnit>(out var unitComponent))
                 {
+                    // Assign saved data to that prefab
                     unitComponent.SetSavedData(attackingUnitSave);
                 }
                 else
@@ -169,15 +181,19 @@ public class DataPersistenceManager : MonoBehaviour
             }
         }
 
+        // Get loading unit saves
         foreach (var loadingUnitSave in _saveData.LoadingUnitSaveDatas)
         {
+            // Create prefab based of each saved unit type
             GameObject unitPrefab = GetPrefabFromUnitType(loadingUnitSave.UnitType);
             if (unitPrefab != null)
             {
+                // Instantiate it in the right saved position
                 GameObject unitObject = Instantiate(unitPrefab, _mm.Map.CellToWorld(loadingUnitSave.Position),
                     Quaternion.identity);
                 if (unitObject.TryGetComponent<LoadingUnit>(out var unitComponent))
                 {
+                    // Assign saved data to that prefab
                     unitComponent.SetSavedData(loadingUnitSave);
                 }
                 else
@@ -196,6 +212,7 @@ public class DataPersistenceManager : MonoBehaviour
     // Gets unit prefab from unit type (used to create unit object based on the saved data)
     public GameObject GetPrefabFromUnitType(EUnits unitType)
     {
+        // The prefabs passed in the inspector should be given in the right order
         if (_um.UnitPrefabs[(int)unitType] != null)
         {
             return _um.UnitPrefabs[(int)unitType];
@@ -206,5 +223,4 @@ public class DataPersistenceManager : MonoBehaviour
             return null;
         }
     }
-
 }

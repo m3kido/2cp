@@ -95,12 +95,6 @@ MonoBehaviour:
     _energyPerAttack: 0
     _minRange: 0
     _maxRange: 0
-  - _weaponType: 0
-    _damageList: 
-    _energyOrbs: 0
-    _energyPerAttack: 0
-    _minRange: 0
-    _maxRange: 0
   EnergyOrbs: 0
   CurrentWeaponIndex: 0
   isAttacking: 0

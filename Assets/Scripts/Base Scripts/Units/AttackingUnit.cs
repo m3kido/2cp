@@ -188,7 +188,7 @@ public class AttackingUnit : Unit
     /// <returns>Data to be loaded</returns>
     public AttackingUnitSaveData GetDataToSave()
     {
-        // HERE!!! : i put set weapon at null because there's an error, try passing Weapons[CurrentWeaponIndex]
+        // HERE!!! : i set weapon at null because there's an error, try passing Weapons[CurrentWeaponIndex]
         return new AttackingUnitSaveData(UnitType, Health, Provisions, Owner, HasMoved, EnergyOrbs,
             null, CurrentWeaponIndex, HasAttacked, GetGridPosition());
     }
@@ -204,7 +204,8 @@ public class AttackingUnit : Unit
         UnitType = saveData.UnitType;
         HasMoved = saveData.HasMoved;
         CurrentWeaponIndex = saveData.CurrentWeaponIndex;
-        Weapons[CurrentWeaponIndex] = saveData.CurrentWeapon;
+        // HERE!!! : It also causes a problem
+        // Weapons[CurrentWeaponIndex] = saveData.CurrentWeapon;
         HasAttacked = saveData.HasAttacked;
     }
 }

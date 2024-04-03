@@ -43,8 +43,12 @@ public class FileDataHandler
                     dataToLoad = EncryptDecrypt(dataToLoad);
                 }
 
+                Debug.Log("Serialized data: " + dataToLoad);
+
                 // deserialize the data from Json back into a GameData object
                 loadData = JsonUtility.FromJson<SaveData>(dataToLoad);
+
+                loadData.PrintDebugInfo();
             }
             catch (Exception e)
             {
@@ -68,13 +72,13 @@ public class FileDataHandler
             // Serialize the C# GameSaveData object into Json
             string dataToStore = JsonUtility.ToJson(data, true);
 
-            Debug.Log("Serialized data: " + dataToStore);
-
             // Encrypt the data
             if (useEncryption)
             {
                 dataToStore = EncryptDecrypt(dataToStore);
             }
+
+            Debug.Log("Serialized data: " + dataToStore);
 
             // Write the serialized data to the file
             using (FileStream stream = new FileStream(fullPath, FileMode.Create))

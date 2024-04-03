@@ -55,7 +55,6 @@ public class AttackManager : MonoBehaviour
 
     private void DefeatUnit(Unit unit)
     {
-        // Meskina
         Destroy(unit);
     }
 

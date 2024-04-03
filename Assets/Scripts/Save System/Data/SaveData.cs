@@ -14,10 +14,10 @@ public class SaveData
     // Datas of all the players that were in the game
     public List<PlayerSaveData> PlayerSaveDatas;
 
-    // Datas of all the attacking units that were present before leaving the game :
+    // Datas of all the attacking units that were present before leaving the game
     public List<AttackingUnitSaveData> AttackingUnitSaveDatas;
 
-    // Datas of all the loading units that were present before leaving the game :
+    // Datas of all the loading units that were present before leaving the game
     public List<LoadingUnitSaveData> LoadingUnitSaveDatas;
 
     public void PrintDebugInfo() // For debug

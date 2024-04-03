@@ -10,9 +10,10 @@ public class UnitManager : MonoBehaviour
     private GameManager _gm;
     private MapManager _mm;
 
-    // Auto-properties (the compiler automatically creates private fields for them)
     public List<Unit> Units { get; set; }
-    public GameObject[] UnitPrefabs;
+
+    public GameObject[] UnitPrefabs; // We will need access to unit prefabs.
+                                     // Check save system : LoadUnits()
     public Unit SelectedUnit { get; set; }
     public Vector3Int SaveTile { get; set; }
     public List<Vector3Int> Path { get; set; } = new();
@@ -56,7 +57,8 @@ public class UnitManager : MonoBehaviour
     {
         Unit tileUnit = FindUnit(pos);
         if (!unit.Data.IsWalkable(_mm.GetTileData(pos).TerrainType)) { return true; }
-        if (tileUnit != null && _gm.InGamePlayers[tileUnit.Owner].TeamSide != _gm.InGamePlayers[unit.Owner].TeamSide) { return true; }
+        if (tileUnit != null && _gm.InGamePlayers[tileUnit.Owner].TeamSide !=
+            _gm.InGamePlayers[unit.Owner].TeamSide) { return true; }
         return false;
     }
 
@@ -69,7 +71,8 @@ public class UnitManager : MonoBehaviour
                 if (i == 0)
                 {
                     //start case because the start point is not in the path list
-                    _mm.DrawArrow(_mm.Map.WorldToCell(SelectedUnit.transform.position), Path[0], Path[Mathf.Clamp(1, 0, Path.Count - 1)]);
+                    _mm.DrawArrow(_mm.Map.WorldToCell(SelectedUnit.transform.position), Path[0],
+                        Path[Mathf.Clamp(1, 0, Path.Count - 1)]);
                     continue;
                 }
                 //the clamp is for capping the i at its max (path.count -1)
