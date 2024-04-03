@@ -10,7 +10,7 @@ public class UnitManager : MonoBehaviour
     // Managers will be needed
     private GameManager _gm;
     private MapManager _mm;
-
+  
     // Auto-properties (the compiler automatically creates private fields for them)
     public List<Unit> Units { get; set; }
     public Unit SelectedUnit { get; set; }
@@ -23,7 +23,7 @@ public class UnitManager : MonoBehaviour
         // Get map and game managers from the hierarchy
         _mm = FindAnyObjectByType<MapManager>();
         _gm = FindAnyObjectByType<GameManager>();
-
+      
         // Seek for units in the hierarchy
         Units = FindObjectsOfType<Unit>().ToList();
     }
@@ -142,5 +142,6 @@ public class UnitManager : MonoBehaviour
         PathCost = 0;
         SelectedUnit.HasMoved = true;
         SelectedUnit = null;
+        
     }
 }

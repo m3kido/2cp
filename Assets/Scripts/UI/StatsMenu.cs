@@ -32,7 +32,7 @@ public class StatsMenu : MonoBehaviour
     [SerializeField] private GameObject _tileSprite;
 
 
-
+    bool _gameLoaded = false;
 
     // Start is called before the first frame update
     void Awake()
@@ -53,7 +53,11 @@ public class StatsMenu : MonoBehaviour
     private void OnEnable()
     {
         CursorManager.OnCursorMove += UpdateInfo;
-
+        if(_gameLoaded)
+        {
+             UpdateInfo();
+            _anim.SetTrigger("Replay");
+        }
 
     }
     private void OnDisable()
@@ -63,6 +67,8 @@ public class StatsMenu : MonoBehaviour
     private void Start()
     {
         UpdateInfo();
+        _anim.SetTrigger("Replay");
+        _gameLoaded = true;
     }
     private void UpdateInfo()
     {
