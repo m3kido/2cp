@@ -89,16 +89,9 @@ public class ActionMenu : MonoBehaviour
                     Gm.GameState = EGameStates.Attacking;
                     Am.attacker = attacker;
                     //attacker.HighlightTargets(attacker);
-                    attacker.HasAttacked = true;
+                    attacker.IsAttacking = true;
                     Debug.Log("We're attacking");
                     Am.InitiateAttack(attacker);
-                    Gm.GameState = EGameStates.ActionMenu;
-                    //BEFORE RESETING UNIT NEED TO 
-                    //SELECT THE TARGET => A FUNCTION TO SELECT TARGET : Unit target = SelectTarget(attacker);
-                    //SHOW AN ATTACKING SCENE => ShowAttackingScene(attacker, target);
-                    //APPLY DAMMAGE => attacker.ApplyDamage(target, attacker); 
-
-
                     StartCoroutine(EndMoveAfterDelay(1.0f, attacker));
                     
                        

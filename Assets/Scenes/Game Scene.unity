@@ -323,6 +323,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Infantry (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 3059829734496104930, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
+      propertyPath: Owner
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059829734496104930, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
+      propertyPath: CurrentWeaponIndex
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3294983261654783976, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3
@@ -564,6 +572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d10542be0bcff0a4e945489e7abe08a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attacker: {fileID: 0}
 --- !u!4 &360095683
 Transform:
   m_ObjectHideFlags: 0
@@ -683,7 +692,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -777,6 +786,14 @@ PrefabInstance:
     - target: {fileID: 2330572529859379085, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
       propertyPath: m_Name
       value: Infantry (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059829734496104930, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
+      propertyPath: Owner
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059829734496104930, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
+      propertyPath: CurrentWeaponIndex
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3294983261654783976, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
       propertyPath: m_LocalPosition.x

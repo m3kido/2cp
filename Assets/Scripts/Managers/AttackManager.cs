@@ -9,7 +9,8 @@ public class AttackManager : MonoBehaviour
     // Method to initiate an attack
     public static AttackManager Instance { get; private set; }
     GameManager Gm;
-    public AttackingUnit attacker; 
+    public AttackingUnit attacker;
+    private int selectedTargetIndex = -1;
     private void Awake()
     {
         Gm = FindAnyObjectByType<GameManager>();
@@ -25,21 +26,24 @@ public class AttackManager : MonoBehaviour
         if (attacker == null) print("NO ATTACKER FOUND ");
         return attacker.CanAttack(attacker); 
     }
+
     public void ApplyDamage(Unit target, AttackingUnit attacker)
     {
         if (target == null || attacker == null)
         {
-            // Handle null references, maybe throw an exception or log an error
+            Debug.LogError("Target or attacker is null.");
             return;
         }
 
-        var damageToTarget = attacker.CalculateDamage(target, attacker);
+        float damageToTarget = attacker.CalculateDamage(target, attacker);
+        Debug.Log("Dammage : "+damageToTarget);
         target.Health -= (int)damageToTarget;
-
+        Debug.Log("target has been dammaged!");
         if (target.Health <= 0)
         {
             // Target is defeated, handle accordingly (remove from game, trigger events, etc.)
             DefeatUnit(target);
+            Debug.Log($"{target.name} has been defeated!");
         }
         else
         {
@@ -51,9 +55,13 @@ public class AttackManager : MonoBehaviour
             {
                 // Attacker is defeated, handle accordingly (remove from game, trigger events, etc.)
                 DefeatUnit(attacker);
+                Debug.Log($"{attacker.name} has been defeated!");
             }
         }
     }
+
+
+
 
     private void DefeatUnit(Unit unit)
     {
@@ -71,10 +79,11 @@ public class AttackManager : MonoBehaviour
 
         // Initiate target selection for the attacker
         attacker.InitiateTargetSelection();
+        Debug.Log("Action finished");
     }
 
 
-    private int selectedTargetIndex = -1;
+    
 
     // Call this function to initialize the target selection process
     public void InitiateTargetSelection(AttackingUnit attacker)
@@ -88,6 +97,7 @@ public class AttackManager : MonoBehaviour
             selectedTargetIndex = 0;
             HandleTargetSelectionInput();
         }
+        Debug.Log("Finished");
     }
 
     // Method to highlight the selected target
@@ -117,69 +127,63 @@ public class AttackManager : MonoBehaviour
 
         HighlightSelectedTarget(targets[selectedTargetIndex]);
 
-        // Handle keyboard input
         if (Input.GetKeyDown(KeyCode.Z))
         {
             // Move to the next target (circular)
             Debug.LogWarning("Z clicked");
+            attacker.UnHighlightTarget(targets[selectedTargetIndex]);
             selectedTargetIndex = (selectedTargetIndex + 1) % targets.Count;
             HighlightSelectedTarget(targets[selectedTargetIndex]);
-            if (Input.GetKeyDown(KeyCode.A)) // Assuming "A" key is used to confirm attack
-            {
-                // Apply damage to the selected target
-                Unit selectedTarget = targets[selectedTargetIndex];
-                ApplyDamage(selectedTarget, attacker);
-                Debug.Log("EA SPORTS , IT'S IN THE GAME");
-                return true;
-            }
-            else if (Input.GetKeyDown(KeyCode.X)) // Assuming "A" key is used to confirm attack
-            {
-                EndAttackPhase();
-                return false;
-
-
-            }
+                
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
             // Move to the previous target (circular)
             Debug.LogWarning("D clickeddzd");
+            attacker.UnHighlightTarget(targets[selectedTargetIndex]);
             selectedTargetIndex = (selectedTargetIndex - 1 + targets.Count) % targets.Count;
             HighlightSelectedTarget(targets[selectedTargetIndex]);
-            if (Input.GetKeyDown(KeyCode.A)) // Assuming "A" key is used to confirm attack
-            {
-                // Apply damage to the selected target
-                Unit selectedTarget = targets[selectedTargetIndex];
-                ApplyDamage(selectedTarget, attacker);
-                Debug.Log("EA SPORTS , IT'S IN THE GAME");
-                return true;
-            }
-            else if (Input.GetKeyDown(KeyCode.X)) // Assuming "A" key is used to confirm attack
-            {
-                EndAttackPhase();
-                return false;
-
-
-            }
-
+                
         }
-        return false;
+        if (Input.GetKeyDown(KeyCode.A)) // Assuming "A" key is used to confirm attack
+        {
+            // Apply damage to the selected target
+            Unit selectedTarget = targets[selectedTargetIndex];
+            ApplyDamage(selectedTarget, attacker);
+            attacker.UnHighlightTargets(attacker);
+            attacker.IsAttacking = false;
+            attacker.HasAttacked = true; 
+            Gm.GameState = EGameStates.Idle;
+            return true; // Return true to indicate attack is confirmed
+        }
+        else if (Input.GetKeyDown(KeyCode.X)) // Assuming "X" key is used to cancel attack
+        {
+            attacker.UnHighlightTargets(attacker);
+            EndAttackPhase();
+            return false; // Return false to indicate attack is canceled
+        }
+           
+        
+    return false;
     }
     
     public void EndAttackPhase()
     {
         // Reset the attacking state to false
-        attacker.isAttacking = false;
-        Gm.GameState = EGameStates.Idle;
+        attacker.IsAttacking = false;
+        Gm.GameState = EGameStates.ActionMenu;
     }
     void Update()
     {
-        // Check if the game is in attacking state before executing update logic
-        if (Gm.GameState == EGameStates.Attacking)
-        {
-            HandleTargetSelectionInput();     
+       if(Gm.GameState == EGameStates.Attacking)
+       {
+            HandleTargetSelectionInput();
+            
         }
+
+        
     }
+    
 
 
 }

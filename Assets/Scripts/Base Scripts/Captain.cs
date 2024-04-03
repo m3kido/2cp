@@ -1,4 +1,15 @@
+using System;
 using UnityEngine;
+
+[Serializable]
+public class CaptainData
+{
+    public int passiveAttack;
+    public int passiveDefense;
+    public int celesteAttack;
+    public int celesteDefense;
+    public Captains name;
+}
 
 public enum Captains
 {
@@ -10,15 +21,11 @@ public enum Captains
 
 public class Captain : MonoBehaviour
 {
-    [SerializeField] int _passiveAttack;
-    [SerializeField] int _passiveDefense;
-    [SerializeField] int _celesteAttack;
-    [SerializeField] int _celesteDefense;
-    [SerializeField] Captains _name;
+    [SerializeField] private CaptainData captainData;
 
-    public int PassiveAttack { get { return _passiveAttack; } }
-    public int PassiveDefense { get { return _passiveDefense; } }
-    public int CelesteAttack { get { return _celesteAttack; } }
-    public int CelesteDefense { get { return _celesteDefense; } }
-    public Captains Name { get => _name; }
+    public int PassiveAttack { get { return captainData.passiveAttack; } }
+    public int PassiveDefense { get { return captainData.passiveDefense; } }
+    public int CelesteAttack { get { return captainData.celesteAttack; } }
+    public int CelesteDefense { get { return captainData.celesteDefense; } }
+    public Captains Name { get { return captainData.name; } }
 }

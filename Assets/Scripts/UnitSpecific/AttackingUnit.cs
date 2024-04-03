@@ -11,19 +11,19 @@ public class AttackingUnit : Unit
 
     public List<Weapon> Weapons { get => _weapons; set => _weapons = value; }
     public int CurrentWeaponIndex = 0;
-    public bool isAttacking = false;
-    public bool _hasAttacked = false;
+    public bool _isAttacking = false;
+    public bool HasAttacked = false;
 
-    public bool HasAttacked
+    public bool IsAttacking
     {
         get
         {
-            return _hasAttacked;
+            return _isAttacking;
         }
         set
         {
-            _hasAttacked = value;
-            if (_hasAttacked)
+            _isAttacking = value;
+            if (_isAttacking)
             {
                 rend.color = Color.red;
             }
@@ -72,7 +72,7 @@ public class AttackingUnit : Unit
         int baseDamage = _weapons[CurrentWeaponIndex].DamageList[(int)target.Type];
         Player attackerPlayer = Gm.Players[attacker.Owner];
         Captain attackerCaptain = attackerPlayer.Captain;
-        int celesteAttack = attackerPlayer.IsCelesteActive ? attackerCaptain.CelesteDefense : 0;
+        int celesteAttack = attackerPlayer.IsCelesteActive ? attackerCaptain.CelesteDefense : 0; 
         float attackDamage = baseDamage * (1 + attackerCaptain.PassiveAttack) * (1 + celesteAttack);
 
 
@@ -112,7 +112,7 @@ public class AttackingUnit : Unit
 
             bool IsInRange = (L1Distance(attackerPos, potentialTargetPos) >= currentWeapon.MinRange) && (L1Distance(attackerPos, potentialTargetPos) < currentWeapon.MaxRange);
             bool IsEnemy = attacker.Owner != unit.Owner;
-            bool IsDamageable = attacker._weapons[CurrentWeaponIndex].DamageList[(int)unit.Type] != 0;
+            bool IsDamageable = attacker._weapons[0].DamageList[(int)unit.Type] != 0;
 
             if (IsInRange && IsEnemy && IsDamageable)
             {
@@ -156,6 +156,19 @@ public class AttackingUnit : Unit
         }
     }
 
+    public void UnHighlightTarget(Unit target)
+    {
+       
+        if (target.TryGetComponent<Renderer>(out var renderer))
+        {
+            MaterialPropertyBlock propBlock = new();
+            renderer.GetPropertyBlock(propBlock);
+            propBlock.SetColor("_Color", Color.white); // Set the color to red
+            renderer.SetPropertyBlock(propBlock);
+        }
+        
+    }
+
     public bool CanAttack(AttackingUnit attacker)
     {
         List<Unit> targets = ScanTargets(attacker);
@@ -196,6 +209,7 @@ public class AttackingUnit : Unit
     {
         Debug.Log("Initiating target selection from the AU");
         AttackManager.Instance.InitiateTargetSelection(this);
+        Debug.Log("Finished");
     }
 
     // Method to handle keyboard input for navigating through targets

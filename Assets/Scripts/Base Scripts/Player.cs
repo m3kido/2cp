@@ -1,4 +1,7 @@
-﻿public class Player
+﻿using System;
+
+[Serializable]
+public class Player
 {
     public string Name;
     public bool Lost = false;
