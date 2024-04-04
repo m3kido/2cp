@@ -92,9 +92,10 @@ public class ActionMenu : MonoBehaviour
                     attacker.IsAttacking = true;
                     Debug.Log("We're attacking");
                     Am.InitiateAttack(attacker);
+                    gameObject.SetActive(true);
                     StartCoroutine(EndMoveAfterDelay(1.0f, attacker));
-                    
-                       
+                    gameObject.SetActive(false);
+
 
                 }
 
@@ -117,13 +118,15 @@ public class ActionMenu : MonoBehaviour
 
 
     }
-    private IEnumerator EndMoveAfterDelay(float delay , AttackingUnit attacker ) 
+    private IEnumerator EndMoveAfterDelay(float delay, AttackingUnit attacker)
     {
         yield return new WaitForSeconds(delay);
 
         Um.EndMove();
-        attacker.UnHighlightTargets(attacker); 
+        attacker.UnHighlightTargets(attacker);
         Gm.GameState = EGameStates.Idle;
+
+        
     }
     private void CalculateOptions()
     {
@@ -131,7 +134,7 @@ public class ActionMenu : MonoBehaviour
 
         CheckAttackOption();
         CheckCapture();
-        
+
 
         if (OptionsList.Count > 0)
         {
@@ -159,7 +162,7 @@ public class ActionMenu : MonoBehaviour
             else
             {
                 if (Am == null) Debug.Log("ONIICHAAAAAAAAAN");
-                if (attacker.CanAttack(attacker) )
+                if (attacker.CanAttack(attacker))
                 {
                     AttackOptionInstance.SetActive(true);
                     OptionsList.Add(AttackOptionInstance);

@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
         set { _gameState = value; OnStateChange?.Invoke(); LastState = _gameState; }
     }
     public EGameStates LastState;
+
     [SerializeField] private Captain captainA;
     [SerializeField] private Captain captainB;
 
@@ -30,11 +31,12 @@ public class GameManager : MonoBehaviour
         
         GameState = EGameStates.Idle;
         // Initialize players
-        Players = new List<Player>
+
+        /*Players = new List<Player>
         {
             new("Andrew",EPlayerColors.Amber, ETeams.A, captainA),
             new("Freya",EPlayerColors.Azure, ETeams.B, captainB)
-        };
+        };*/
 
     }
 

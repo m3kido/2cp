@@ -51,9 +51,13 @@ public class Unit : MonoBehaviour
         {
             if (value <= 0)
             {
+                _health = 0;
                 Die();
             }
-            else _health = value;
+            else
+            {
+                _health = value;
+            }
         }
     }
 
@@ -178,7 +182,9 @@ public class Unit : MonoBehaviour
     public void Die()
     {
         print("I'm Going To Die!");
-        Destroy(this);
+        Um.Units.Remove(this);
+        Destroy(gameObject);
+
     }
 
     public static float L1Distance(Vector3 A, Vector3 B)

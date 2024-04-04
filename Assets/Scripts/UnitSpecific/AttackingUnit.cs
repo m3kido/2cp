@@ -84,7 +84,7 @@ public class AttackingUnit : Unit
 
 
         int chance = (attackerCaptain.Name == Captains.Andrew) ? UnityEngine.Random.Range(2, 10) : UnityEngine.Random.Range(1, 10);
-        float totalDamage = attacker.Health / 100 * attackDamage * defenseDamage * (1 + chance / 100);
+        float totalDamage = (float)attacker.Health / 100 * attackDamage * defenseDamage * (1 + (float)chance / 100);
         return totalDamage;
     }
 

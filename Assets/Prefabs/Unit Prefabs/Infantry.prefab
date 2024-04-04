@@ -93,13 +93,13 @@ MonoBehaviour:
   Type: 0
   IsMoving: 0
   _weapons:
-  - _damageList: 0100000001000000
+  - _damageList: e8030000e8030000
     _ammo: 10
     _weaponType: 1
     _ammoPerAttack: 2
     _minRange: 0
     _maxRange: 2
-  - _damageList: 0100000001000000
+  - _damageList: e8030000e8030000
     _ammo: 2147483647
     _weaponType: 0
     _ammoPerAttack: 2

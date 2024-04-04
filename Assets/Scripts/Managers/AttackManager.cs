@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class AttackManager : MonoBehaviour
@@ -18,13 +16,13 @@ public class AttackManager : MonoBehaviour
     }
 
     // Method to initiate an attack
-    
+
 
     // Method to check if a unit can attack
     public bool UnitCanAttack(AttackingUnit attacker)
     {
         if (attacker == null) print("NO ATTACKER FOUND ");
-        return attacker.CanAttack(attacker); 
+        return attacker.CanAttack(attacker);
     }
 
     public void ApplyDamage(Unit target, AttackingUnit attacker)
@@ -36,28 +34,18 @@ public class AttackManager : MonoBehaviour
         }
 
         float damageToTarget = attacker.CalculateDamage(target, attacker);
-        Debug.Log("Dammage : "+damageToTarget);
+        Debug.Log("Dammage : " + damageToTarget);
         target.Health -= (int)damageToTarget;
         Debug.Log("target has been dammaged!");
-        if (target.Health <= 0)
+        // If the target is still alive, apply counter-attack to attacker
+        if (target.Health > 0 && target is AttackingUnit)
         {
-            // Target is defeated, handle accordingly (remove from game, trigger events, etc.)
-            DefeatUnit(target);
-            Debug.Log($"{target.name} has been defeated!");
-        }
-        else
-        {
-            // If the target is still alive, apply counter-attack to attacker
-            var damageToAttacker = attacker.CalculateDamage(target, attacker);
+            var damageToAttacker = attacker.CalculateDamage(attacker, target as AttackingUnit);
             attacker.Health -= (int)damageToAttacker;
-
-            if (attacker.Health <= 0)
-            {
-                // Attacker is defeated, handle accordingly (remove from game, trigger events, etc.)
-                DefeatUnit(attacker);
-                Debug.Log($"{attacker.name} has been defeated!");
-            }
+            Debug.Log("Dammage : " + damageToAttacker);
+            Debug.Log("attacker has been dammaged!");
         }
+
     }
 
 
@@ -70,7 +58,7 @@ public class AttackManager : MonoBehaviour
 
     public void InitiateAttack(AttackingUnit attacker)
     {
-        Debug.Log("Initiating Attack from the AM" ); 
+        Debug.Log("Initiating Attack from the AM");
         if (attacker == null)
         {
             Debug.LogWarning("Cannot initiate attack. Attacker is null.");
@@ -83,7 +71,7 @@ public class AttackManager : MonoBehaviour
     }
 
 
-    
+
 
     // Call this function to initialize the target selection process
     public void InitiateTargetSelection(AttackingUnit attacker)
@@ -134,7 +122,7 @@ public class AttackManager : MonoBehaviour
             attacker.UnHighlightTarget(targets[selectedTargetIndex]);
             selectedTargetIndex = (selectedTargetIndex + 1) % targets.Count;
             HighlightSelectedTarget(targets[selectedTargetIndex]);
-                
+
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
@@ -143,7 +131,7 @@ public class AttackManager : MonoBehaviour
             attacker.UnHighlightTarget(targets[selectedTargetIndex]);
             selectedTargetIndex = (selectedTargetIndex - 1 + targets.Count) % targets.Count;
             HighlightSelectedTarget(targets[selectedTargetIndex]);
-                
+
         }
         if (Input.GetKeyDown(KeyCode.A)) // Assuming "A" key is used to confirm attack
         {
@@ -152,7 +140,7 @@ public class AttackManager : MonoBehaviour
             ApplyDamage(selectedTarget, attacker);
             attacker.UnHighlightTargets(attacker);
             attacker.IsAttacking = false;
-            attacker.HasAttacked = true; 
+            attacker.HasAttacked = true;
             Gm.GameState = EGameStates.Idle;
             return true; // Return true to indicate attack is confirmed
         }
@@ -162,11 +150,11 @@ public class AttackManager : MonoBehaviour
             EndAttackPhase();
             return false; // Return false to indicate attack is canceled
         }
-           
-        
-    return false;
+
+
+        return false;
     }
-    
+
     public void EndAttackPhase()
     {
         // Reset the attacking state to false
@@ -175,15 +163,15 @@ public class AttackManager : MonoBehaviour
     }
     void Update()
     {
-       if(Gm.GameState == EGameStates.Attacking)
-       {
+        if (Gm.GameState == EGameStates.Attacking)
+        {
             HandleTargetSelectionInput();
-            
+
         }
 
-        
+
     }
-    
+
 
 
 }
