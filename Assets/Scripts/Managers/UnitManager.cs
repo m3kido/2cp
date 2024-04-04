@@ -17,7 +17,7 @@ public class UnitManager : MonoBehaviour
 
     GameManager Gm;
     MapManager Mm;
-    
+
     void Awake()
     {
         // Get map and game managers from the hierarchy
@@ -26,7 +26,7 @@ public class UnitManager : MonoBehaviour
 
         // Seek for units in the hierarchy
         Units = FindObjectsOfType<Unit>().ToList();
-        
+
     }
 
     private void OnEnable()
@@ -65,18 +65,18 @@ public class UnitManager : MonoBehaviour
     // Draw the arrow path
     public void DrawPath()
     {
-       
-            for (int i = 0; i < Path.Count; i++)
+
+        for (int i = 0; i < Path.Count; i++)
+        {
+            if (i == 0)
             {
-                if (i == 0)
-                {
-                    //start case because the start point is not in the path list
-                    Mm.DrawArrow(Mm.Map.WorldToCell(SelectedUnit.transform.position), Path[0], Path[Mathf.Clamp(1, 0, Path.Count - 1)]);
-                    continue;
-                }
-                //the clamp is for capping the i at its max (path.count -1)
-                Mm.DrawArrow(Path[i - 1], Path[i], Path[Mathf.Clamp(i + 1, 0, Path.Count - 1)]);
+                //start case because the start point is not in the path list
+                Mm.DrawArrow(Mm.Map.WorldToCell(SelectedUnit.transform.position), Path[0], Path[Mathf.Clamp(1, 0, Path.Count - 1)]);
+                continue;
             }
+            //the clamp is for capping the i at its max (path.count -1)
+            Mm.DrawArrow(Path[i - 1], Path[i], Path[Mathf.Clamp(i + 1, 0, Path.Count - 1)]);
+        }
     }
 
     // Undraw the arrow path
@@ -111,31 +111,33 @@ public class UnitManager : MonoBehaviour
     // Move the selected unit
     public IEnumerator MoveUnit()
     {
-        
+
         SelectedUnit.IsMoving = true;
         SelectedUnit.ResetTiles();
         UnDrawPath();
-        
+
         foreach (var pos in Path)
         {
             SelectedUnit.transform.position = pos;
-            yield return new WaitForSeconds(0.08f) ;
+            yield return new WaitForSeconds(0.08f);
 
         }
         yield return 1f;
         SelectedUnit.IsMoving = false;
-        
+
         Gm.GameState = EGameStates.ActionMenu;
-      
+
     }
-    
+
     // Runs at the end of the day 
     private void ResetUnits()
     {
-        foreach(var unit in Units) {
-            unit.HasMoved=false;
+        foreach (var unit in Units)
+        {
+            unit.HasMoved = false;
         }
     }
+
     public void EndMove()
     {
         SelectedUnit.Fuel -= PathCost;
@@ -143,6 +145,8 @@ public class UnitManager : MonoBehaviour
         PathCost = 0;
         SelectedUnit.HasMoved = true;
         SelectedUnit = null;
+        Gm.GameState = EGameStates.Idle;
+
     }
 
 

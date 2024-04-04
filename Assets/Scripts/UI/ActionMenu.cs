@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -25,7 +24,7 @@ public class ActionMenu : MonoBehaviour
     private GameObject WaitOptionInstance;
     private GameObject AttackOptionInstance;
 
-    private AttackingUnit attacker;
+    //private AttackingUnit attacker;
 
     //public GameObject FireOption;
     //public GameObject CaptureOption;
@@ -77,29 +76,27 @@ public class ActionMenu : MonoBehaviour
             if (OptionsList[SelectedOption].name.Contains("Wait"))
             {
                 Um.EndMove();
-                Gm.GameState = EGameStates.Idle;
             }
-            //Logique to do when the player choose to attack 
+            //Logic to do when the player choose to attack 
             else if (OptionsList[SelectedOption].name.Contains("Attack"))
             {
 
                 if (Um.SelectedUnit is AttackingUnit)
                 {
-                    attacker = Um.SelectedUnit as AttackingUnit;
-                    Gm.GameState = EGameStates.Attacking;
-                    Am.attacker = attacker;
-                    attacker.IsAttacking = true;
+                    Am.Attacker = Um.SelectedUnit as AttackingUnit;
+
                     Debug.Log("We're attacking");
-                    Am.InitiateAttack(attacker);
+                    Am.InitiateAttack();
                     Debug.Log("Done attacking");
-                    attacker.UnHighlightTargets(attacker);
+
+                    Am.EndAttackPhase();
                     Um.EndMove();
-                    Gm.GameState = EGameStates.Idle;
+
 
 
                 }
 
-                ;
+
             }
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -118,7 +115,7 @@ public class ActionMenu : MonoBehaviour
 
 
     }
-    
+
     private void CalculateOptions()
     {
         //Hna n3amr ola list te3 option 
@@ -135,6 +132,7 @@ public class ActionMenu : MonoBehaviour
         }
 
     }
+
     private void CheckAttackOption()
     {
         if (Um.SelectedUnit == null)
@@ -145,15 +143,14 @@ public class ActionMenu : MonoBehaviour
 
         if (Um.SelectedUnit is AttackingUnit)
         {
-            attacker = Um.SelectedUnit as AttackingUnit;
-            if (attacker == null)
+            Am.Attacker = Um.SelectedUnit as AttackingUnit;
+            if (Am.Attacker == null)
             {
                 Debug.Log("Attacker is null");
             }
             else
             {
-                if (Am == null) Debug.Log("ONIICHAAAAAAAAAN");
-                if (attacker.CanAttack(attacker))
+                if (Am.Attacker.CanAttack())
                 {
                     AttackOptionInstance.SetActive(true);
                     OptionsList.Add(AttackOptionInstance);
@@ -182,6 +179,5 @@ public class ActionMenu : MonoBehaviour
 
 
         }
-
     }
 }

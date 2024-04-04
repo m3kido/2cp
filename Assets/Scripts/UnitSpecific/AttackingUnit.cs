@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 [Serializable]
@@ -11,7 +10,7 @@ public class AttackingUnit : Unit
 
     public List<Weapon> Weapons { get => _weapons; set => _weapons = value; }
     public int CurrentWeaponIndex = 0;
-    public bool _isAttacking = false;
+    private bool _isAttacking = false;
     public bool HasAttacked = false;
 
     public bool IsAttacking
@@ -72,35 +71,29 @@ public class AttackingUnit : Unit
         int baseDamage = _weapons[CurrentWeaponIndex].DamageList[(int)target.Type];
         Player attackerPlayer = Gm.Players[attacker.Owner];
         Captain attackerCaptain = attackerPlayer.Captain;
-        int celesteAttack = attackerPlayer.IsCelesteActive ? attackerCaptain.CelesteDefense : 0; 
-        float attackDamage = baseDamage * (1 + attackerCaptain.PassiveAttack) * (1 + celesteAttack);
+        int celesteAttack = attackerPlayer.IsCelesteActive ? attackerCaptain.Data.CelesteDefense : 0;
+        float attackDamage = baseDamage * (1 + attackerCaptain.Data.PassiveAttack) * (1 + celesteAttack);
 
 
         int terrainStars = Mm.GetTileData(Mm.Map.WorldToCell(target.transform.position)).Defence;
         Player targetPlayer = Gm.Players[attacker.Owner];
         Captain targetCaptain = targetPlayer.Captain;
-        int celesteDefense = targetPlayer.IsCelesteActive ? targetCaptain.CelesteDefense : 0;
-        float defenseDamage = (1 - terrainStars * target.Health / 1000) * (1 - targetCaptain.PassiveDefense) * (1 - celesteDefense);
+        int celesteDefense = targetPlayer.IsCelesteActive ? targetCaptain.Data.CelesteDefense : 0;
+        float defenseDamage = (1 - terrainStars * target.Health / 1000) * (1 - targetCaptain.Data.PassiveDefense) * (1 - celesteDefense);
 
 
-        int chance = (attackerCaptain.Name == Captains.Andrew) ? UnityEngine.Random.Range(2, 10) : UnityEngine.Random.Range(1, 10);
+        int chance = (attackerCaptain.Data.Name == ECaptains.Andrew) ? UnityEngine.Random.Range(2, 10) : UnityEngine.Random.Range(1, 10);
         float totalDamage = (float)attacker.Health / 100 * attackDamage * defenseDamage * (1 + (float)chance / 100);
         return totalDamage;
     }
 
-    
+
 
     // scans area for targets in an Intervall [ min range, max range[
     // Assumed that every unit can be in one tile which can be in one grid position
-    public List<Unit> ScanTargets(AttackingUnit attacker)
+    public List<Unit> ScanTargets()
     {
-        if (attacker == null || attacker.transform == null || Mm == null)
-        {
-            Debug.LogError("Error: Null reference detected in ScanTargets method.");
-            return new List<Unit>();
-        }
-
-        var attackerPos = Mm.Map.WorldToCell(attacker.transform.position);
+        var attackerPos = GetGridPosition();
         List<Unit> targets = new();
 
         foreach (var unit in Um.Units)
@@ -108,11 +101,11 @@ public class AttackingUnit : Unit
 
             var potentialTargetPos = Mm.Map.WorldToCell(unit.transform.position);
 
-            var currentWeapon = attacker.Weapons[CurrentWeaponIndex];// getting the current weapon from the attacker
+            var currentWeapon = Weapons[CurrentWeaponIndex];// getting the current weapon from the attacker
 
             bool IsInRange = (L1Distance(attackerPos, potentialTargetPos) >= currentWeapon.MinRange) && (L1Distance(attackerPos, potentialTargetPos) < currentWeapon.MaxRange);
-            bool IsEnemy = attacker.Owner != unit.Owner;
-            bool IsDamageable = attacker._weapons[0].DamageList[(int)unit.Type] != 0;
+            bool IsEnemy = Owner != unit.Owner;
+            bool IsDamageable = Weapons[0].DamageList[(int)unit.Type] != 0;
 
             if (IsInRange && IsEnemy && IsDamageable)
             {
@@ -124,9 +117,9 @@ public class AttackingUnit : Unit
     }
 
 
-    public void HighlightTargets(AttackingUnit attacker)
+    public void HighlightTargets()
     {
-        List<Unit> targets = ScanTargets(attacker);
+        List<Unit> targets = ScanTargets();
         Debug.Log("You can attack " + targets.Count + " enemies");
         foreach (var target in targets)
         {
@@ -140,9 +133,9 @@ public class AttackingUnit : Unit
             }
         }
     }
-    public void UnHighlightTargets(AttackingUnit attacker)
+    public void UnHighlightTargets()
     {
-        List<Unit> targets = ScanTargets(attacker);
+        List<Unit> targets = ScanTargets();
         foreach (var target in targets)
         {
             // Change the material color of the target to red
@@ -158,7 +151,7 @@ public class AttackingUnit : Unit
 
     public void UnHighlightTarget(Unit target)
     {
-       
+
         if (target.TryGetComponent<Renderer>(out var renderer))
         {
             MaterialPropertyBlock propBlock = new();
@@ -166,32 +159,28 @@ public class AttackingUnit : Unit
             propBlock.SetColor("_Color", Color.white); // Set the color to red
             renderer.SetPropertyBlock(propBlock);
         }
-        
+
     }
 
-    public bool CanAttack(AttackingUnit attacker)
+    public bool CanAttack()
     {
-        List<Unit> targets = ScanTargets(attacker);
-        if (attacker == null)
+        List<Unit> targets = ScanTargets();
+        
+        if (targets == null)
         {
-            Debug.LogWarning("Attacker is null. Unable to check if it can attack.");
+            Debug.LogWarning("Targets list is null. Unable to check if attacker can attack.");
             return false;
         }
-        if (targets == null)
-    {
-        Debug.LogWarning("Targets list is null. Unable to check if attacker can attack.");
-        return false;
-    }
 
-    // Now, check if the attacker has any valid targets to attack
-    if (targets.Count > 0)
-    {
+        // Now, check if the attacker has any valid targets to attack
+        if (targets.Count > 0)
+        {
             return true;
-    }
-    else
-    {
-            return false; 
-    }
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public void MoveToNextWeapon()

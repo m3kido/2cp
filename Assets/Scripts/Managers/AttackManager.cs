@@ -4,22 +4,33 @@ using UnityEngine;
 
 public class AttackManager : MonoBehaviour
 {
-    public static AttackManager Instance { get; private set; }
     GameManager Gm;
-    public AttackingUnit attacker;
+    public AttackingUnit Attacker;
     private int selectedTargetIndex = -1;
-    private bool actionTaked = false; 
+    private bool _actionTaken = false;
+    public bool ActionTaken
+    {
+        get
+        {
+            return _actionTaken;
+        }
+        set
+        {
+            _actionTaken = value;
+            print($"-----------ActionTaken : {value}");
+        }
+    }
 
     private void Awake()
     {
         Gm = FindAnyObjectByType<GameManager>();
-        Instance = this;
+        ActionTaken = false;
     }
 
     public bool UnitCanAttack(AttackingUnit attacker)
     {
         if (attacker == null) print("NO ATTACKER FOUND ");
-        return attacker.CanAttack(attacker);
+        return attacker.CanAttack();
     }
 
     public void ApplyDamage(Unit target, AttackingUnit attacker)
@@ -44,10 +55,10 @@ public class AttackManager : MonoBehaviour
         }
     }
 
-    public void InitiateAttack(AttackingUnit attacker)
+    public void InitiateAttack()
     {
         Debug.Log("Initiating Attack from the AM");
-        if (attacker == null)
+        if (Attacker == null)
         {
             Debug.LogWarning("Cannot initiate attack. Attacker is null.");
             return;
@@ -55,48 +66,42 @@ public class AttackManager : MonoBehaviour
 
         // Set the game state to Attacking
         Gm.GameState = EGameStates.Attacking;
+        Attacker.IsAttacking = true;
+        Attacker.HasAttacked = false;
 
-        // Initiate the attack coroutine
-        StartCoroutine(AttackCoroutine(attacker));
-    }
 
-    private IEnumerator AttackCoroutine(AttackingUnit attacker)
-    {
-        Debug.Log("Initiating target selection from the AM");
-        List<Unit> targets = attacker.ScanTargets(attacker);
+        List<Unit> targets = Attacker.ScanTargets();
+
         if (targets.Count > 0)
         {
-            Debug.Log(attacker + " can attack");
+            Debug.Log(Attacker + " can attack");
             selectedTargetIndex = 0;
 
             // Start target selection process
-            yield return StartCoroutine(TargetSelectionCoroutine(attacker, targets));
-
-            Debug.Log("Action finished");
+            StartCoroutine(TargetSelectionCoroutine(Attacker, targets));
         }
         else
         {
             Debug.Log("No valid targets found.");
         }
 
-        // Reset the game state to Idle after finishing the attack
-        Gm.GameState = EGameStates.Idle;
     }
 
     private IEnumerator TargetSelectionCoroutine(AttackingUnit attacker, List<Unit> targets)
     {
-        while (!actionTaked)
+        while (!ActionTaken)
         {
             HandleTargetSelectionInput(attacker, targets);
 
             // Wait for the next frame
             yield return null;
         }
+        ActionTaken = false;
+        Debug.Log("Action finished");
     }
 
     private void HandleTargetSelectionInput(AttackingUnit attacker, List<Unit> targets)
     {
-        Debug.Log("Handling target selection");
 
         // Check if there are any targets to select
         if (selectedTargetIndex == -1)
@@ -138,16 +143,13 @@ public class AttackManager : MonoBehaviour
             // Apply damage to the selected target
             Unit selectedTarget = targets[selectedTargetIndex];
             ApplyDamage(selectedTarget, attacker);
-            attacker.UnHighlightTargets(attacker);
-            attacker.IsAttacking = false;
-            attacker.HasAttacked = true;
-            actionTaked = true; 
+            ActionTaken = true;
         }
-        else if (Input.GetKeyDown(KeyCode.X)) // Assuming "X" key is used to cancel attack
+
+        if (Input.GetKeyDown(KeyCode.X)) // Assuming "X" key is used to cancel attack
         {
-            attacker.UnHighlightTargets(attacker);
-            EndAttackPhase();
-            actionTaked = true;
+            attacker.UnHighlightTargets();
+            ActionTaken = true;
 
         }
     }
@@ -186,10 +188,15 @@ public class AttackManager : MonoBehaviour
 
     public void EndAttackPhase()
     {
-        attacker.IsAttacking = false;
+        Attacker.IsAttacking = false;
+        Attacker.HasAttacked = true;
         Gm.GameState = EGameStates.Idle;
+        Attacker.UnHighlightTargets();
+        Attacker = null;
+
+
     }
 
-    //}
+
 
 }

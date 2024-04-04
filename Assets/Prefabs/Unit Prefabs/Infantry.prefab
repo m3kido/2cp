@@ -86,7 +86,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data: {fileID: 11400000, guid: 377aff6a34101e841bb51303d0cf5623, type: 2}
-  _health: 10
+  _health: 100
   Fuel: 100
   IsSelected: 0
   Owner: 0
@@ -106,5 +106,4 @@ MonoBehaviour:
     _minRange: 0
     _maxRange: 2
   CurrentWeaponIndex: 0
-  _isAttacking: 0
   HasAttacked: 0
