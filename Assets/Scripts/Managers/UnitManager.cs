@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
 
 // This script handles unit interactions and
 // keeps track of units and the path drawn by the cursor
@@ -17,6 +18,8 @@ public class UnitManager : MonoBehaviour
     public Vector3Int SaveTile { get; set; }
     public List<Vector3Int> Path { get; set; } = new();
     public int PathCost { get; set; }
+
+    public static event Action OnMoveEnd;
 
     private void Awake()
     {
@@ -142,6 +145,6 @@ public class UnitManager : MonoBehaviour
         PathCost = 0;
         SelectedUnit.HasMoved = true;
         SelectedUnit = null;
-        
+        OnMoveEnd?.Invoke();
     }
 }

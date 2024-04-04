@@ -8,6 +8,7 @@ public class Player
     public ETeams TeamSide { get; set; }
     public Captain PlayerCaptain { get; set; }
     public int Gold { get; set; }
+    public int SuperMeter { get; set; }
 
     // Player constructor
     public Player(string name, ETeamColors color, ETeams teamSide, Captain captain)

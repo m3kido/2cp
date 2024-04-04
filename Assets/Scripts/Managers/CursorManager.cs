@@ -13,6 +13,12 @@ public class CursorManager : MonoBehaviour
     private GameManager _gm;
     private Camera _camera;
 
+    private float _cooldown=0.3f;
+    private float _duration =0;
+    private Vector3Int _lastOffset = Vector3Int.zero;
+    private Vector3Int _offset = Vector3Int.zero;
+
+
     public static event Action OnCursorMove;
     // This is a property that holds the tile which the cursor is hovering over
     public Vector3Int HoveredOverTile
@@ -43,6 +49,9 @@ public class CursorManager : MonoBehaviour
 
     void Update()
     {
+        
+       
+        
         // Handle input every frame
         if(_gm.CurrentStateOfPlayer == EPlayerStates.Idle || _gm.CurrentStateOfPlayer == EPlayerStates.Selecting) {
             HandleInput();
@@ -67,25 +76,84 @@ public class CursorManager : MonoBehaviour
             SpaceClicked();
         }
 
+        if (_duration > 0)
+        {
+            _duration -= Time.deltaTime;
+        }
         // Arrow keys
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            MoveSelector(Vector3Int.right);
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            MoveSelector(Vector3Int.left);
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            MoveSelector(Vector3Int.up);
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            MoveSelector(Vector3Int.down);
-        }
-    }
 
+        if (Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.UpArrow))
+        {
+            _offset = Vector3Int.up+Vector3Int.right;
+        }
+        else if (Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.DownArrow))
+        {
+            _offset = Vector3Int.right+Vector3Int.down;
+        }
+        else if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.UpArrow))
+        {
+            _offset = Vector3Int.left+ Vector3Int.up;
+        }
+        else if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.DownArrow))
+        {
+            _offset = Vector3Int.left + Vector3Int.down;
+        }
+        else if (Input.GetKey(KeyCode.RightArrow))
+        {
+            _offset = Vector3Int.right;
+        }
+        else if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            _offset = Vector3Int.left;
+        }
+        else if (Input.GetKey(KeyCode.UpArrow))
+        {
+            _offset = Vector3Int.up;
+        }
+        else if (Input.GetKey(KeyCode.DownArrow))
+        {
+            _offset = Vector3Int.down;
+        }
+        else
+        {
+            _lastOffset = _offset;
+            _duration = 0;
+            return;
+        }
+
+
+       
+
+        if (_offset != _lastOffset || _duration <= 0 )
+        {
+            if(_offset.x !=0 && _offset.y != 0)
+            {
+                MoveSelector(new Vector3Int(_offset.x, 0, 0));
+                MoveSelector(new Vector3Int(0,_offset.y, 0));
+            }
+            else
+            {
+                MoveSelector(_offset);
+            }
+            if (_offset == _lastOffset)
+            {
+                _duration = 0.3f * _cooldown;
+
+            }
+            else
+            {
+                _duration = _cooldown;
+
+            }
+            _lastOffset = _offset;
+        }
+
+       
+        
+
+      
+    }
+   
     // Move the cursor 
      void MoveSelector(Vector3Int offset)
     {
@@ -136,6 +204,7 @@ public class CursorManager : MonoBehaviour
         HoveredOverTile += offset;
         MoveCamera(offset);
         OnCursorMove?.Invoke();
+        
     }
 
     // Handle X Click

@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     // Event to let know that the state of the player has changed
     public static event Action OnStateChange;
 
-    private void Start()
+    private void Awake()
     {
         CurrentStateOfPlayer = EPlayerStates.Idle;
         LastStateOfPlayer = EPlayerStates.Idle;
@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
             new("Oussama", ETeamColors.Azure, ETeams.B, null)
         };
     }
+   
 
     private void Update()
     {
