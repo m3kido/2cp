@@ -205,18 +205,18 @@ public class AttackingUnit : Unit
         CurrentWeaponIndex = 0;
     }
 
-    public void InitiateTargetSelection()
-    {
-        Debug.Log("Initiating target selection from the AU");
-        AttackManager.Instance.InitiateTargetSelection(this);
-        Debug.Log("Finished");
-    }
+    //public void InitiateTargetSelection()
+    //{
+    //    Debug.Log("Initiating target selection from the AU");
+    //    AttackManager.Instance.InitiateTargetSelection(this);
+    //    Debug.Log("Finished");
+    //}
 
-    // Method to handle keyboard input for navigating through targets
-    private void HandleTargetSelectionInput()
-    {
-        AttackManager.Instance.HandleTargetSelectionInput();
-    }
+    //// Method to handle keyboard input for navigating through targets
+    //private void HandleTargetSelectionInput()
+    //{
+    //    AttackManager.Instance.HandleTargetSelectionInput();
+    //}
 
     // Update method to handle target selection input
     //private void Update()

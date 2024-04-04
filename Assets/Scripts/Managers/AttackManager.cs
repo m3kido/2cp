@@ -1,24 +1,21 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackManager : MonoBehaviour
 {
-
-    // Method to initiate an attack
     public static AttackManager Instance { get; private set; }
     GameManager Gm;
     public AttackingUnit attacker;
     private int selectedTargetIndex = -1;
+    private bool actionTaked = false; 
+
     private void Awake()
     {
         Gm = FindAnyObjectByType<GameManager>();
         Instance = this;
     }
 
-    // Method to initiate an attack
-
-
-    // Method to check if a unit can attack
     public bool UnitCanAttack(AttackingUnit attacker)
     {
         if (attacker == null) print("NO ATTACKER FOUND ");
@@ -34,26 +31,17 @@ public class AttackManager : MonoBehaviour
         }
 
         float damageToTarget = attacker.CalculateDamage(target, attacker);
-        Debug.Log("Dammage : " + damageToTarget);
+        Debug.Log("Damage to target: " + damageToTarget);
         target.Health -= (int)damageToTarget;
-        Debug.Log("target has been dammaged!");
-        // If the target is still alive, apply counter-attack to attacker
+        Debug.Log("Target has been damaged!");
+
         if (target.Health > 0 && target is AttackingUnit)
         {
             var damageToAttacker = attacker.CalculateDamage(attacker, target as AttackingUnit);
             attacker.Health -= (int)damageToAttacker;
-            Debug.Log("Dammage : " + damageToAttacker);
-            Debug.Log("attacker has been dammaged!");
+            Debug.Log("Damage to attacker: " + damageToAttacker);
+            Debug.Log("Attacker has been damaged!");
         }
-
-    }
-
-
-
-
-    private void DefeatUnit(Unit unit)
-    {
-        Destroy(unit);
     }
 
     public void InitiateAttack(AttackingUnit attacker)
@@ -65,74 +53,86 @@ public class AttackManager : MonoBehaviour
             return;
         }
 
-        // Initiate target selection for the attacker
-        attacker.InitiateTargetSelection();
-        Debug.Log("Action finished");
+        // Set the game state to Attacking
+        Gm.GameState = EGameStates.Attacking;
+
+        // Initiate the attack coroutine
+        StartCoroutine(AttackCoroutine(attacker));
     }
 
-
-
-
-    // Call this function to initialize the target selection process
-    public void InitiateTargetSelection(AttackingUnit attacker)
+    private IEnumerator AttackCoroutine(AttackingUnit attacker)
     {
         Debug.Log("Initiating target selection from the AM");
         List<Unit> targets = attacker.ScanTargets(attacker);
         if (targets.Count > 0)
         {
-            // Start target selection from the first target
             Debug.Log(attacker + " can attack");
             selectedTargetIndex = 0;
-            HandleTargetSelectionInput();
-        }
-        Debug.Log("Finished");
-    }
 
-    // Method to highlight the selected target
-    private void HighlightSelectedTarget(Unit target)
-    {
-        if (target.TryGetComponent<Renderer>(out var renderer))
+            // Start target selection process
+            yield return StartCoroutine(TargetSelectionCoroutine(attacker, targets));
+
+            Debug.Log("Action finished");
+        }
+        else
         {
-            MaterialPropertyBlock propBlock = new();
-            renderer.GetPropertyBlock(propBlock);
-            propBlock.SetColor("_Color", Color.blue); // Set the color to red
-            renderer.SetPropertyBlock(propBlock);
+            Debug.Log("No valid targets found.");
+        }
+
+        // Reset the game state to Idle after finishing the attack
+        Gm.GameState = EGameStates.Idle;
+    }
+
+    private IEnumerator TargetSelectionCoroutine(AttackingUnit attacker, List<Unit> targets)
+    {
+        while (!actionTaked)
+        {
+            HandleTargetSelectionInput(attacker, targets);
+
+            // Wait for the next frame
+            yield return null;
         }
     }
 
-    // Method to handle keyboard input for navigating through targets
-    public bool HandleTargetSelectionInput()
+    private void HandleTargetSelectionInput(AttackingUnit attacker, List<Unit> targets)
     {
         Debug.Log("Handling target selection");
+
         // Check if there are any targets to select
         if (selectedTargetIndex == -1)
         {
             Debug.LogWarning("No targets available for selection.");
-            return false;
+            return;
         }
 
-        List<Unit> targets = attacker.ScanTargets(attacker);
-
-        HighlightSelectedTarget(targets[selectedTargetIndex]);
-
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (targets.Count == 1)
         {
-            // Move to the next target (circular)
-            Debug.LogWarning("Z clicked");
-            attacker.UnHighlightTarget(targets[selectedTargetIndex]);
-            selectedTargetIndex = (selectedTargetIndex + 1) % targets.Count;
+            HighlightSelectedTarget(targets[0]);
+        }
+        else
+        {
             HighlightSelectedTarget(targets[selectedTargetIndex]);
 
+            // Handle navigation keys
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                // Move to the next target (circular)
+                Debug.LogWarning("Z clicked");
+                attacker.UnHighlightTarget(targets[selectedTargetIndex]);
+                selectedTargetIndex = (selectedTargetIndex + 1) % targets.Count;
+                HighlightSelectedTarget(targets[selectedTargetIndex]);
+            }
+            else if (Input.GetKeyDown(KeyCode.D))
+            {
+                // Move to the previous target (circular)
+                Debug.LogWarning("D clicked");
+                attacker.UnHighlightTarget(targets[selectedTargetIndex]);
+                selectedTargetIndex = (selectedTargetIndex - 1 + targets.Count) % targets.Count;
+                HighlightSelectedTarget(targets[selectedTargetIndex]);
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            // Move to the previous target (circular)
-            Debug.LogWarning("D clickeddzd");
-            attacker.UnHighlightTarget(targets[selectedTargetIndex]);
-            selectedTargetIndex = (selectedTargetIndex - 1 + targets.Count) % targets.Count;
-            HighlightSelectedTarget(targets[selectedTargetIndex]);
 
-        }
+        // Handle attack confirmation and cancellation
         if (Input.GetKeyDown(KeyCode.A)) // Assuming "A" key is used to confirm attack
         {
             // Apply damage to the selected target
@@ -141,37 +141,55 @@ public class AttackManager : MonoBehaviour
             attacker.UnHighlightTargets(attacker);
             attacker.IsAttacking = false;
             attacker.HasAttacked = true;
-            Gm.GameState = EGameStates.Idle;
-            return true; // Return true to indicate attack is confirmed
+            actionTaked = true; 
         }
         else if (Input.GetKeyDown(KeyCode.X)) // Assuming "X" key is used to cancel attack
         {
             attacker.UnHighlightTargets(attacker);
             EndAttackPhase();
-            return false; // Return false to indicate attack is canceled
+            actionTaked = true;
+
+        }
+    }
+
+    private void HighlightSelectedTarget(Unit target)
+    {
+        // Check if the target is null or has been destroyed
+        if (target == null)
+        {
+            Debug.LogWarning("Target is null or has been destroyed.");
+            return;
         }
 
+        // Check if the target's GameObject is null or has been destroyed
+        if (target.gameObject == null)
+        {
+            Debug.LogWarning("Target's GameObject is null or has been destroyed.");
+            return;
+        }
 
-        return false;
+        // Try to get the Renderer component of the target's GameObject
+        if (target.gameObject.TryGetComponent<Renderer>(out var renderer))
+        {
+            MaterialPropertyBlock propBlock = new();
+            renderer.GetPropertyBlock(propBlock);
+            propBlock.SetColor("_Color", Color.blue);
+            renderer.SetPropertyBlock(propBlock);
+        }
+        else
+        {
+            Debug.LogWarning("Target does not have a Renderer component.");
+        }
     }
+
+
 
     public void EndAttackPhase()
     {
-        // Reset the attacking state to false
         attacker.IsAttacking = false;
-        Gm.GameState = EGameStates.ActionMenu;
-    }
-    void Update()
-    {
-        if (Gm.GameState == EGameStates.Attacking)
-        {
-            HandleTargetSelectionInput();
-
-        }
-
-
+        Gm.GameState = EGameStates.Idle;
     }
 
-
+    //}
 
 }

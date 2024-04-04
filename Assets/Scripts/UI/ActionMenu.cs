@@ -88,13 +88,13 @@ public class ActionMenu : MonoBehaviour
                     attacker = Um.SelectedUnit as AttackingUnit;
                     Gm.GameState = EGameStates.Attacking;
                     Am.attacker = attacker;
-                    //attacker.HighlightTargets(attacker);
                     attacker.IsAttacking = true;
                     Debug.Log("We're attacking");
                     Am.InitiateAttack(attacker);
-                    gameObject.SetActive(true);
-                    StartCoroutine(EndMoveAfterDelay(1.0f, attacker));
-                    gameObject.SetActive(false);
+                    Debug.Log("Done attacking");
+                    attacker.UnHighlightTargets(attacker);
+                    Um.EndMove();
+                    Gm.GameState = EGameStates.Idle;
 
 
                 }
@@ -118,16 +118,7 @@ public class ActionMenu : MonoBehaviour
 
 
     }
-    private IEnumerator EndMoveAfterDelay(float delay, AttackingUnit attacker)
-    {
-        yield return new WaitForSeconds(delay);
-
-        Um.EndMove();
-        attacker.UnHighlightTargets(attacker);
-        Gm.GameState = EGameStates.Idle;
-
-        
-    }
+    
     private void CalculateOptions()
     {
         //Hna n3amr ola list te3 option 
