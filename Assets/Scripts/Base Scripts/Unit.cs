@@ -2,39 +2,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+// Class to represent a unit, associated to every unit prefab on the scene
 public class Unit : MonoBehaviour
 {
-    protected MapManager Mm;
-    protected UnitManager Um;
-    protected GameManager Gm;
-    protected SpriteRenderer rend;
+    // Managers will be needed
+    private MapManager _mm;
+    private UnitManager _um;
+    private SpriteRenderer _rend;
 
-    public UnitData Data;
-    public int _health = 10;// <----
-    public int Fuel = 100;// <----
-    public bool IsSelected = false;
-    public int Owner;// <----
+    [SerializeField] private UnitDataSO _data;
+    public UnitDataSO Data => _data; // Readonly property for the _data field
 
-    public EUnitType Type;// <----
+    // Auto-properties (the compiler automatically creates private fields for them)
+    private int _health; // { get; set; }
+    public int Provisions { get; set; }
+    public bool IsSelected; // { get; set; }
+    public bool IsMoving { get; set; }
 
-    public bool IsMoving = false;
-    private bool _hasMoved = false;// <----
-    public bool HasMoved
+    [SerializeField] private int _owner; // Serialization is temporary (just for tests)
+    public int Owner // Property for the _hasMoved field
     {
-        get
-        {
-            return _hasMoved;
-        }
+        get => _owner;
+        set => _owner = value;
+    }
+
+    private bool _hasMoved;
+    public bool HasMoved // Property for the _hasMoved field 
+    {
+        get => _hasMoved;
         set
         {
             _hasMoved = value;
             if (_hasMoved)
             {
-                rend.color = Color.gray;
+                _rend.color = Color.gray;
             }
             else
             {
-                rend.color = Color.white;
+                _rend.color = Color.white;
             }
         }
     }
@@ -67,37 +72,44 @@ public class Unit : MonoBehaviour
 
     private void Awake()
     {
-        rend = GetComponent<SpriteRenderer>();
-        // Get map and unit manager from the hierarchy
-        Mm = FindAnyObjectByType<MapManager>();
-        Um = FindAnyObjectByType<UnitManager>();
-        Gm = FindAnyObjectByType<GameManager>();
+        _rend = GetComponent<SpriteRenderer>();
+        Health = 100;
+        Provisions = _data.MaxProvisions;
+        _hasMoved = false;
     }
+
+    private void Start()
+    {
+        // Get map and unit manager from the hierarchy
+        _mm = FindAnyObjectByType<MapManager>();
+        _um = FindAnyObjectByType<UnitManager>();
+    }
+
     // Highlight the accessible tiles to the unit
     public void HighlightTiles()
     {
         IsSelected = true;
 
         // Empty to remove previous cases
-        ValidTiles.Clear();
+        _validTiles.Clear();
 
 
         // WorlToCell takes a float postion and converts it to grid position
-        Vector3Int startPos = Mm.Map.WorldToCell(transform.position);
+        Vector3Int startPos = _mm.Map.WorldToCell(transform.position);
 
-        // you can find SeekTile() just below
+        // You can find SeekTile() just below
         SeekTile(startPos, -1);
 
-        foreach (var pos in ValidTiles.Keys)
+        foreach (var pos in _validTiles.Keys)
         {
-            if (ValidTiles[pos] <= Fuel)
+            if (_validTiles[pos] <= Provisions)
             {
-                Mm.Map.SetTileFlags(pos, TileFlags.None);
-                Mm.HighlightTile(pos);
+                _mm.Map.SetTileFlags(pos, TileFlags.None);
+                _mm.HighlightTile(pos);
             }
             else
             {
-                ValidTiles.Remove(pos);
+                _validTiles.Remove(pos);
             }
         }
     }
@@ -106,18 +118,18 @@ public class Unit : MonoBehaviour
     public void ResetTiles()
     {
         IsSelected = false;
-        foreach (var pos in ValidTiles.Keys)
+        foreach (var pos in _validTiles.Keys)
         {
-            Mm.UnHighlightTile(pos);
+            _mm.UnHighlightTile(pos);
         }
-        ValidTiles.Clear();
+        _validTiles.Clear();
     }
 
     // Check if the given grid position falls into the move range of the unit
     private bool InBounds(Vector3Int pos)
     {
         // Manhattan distance : |x1 - x2| + |y1 - y2|
-        if (Mathf.Abs(Mm.Map.WorldToCell(transform.position).x - pos.x) + Mathf.Abs(Mm.Map.WorldToCell(transform.position).y - pos.y) <= Data.MoveRange)
+        if (Mathf.Abs(_mm.Map.WorldToCell(transform.position).x - pos.x) + Mathf.Abs(_mm.Map.WorldToCell(transform.position).y - pos.y) <= _data.MoveRange)
         {
             return true;
         }
@@ -126,38 +138,38 @@ public class Unit : MonoBehaviour
 
 
     // A recursive function to fill the ValidTiles dictionary
-    private void SeekTile(Vector3Int current, int CurrFuel)
+    private void SeekTile(Vector3Int currentPosition, int currentProvisions)
     {
-
         // Access the current tile
-        Tile currTile = Mm.Map.GetTile<Tile>(current);
+        Tile currTile = _mm.Map.GetTile<Tile>(currentPosition);
         if (currTile == null) { return; }
 
-        if (CurrFuel < 0)
+        if (currentProvisions < 0)
         {
             // Exception for the start tile
-            CurrFuel = 0;
+            currentProvisions = 0;
         }
         else
         {
             // Add the current tile fuel cost to the current fuel
-            CurrFuel += Mm.GetTileData(currTile).FuelCost;
+            currentProvisions += _mm.GetTileData(currTile).ProvisionsCost;
         }
 
         if (CurrFuel > Fuel) { return; }
+        if (currentProvisions > Provisions) { return; }
 
         // If the current tile is not an obstacle and falls into the move range of the unit
-        if (!Um.IsObstacle(current, this) && InBounds(current))
+        if (!_um.IsObstacle(currentPosition, this) && InBounds(currentPosition))
         {
-            if (!ValidTiles.ContainsKey(current))
+            if (!_validTiles.ContainsKey(currentPosition))
             {
-                ValidTiles.Add(current, CurrFuel);
+                _validTiles.Add(currentPosition, currentProvisions);
             }
             else
             {
-                if (CurrFuel < ValidTiles[current])
+                if (currentProvisions < _validTiles[currentPosition])
                 {
-                    ValidTiles[current] = CurrFuel;
+                    _validTiles[currentPosition] = currentProvisions;
 
                 }
                 else { return; }
@@ -168,15 +180,15 @@ public class Unit : MonoBehaviour
 
         // Explore the nighbouring tiles
         // Restrictions will be added so that we cant go out of the map
-        Vector3Int up = current + Vector3Int.up;
-        Vector3Int down = current + Vector3Int.down;
-        Vector3Int left = current + Vector3Int.left;
-        Vector3Int right = current + Vector3Int.right;
+        Vector3Int up = currentPosition + Vector3Int.up;
+        Vector3Int down = currentPosition + Vector3Int.down;
+        Vector3Int left = currentPosition + Vector3Int.left;
+        Vector3Int right = currentPosition + Vector3Int.right;
 
-        SeekTile(up, CurrFuel);
-        SeekTile(down, CurrFuel);
-        SeekTile(left, CurrFuel);
-        SeekTile(right, CurrFuel);
+        SeekTile(up, currentProvisions);
+        SeekTile(down, currentProvisions);
+        SeekTile(left, currentProvisions);
+        SeekTile(right, currentProvisions);
     }
 
     public void Die()

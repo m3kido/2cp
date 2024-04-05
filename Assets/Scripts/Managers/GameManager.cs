@@ -2,43 +2,38 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-//this handles the game logic
+// Class to handle the game logic
 public class GameManager : MonoBehaviour
 {
+    // Auto-properties (the compiler automatically creates private fields for them)
+    public int PlayerTurn { get; set; }
+    public int Day { get; set; } = 1;
+    public List<Player> Players { get; set; }
+    public EPlayerStates LastStateOfPlayer { get; set; }
 
-    public static event Action OnSave;
-    public static event Action OnLoad;
-
-    public int PlayerTurn = 0;
-    public int Day = 1;
-    [SerializeField] List<Player> _players;
-    public List<Player> Players { get => _players; set => _players = value; }
-     
-    public static event Action OnStateChange;
-    private EGameStates _gameState;
-    public EGameStates GameState
-    {
-        get { return _gameState; }
-        set { _gameState = value; OnStateChange?.Invoke(); LastState = _gameState; }
+    private EPlayerStates _currentStateOfPlayer;
+    public EPlayerStates CurrentStateOfPlayer // Property for the _currentStateOfPlayer field
+    { 
+        get { return _currentStateOfPlayer; } 
+        set { _currentStateOfPlayer = value; OnStateChange?.Invoke(); LastStateOfPlayer = _currentStateOfPlayer; }
     }
-    public EGameStates LastState;
 
-    [SerializeField] private Captain captainA;
-    [SerializeField] private Captain captainB;
+    // Event to let know that the state of the player has changed
+    public static event Action OnStateChange;
 
-    private void Start()
+    private void Awake()
     {
-        
-        GameState = EGameStates.Idle;
+        CurrentStateOfPlayer = EPlayerStates.Idle;
+        LastStateOfPlayer = EPlayerStates.Idle;
         // Initialize players
 
         /*Players = new List<Player>
         {
-            new("Andrew",EPlayerColors.Amber, ETeams.A, captainA),
-            new("Freya",EPlayerColors.Azure, ETeams.B, captainB)
-        };*/
-
+            new("Mohamed", ETeamColors.Amber, ETeams.A, null),
+            new("Oussama", ETeamColors.Azure, ETeams.B, null)
+        };
     }
+   
 
     private void Update()
     {
@@ -59,8 +54,8 @@ public class GameManager : MonoBehaviour
     public static event Action OnTurnEnd;
     public static event Action OnDayEnd;
 
-    // Method to end turn
-    private void EndTurn()
+    // Method to end a turn
+    public void EndTurn()
     {
         PlayerTurn = (PlayerTurn + 1) % Players.Count;
         OnTurnEnd?.Invoke();
@@ -68,5 +63,4 @@ public class GameManager : MonoBehaviour
         Day++;
         OnDayEnd?.Invoke();
     }
-
 }
