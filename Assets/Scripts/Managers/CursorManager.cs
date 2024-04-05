@@ -13,7 +13,7 @@ public class CursorManager : MonoBehaviour
     private GameManager _gm;
     private Camera _camera;
 
-    private float _cooldown=0.3f;
+    private float _cooldown=0.35f;
     private float _duration =0;
     private Vector3Int _lastOffset = Vector3Int.zero;
     private Vector3Int _offset = Vector3Int.zero;
@@ -120,11 +120,11 @@ public class CursorManager : MonoBehaviour
             _duration = 0;
             return;
         }
-
-
+        //this is just making sure that a diagnol movement works nicely
+        bool diff = (_offset.x == 0 && _lastOffset.x != 0)|| (_offset.x != 0 && _lastOffset.x == 0);
        
 
-        if (_offset != _lastOffset || _duration <= 0 )
+        if ((_offset != _lastOffset && diff ) || _duration <= 0 )
         {
             if(_offset.x !=0 && _offset.y != 0)
             {
@@ -254,7 +254,8 @@ public class CursorManager : MonoBehaviour
             {
                 if (_bm.BuildingFromPosition.ContainsKey(HoveredOverTile) && _bm.BuildingFromPosition[HoveredOverTile].Owner==_gm.PlayerTurn)
                 {
-                    _bm.SpawnUnit(EUnits.Infantry, _bm.BuildingFromPosition[HoveredOverTile], _gm.PlayerTurn);
+                    //_bm.SpawnUnit(EUnits.Infantry, _bm.BuildingFromPosition[HoveredOverTile], _gm.PlayerTurn);
+                    _gm.CurrentStateOfPlayer = EPlayerStates.InBuildingMenu;
                 }
                 else
                 {

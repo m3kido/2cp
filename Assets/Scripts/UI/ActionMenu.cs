@@ -151,14 +151,7 @@ public class ActionMenu : MonoBehaviour
         //CheckLoad // if loading unit
        
         CheckAbility();
-        //<testing>
-        _captureOptionInstance.SetActive(true);
-        _optionsList.Add(_captureOptionInstance);
-
-        _attackOptionInstance.SetActive(true);
-        _optionsList.Add(_attackOptionInstance);
-
-        //</testing>
+       
         _selectedOption = 0;
         _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(true);
     }

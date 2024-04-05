@@ -20,6 +20,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject _CaptainsBar;
 
+    [SerializeField] private GameObject _ShopMenu;
+
     private void OnEnable()
     {
         GameManager.OnStateChange += ChangeActiveUI;
@@ -48,6 +50,7 @@ public class UIManager : MonoBehaviour
             case EPlayerStates.InActionsMenu: { _actionMenu.SetActive(false); break; }
             case EPlayerStates.InSettingsMenu: { _settingMenu.SetActive(false); break; }
             case EPlayerStates.Idle: { _statMenu.SetActive(false); _CaptainsBar.SetActive(false); break; }
+            case EPlayerStates.InBuildingMenu: { _ShopMenu.SetActive(false); _CaptainsBar.SetActive(false); break; }
             default: { break; }
         }
         switch (_gm.CurrentStateOfPlayer)
@@ -55,6 +58,7 @@ public class UIManager : MonoBehaviour
             case EPlayerStates.InActionsMenu: {  _actionMenu.SetActive(true); break; }
             case EPlayerStates.InSettingsMenu: { _settingMenu.SetActive(true); break; }
             case EPlayerStates.Idle: { _statMenu.SetActive(true); _CaptainsBar.SetActive(true); break; }
+            case EPlayerStates.InBuildingMenu: { _ShopMenu.SetActive(true); _CaptainsBar.SetActive(true); break; }
             default: { break; }
         }
     }
