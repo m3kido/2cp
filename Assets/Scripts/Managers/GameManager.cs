@@ -21,16 +21,17 @@ public class GameManager : MonoBehaviour
     // Event to let know that the state of the player has changed
     public static event Action OnStateChange;
 
+
     private void Awake()
     {
         CurrentStateOfPlayer = EPlayerStates.Idle;
         LastStateOfPlayer = EPlayerStates.Idle;
         // Initialize players
 
-        /*Players = new List<Player>
+        Players = new List<Player>
         {
-            new("Mohamed", ETeamColors.Amber, ETeams.A, null),
-            new("Oussama", ETeamColors.Azure, ETeams.B, null)
+            new("Mohamed", ETeamColors.Amber, ETeams.A, CaptainManager.CaptainList[0]),
+            new("Oussama", ETeamColors.Azure, ETeams.B, CaptainManager.CaptainList[1])
         };
     }
    
@@ -42,11 +43,11 @@ public class GameManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.C)) EndTurn();
 
             // Check if there are subscribers before invoking the events
-            if (Input.GetKeyDown(KeyCode.S) && OnSave != null)
+            /*if (Input.GetKeyDown(KeyCode.S) && OnSave != null)
                 OnSave.Invoke();
 
             if (Input.GetKeyDown(KeyCode.D) && OnLoad != null)
-                OnLoad.Invoke();
+                OnLoad.Invoke();*/
    
     }
 

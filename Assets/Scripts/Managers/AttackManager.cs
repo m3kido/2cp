@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class AttackManager : MonoBehaviour
 {
-    GameManager Gm;
+    GameManager _gm;
+    UnitManager _um;
+    MapManager _mm;
+    
     public AttackingUnit Attacker;
     private int selectedTargetIndex = -1;
     private bool _actionTaken = false;
@@ -23,8 +26,9 @@ public class AttackManager : MonoBehaviour
 
     private void Awake()
     {
-        Gm = FindAnyObjectByType<GameManager>();
-        ActionTaken = false;
+        _gm = FindAnyObjectByType<GameManager>();
+        _um = FindAnyObjectByType<UnitManager>();
+        _mm = FindAnyObjectByType<MapManager>();
     }
 
     public bool UnitCanAttack(AttackingUnit attacker)
@@ -41,14 +45,14 @@ public class AttackManager : MonoBehaviour
             return;
         }
 
-        float damageToTarget = attacker.CalculateDamage(target, attacker);
+        float damageToTarget = CalculateDamage(target, attacker);
         Debug.Log("Damage to target: " + damageToTarget);
         target.Health -= (int)damageToTarget;
         Debug.Log("Target has been damaged!");
 
         if (target.Health > 0 && target is AttackingUnit)
         {
-            var damageToAttacker = attacker.CalculateDamage(attacker, target as AttackingUnit);
+            var damageToAttacker = CalculateDamage(attacker, target as AttackingUnit);
             attacker.Health -= (int)damageToAttacker;
             Debug.Log("Damage to attacker: " + damageToAttacker);
             Debug.Log("Attacker has been damaged!");
@@ -65,7 +69,7 @@ public class AttackManager : MonoBehaviour
         }
 
         // Set the game state to Attacking
-        Gm.GameState = EGameStates.Attacking;
+        _gm.CurrentStateOfPlayer = EPlayerStates.Attacking;
         Attacker.IsAttacking = true;
         Attacker.HasAttacked = false;
 
@@ -97,6 +101,8 @@ public class AttackManager : MonoBehaviour
             yield return null;
         }
         ActionTaken = false;
+        EndAttackPhase();
+        _um.EndMove();
         Debug.Log("Action finished");
     }
 
@@ -184,13 +190,35 @@ public class AttackManager : MonoBehaviour
         }
     }
 
+    public float CalculateDamage(Unit target, AttackingUnit attacker)
+    {
+
+        int baseDamage = attacker.Weapons[attacker.CurrentWeaponIndex].DamageList[(int)target.Data.UnitType];
+        Player attackerPlayer = _gm.Players[attacker.Owner];
+        Captain attackerCaptain = attackerPlayer.PlayerCaptain;
+        int celesteAttack = attackerCaptain.IsCelesteActive ? attackerCaptain.Data.CelesteDefense : 0;
+        float attackDamage = baseDamage * (1 + attackerCaptain.Data.PassiveAttack) * (1 + celesteAttack);
+
+
+        int terrainStars = _mm.GetTileData(_mm.Map.WorldToCell(target.transform.position)).DefenceStars;
+        Player targetPlayer = _gm.Players[attacker.Owner];
+        Captain targetCaptain = targetPlayer.PlayerCaptain;
+        int celesteDefense = targetCaptain.IsCelesteActive ? targetCaptain.Data.CelesteDefense : 0;
+        float defenseDamage = (1 - terrainStars * target.Health / 1000) * (1 - targetCaptain.Data.PassiveDefense) * (1 - celesteDefense);
+
+
+        int chance = (attackerCaptain.Data.Name == ECaptains.Andrew) ? UnityEngine.Random.Range(2, 10) : UnityEngine.Random.Range(1, 10);
+        float totalDamage = (float)attacker.Health / 100 * attackDamage * defenseDamage * (1 + (float)chance / 100);
+        return totalDamage;
+    }
+
 
 
     public void EndAttackPhase()
     {
         Attacker.IsAttacking = false;
         Attacker.HasAttacked = true;
-        Gm.GameState = EGameStates.Idle;
+        _gm.CurrentStateOfPlayer = EPlayerStates.Idle;
         Attacker.UnHighlightTargets();
         Attacker = null;
 

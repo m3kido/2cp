@@ -2,8 +2,15 @@ public enum EPlayerStates
 {
     Idle,
     Selecting,
-    InSettingsMenu,
-    InActionsMenu,
     InBuildingMenu,
+    InActionsMenu,
+    Attacking,
+    Animating,
+    finished,
+    MainMenu,
+    InGame,
+    WinScreen,
+    DefeatScreen,
+    InSettingsMenu,
     EndedTurn
 }

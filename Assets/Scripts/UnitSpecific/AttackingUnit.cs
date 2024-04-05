@@ -24,11 +24,11 @@ public class AttackingUnit : Unit
             _isAttacking = value;
             if (_isAttacking)
             {
-                rend.color = Color.red;
+                _rend.color = Color.red;
             }
             else
             {
-                rend.color = Color.white;
+                _rend.color = Color.white;
             }
         }
     }
@@ -43,52 +43,6 @@ public class AttackingUnit : Unit
         Weapon.OnAmmoRanOut -= MoveToNextWeapon;
     }
 
-    /// <summary>
-    /// Sets the loaded Data
-    /// </summary>
-    public void SetSaveData(AttackingUnitSaveData saveData)
-    {
-        Health = saveData.Health;
-        Fuel = saveData.Fuel;
-        Owner = saveData.Owner;
-        Type = saveData.Type;
-        HasMoved = saveData.HasMoved;
-        CurrentWeaponIndex = saveData.CurrentWeaponIndex;
-        Weapons[CurrentWeaponIndex] = saveData.CurrentWeapon;
-        HasAttacked = saveData.HasAttacked;
-    }
-
-    /// <summary></summary>
-    /// <returns>Data to be loaded</returns>
-    public AttackingUnitSaveData GetSaveData()
-    {
-        return new AttackingUnitSaveData(Health, Fuel, Owner, Type, HasMoved, Weapons[CurrentWeaponIndex], CurrentWeaponIndex, HasAttacked, GetGridPosition());
-    }
-
-    public float CalculateDamage(Unit target, AttackingUnit attacker)
-    {
-
-        int baseDamage = _weapons[CurrentWeaponIndex].DamageList[(int)target.Type];
-        Player attackerPlayer = Gm.Players[attacker.Owner];
-        Captain attackerCaptain = attackerPlayer.Captain;
-        int celesteAttack = attackerPlayer.IsCelesteActive ? attackerCaptain.Data.CelesteDefense : 0;
-        float attackDamage = baseDamage * (1 + attackerCaptain.Data.PassiveAttack) * (1 + celesteAttack);
-
-
-        int terrainStars = Mm.GetTileData(Mm.Map.WorldToCell(target.transform.position)).Defence;
-        Player targetPlayer = Gm.Players[attacker.Owner];
-        Captain targetCaptain = targetPlayer.Captain;
-        int celesteDefense = targetPlayer.IsCelesteActive ? targetCaptain.Data.CelesteDefense : 0;
-        float defenseDamage = (1 - terrainStars * target.Health / 1000) * (1 - targetCaptain.Data.PassiveDefense) * (1 - celesteDefense);
-
-
-        int chance = (attackerCaptain.Data.Name == ECaptains.Andrew) ? UnityEngine.Random.Range(2, 10) : UnityEngine.Random.Range(1, 10);
-        float totalDamage = (float)attacker.Health / 100 * attackDamage * defenseDamage * (1 + (float)chance / 100);
-        return totalDamage;
-    }
-
-
-
     // scans area for targets in an Intervall [ min range, max range[
     // Assumed that every unit can be in one tile which can be in one grid position
     public List<Unit> ScanTargets()
@@ -96,23 +50,26 @@ public class AttackingUnit : Unit
         var attackerPos = GetGridPosition();
         List<Unit> targets = new();
 
-        foreach (var unit in Um.Units)
+        foreach (var unit in _um.Units)
         {
+            if (unit == this) continue;
 
-            var potentialTargetPos = Mm.Map.WorldToCell(unit.transform.position);
+            var potentialTargetPos = _mm.Map.WorldToCell(unit.transform.position);
 
             var currentWeapon = Weapons[CurrentWeaponIndex];// getting the current weapon from the attacker
 
-            bool IsInRange = (L1Distance(attackerPos, potentialTargetPos) >= currentWeapon.MinRange) && (L1Distance(attackerPos, potentialTargetPos) < currentWeapon.MaxRange);
+            bool IsInRange = (L1Distance2D(attackerPos, potentialTargetPos) >= currentWeapon.MinRange) && (L1Distance2D(attackerPos, potentialTargetPos) < currentWeapon.MaxRange);
             bool IsEnemy = Owner != unit.Owner;
-            bool IsDamageable = Weapons[0].DamageList[(int)unit.Type] != 0;
+            bool IsDamageable = Weapons[CurrentWeaponIndex].DamageList[(int)unit.Data.UnitType] != 0;
 
+            print($"{L1Distance2D(attackerPos, potentialTargetPos)} / {currentWeapon.MinRange} / {currentWeapon.MaxRange} / {unit}");
             if (IsInRange && IsEnemy && IsDamageable)
             {
+                
                 targets.Add(unit);
             }
         }
-
+        print("targets : " + targets.Count);
         return targets;
     }
 
@@ -123,12 +80,12 @@ public class AttackingUnit : Unit
         Debug.Log("You can attack " + targets.Count + " enemies");
         foreach (var target in targets)
         {
-            // Change the material color of the target to red
+            // Change the material color of the target to blue
             if (target.TryGetComponent<Renderer>(out var renderer))
             {
                 MaterialPropertyBlock propBlock = new();
                 renderer.GetPropertyBlock(propBlock);
-                propBlock.SetColor("_Color", Color.blue); // Set the color to red
+                propBlock.SetColor("_Color", Color.blue); // Set the color to blue
                 renderer.SetPropertyBlock(propBlock);
             }
         }
@@ -138,12 +95,12 @@ public class AttackingUnit : Unit
         List<Unit> targets = ScanTargets();
         foreach (var target in targets)
         {
-            // Change the material color of the target to red
+            // Change the material color of the target to white
             if (target.TryGetComponent<Renderer>(out var renderer))
             {
                 MaterialPropertyBlock propBlock = new();
                 renderer.GetPropertyBlock(propBlock);
-                propBlock.SetColor("_Color", Color.white); // Set the color to red
+                propBlock.SetColor("_Color", Color.white); // Set the color to white
                 renderer.SetPropertyBlock(propBlock);
             }
         }

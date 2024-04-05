@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,15 +8,15 @@ public class CaptainBar : MonoBehaviour
     [SerializeField] private GameObject _goldValue;
     [SerializeField] private Image _captainSprite;
 
-    
+
     private GameManager _gm;
-    
+
     private void Awake()
     {
         _gm = FindAnyObjectByType<GameManager>();
     }
 
-    
+
     void Start()
     {
         UpdateCaptain();
@@ -33,6 +31,11 @@ public class CaptainBar : MonoBehaviour
     private void UpdateCaptain()
     {
         //_captainSprite.sprite = _gm.Players[_gm.PlayerTurn].PlayerCaptain.FrameSprite;
-        _goldValue.GetComponent<TextMeshProUGUI>().text = _gm.Players[_gm.PlayerTurn].Gold.ToString();
+        if (_goldValue.TryGetComponent<TextMeshProUGUI>(out var textMesh))
+        {
+            textMesh.text = _gm.Players[_gm.PlayerTurn].Gold.ToString();
+        }
+
+        
     }
 }

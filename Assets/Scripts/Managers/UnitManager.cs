@@ -82,7 +82,7 @@ public class UnitManager : MonoBehaviour
                 _mm.DrawArrow(Path[i - 1], Path[i], Path[Mathf.Clamp(i + 1, 0, Path.Count - 1)]);
             }
             //the clamp is for capping the i at its max (path.count -1)
-            Mm.DrawArrow(Path[i - 1], Path[i], Path[Mathf.Clamp(i + 1, 0, Path.Count - 1)]);
+            _mm.DrawArrow(Path[i - 1], Path[i], Path[Mathf.Clamp(i + 1, 0, Path.Count - 1)]);
         }
     }
 
@@ -149,8 +149,9 @@ public class UnitManager : MonoBehaviour
         Path.Clear();
         PathCost = 0;
         SelectedUnit.HasMoved = true;
+        
         SelectedUnit = null;
-        Gm.GameState = EGameStates.Idle;
+        _gm.CurrentStateOfPlayer = EPlayerStates.Idle;
 
         OnMoveEnd?.Invoke();
     }

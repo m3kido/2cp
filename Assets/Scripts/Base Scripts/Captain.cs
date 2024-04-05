@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class Captain
+public class Captain 
 {
     public CaptainData Data;
     public bool IsCelesteActive = false;
@@ -15,6 +15,11 @@ public abstract class Captain
     public virtual bool IsCelesteReady()
     {
         return false;
+    }
+
+    public Captain(CaptainData data) 
+    {
+        Data = data;
     }
 
 }

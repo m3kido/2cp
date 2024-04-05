@@ -120,7 +120,7 @@ public class ActionMenu : MonoBehaviour
                 _um.EndMove();
             }
             //Logic to do when the player choose to attack 
-            else if (OptionsList[SelectedOption].name.Contains("Attack"))
+            else if (_optionsList[_selectedOption] == _attackOptionInstance)
             {
 
                 if (_um.SelectedUnit is AttackingUnit)
@@ -131,8 +131,7 @@ public class ActionMenu : MonoBehaviour
                     _am.InitiateAttack();
                     Debug.Log("Done attacking");
 
-                    _am.EndAttackPhase();
-                    _um.EndMove();
+                    
 
 
 
@@ -174,10 +173,10 @@ public class ActionMenu : MonoBehaviour
         CheckCapture();
 
 
-        if (OptionsList.Count > 0)
+        if (_optionsList.Count > 0)
         {
-            SelectedOption = 0;
-            OptionsList[SelectedOption].transform.GetChild(0).GetComponent<Image>().color = Color.white;
+            _selectedOption = 0;
+            _optionsList[_selectedOption].transform.GetChild(0).GetComponent<Image>().color = Color.white;
 
         }
 
@@ -200,10 +199,11 @@ public class ActionMenu : MonoBehaviour
             }
             else
             {
+                print($"{_am.Attacker} Value(CanAttack) = {_am.Attacker.CanAttack()}");
                 if (_am.Attacker.CanAttack())
                 {
-                    AttackOptionInstance.SetActive(true);
-                    OptionsList.Add(AttackOptionInstance);
+                    _attackOptionInstance.SetActive(true);
+                    _optionsList.Add(_attackOptionInstance);
                 }
             }
         }

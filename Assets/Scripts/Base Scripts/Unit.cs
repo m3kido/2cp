@@ -6,9 +6,10 @@ using UnityEngine.Tilemaps;
 public class Unit : MonoBehaviour
 {
     // Managers will be needed
-    private MapManager _mm;
-    private UnitManager _um;
-    private SpriteRenderer _rend;
+    protected MapManager _mm;
+    protected UnitManager _um;
+    protected GameManager _gm;
+    protected SpriteRenderer _rend;
 
     [SerializeField] private UnitDataSO _data;
     public UnitDataSO Data => _data; // Readonly property for the _data field
@@ -83,6 +84,7 @@ public class Unit : MonoBehaviour
         // Get map and unit manager from the hierarchy
         _mm = FindAnyObjectByType<MapManager>();
         _um = FindAnyObjectByType<UnitManager>();
+        _gm = FindAnyObjectByType<GameManager>();
     }
 
     // Highlight the accessible tiles to the unit
@@ -91,7 +93,7 @@ public class Unit : MonoBehaviour
         IsSelected = true;
 
         // Empty to remove previous cases
-        _validTiles.Clear();
+        ValidTiles.Clear();
 
 
         // WorlToCell takes a float postion and converts it to grid position
@@ -100,16 +102,16 @@ public class Unit : MonoBehaviour
         // You can find SeekTile() just below
         SeekTile(startPos, -1);
 
-        foreach (var pos in _validTiles.Keys)
+        foreach (var pos in ValidTiles.Keys)
         {
-            if (_validTiles[pos] <= Provisions)
+            if (ValidTiles[pos] <= Provisions)
             {
                 _mm.Map.SetTileFlags(pos, TileFlags.None);
                 _mm.HighlightTile(pos);
             }
             else
             {
-                _validTiles.Remove(pos);
+                ValidTiles.Remove(pos);
             }
         }
     }
@@ -118,11 +120,11 @@ public class Unit : MonoBehaviour
     public void ResetTiles()
     {
         IsSelected = false;
-        foreach (var pos in _validTiles.Keys)
+        foreach (var pos in ValidTiles.Keys)
         {
             _mm.UnHighlightTile(pos);
         }
-        _validTiles.Clear();
+        ValidTiles.Clear();
     }
 
     // Check if the given grid position falls into the move range of the unit
@@ -155,21 +157,20 @@ public class Unit : MonoBehaviour
             currentProvisions += _mm.GetTileData(currTile).ProvisionsCost;
         }
 
-        if (CurrFuel > Fuel) { return; }
         if (currentProvisions > Provisions) { return; }
 
         // If the current tile is not an obstacle and falls into the move range of the unit
         if (!_um.IsObstacle(currentPosition, this) && InBounds(currentPosition))
         {
-            if (!_validTiles.ContainsKey(currentPosition))
+            if (!ValidTiles.ContainsKey(currentPosition))
             {
-                _validTiles.Add(currentPosition, currentProvisions);
+                ValidTiles.Add(currentPosition, currentProvisions);
             }
             else
             {
-                if (currentProvisions < _validTiles[currentPosition])
+                if (currentProvisions < ValidTiles[currentPosition])
                 {
-                    _validTiles[currentPosition] = currentProvisions;
+                    ValidTiles[currentPosition] = currentProvisions;
 
                 }
                 else { return; }
@@ -194,19 +195,19 @@ public class Unit : MonoBehaviour
     public void Die()
     {
         print("I'm Going To Die!");
-        Um.Units.Remove(this);
+        _um.Units.Remove(this);
         Destroy(gameObject);
 
     }
 
-    public static float L1Distance(Vector3 A, Vector3 B)
+    public static float L1Distance2D(Vector3 A, Vector3 B)
     {
-        return Mathf.Abs(A.x - B.x) + Mathf.Abs(A.y - B.y) + Mathf.Abs(A.z - B.z);
+        return Mathf.Abs(A.x - B.x) + Mathf.Abs(A.y - B.y);//+ Mathf.Abs(A.z - B.z)
     }
 
     public Vector3Int GetGridPosition()
     {
-        return Mm.Map.WorldToCell(transform.position);
+        return _mm.Map.WorldToCell(transform.position);
     }
 
 }
