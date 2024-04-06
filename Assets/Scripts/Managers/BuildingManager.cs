@@ -76,13 +76,20 @@ public class BuildingManager : MonoBehaviour
             if (posTile != null && posTile.TerrainType == ETerrains.Building)
             {
                 BuildingDataSO currData = _buildingDataFromTile[_mm.Map.GetTile<Tile>(pos)];
-                _buildingFromPosition.Add(pos, new Building(currData.BuildingType, pos, (int)currData.Color));
+                foreach(var player in _gm.Players){
+                    if(player.Color==currData.Color)
+                    {
+                        _buildingFromPosition.Add(pos, new Building(currData.BuildingType, pos, _gm.Players.IndexOf(player)));
+                    }
+                }
+               
             }
         }
     }
     //change the sprite
     private void ChangeBuildingOwner(Building building,int owner)
     {
+        print("3");
         foreach(var SO in _buildingDatas)
         {
             if(SO.Color == _gm.Players[_gm.PlayerTurn].Color && SO.BuildingType==building.BuildingType) {
@@ -90,7 +97,7 @@ public class BuildingManager : MonoBehaviour
             }
         }
         building.Owner = owner;
-        building.Health = 20;
+        building.Health = 200;
     }
     // Get building data of given grid position
     public BuildingDataSO GetBuildingData(Vector3Int pos)
@@ -103,6 +110,7 @@ public class BuildingManager : MonoBehaviour
     {
         
         BuildingFromPosition[pos].Health -= _um.SelectedUnit.Health;
+        print(BuildingFromPosition[pos].Health);
         if (BuildingFromPosition[pos].Health <= 0)
         {
             ChangeBuildingOwner(BuildingFromPosition[pos], _gm.PlayerTurn);

@@ -87,6 +87,7 @@ public class ShopMenu : MonoBehaviour
     {
         _unitDetails.SetActive(true);
         _unitsList.SetActive(true);
+        _unitElements.Keys.ToList()[_selectedUnit].transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = textColor;
         _selectedUnit = 0;
         _unitElements.Keys.ToList()[_selectedUnit].transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = Color.red;
         UpdateUI();

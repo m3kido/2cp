@@ -13,7 +13,7 @@ public class CursorManager : MonoBehaviour
     private GameManager _gm;
     private Camera _camera;
 
-    private float _cooldown=0.35f;
+    private float _cooldown=0.25f;
     private float _duration =0;
     private Vector3Int _lastOffset = Vector3Int.zero;
     private Vector3Int _offset = Vector3Int.zero;
@@ -117,14 +117,14 @@ public class CursorManager : MonoBehaviour
         else
         {
             _lastOffset = _offset;
-            _duration = 0;
+            _duration = 0.2f * _cooldown;
             return;
         }
         //this is just making sure that a diagnol movement works nicely
-        bool diff = (_offset.x == 0 && _lastOffset.x != 0)|| (_offset.x != 0 && _lastOffset.x == 0);
+        bool diff = ((_offset.x == 0 || _offset.y==0)&& (_lastOffset.x != 0 && _lastOffset.y!=0) )|| ((_lastOffset.x == 0 || _lastOffset.y == 0) && (_offset.x != 0 && _offset.y != 0));
        
 
-        if ((_offset != _lastOffset && diff ) || _duration <= 0 )
+        if ((_offset != _lastOffset && !diff ) || _duration <= 0 )
         {
             if(_offset.x !=0 && _offset.y != 0)
             {
@@ -146,6 +146,7 @@ public class CursorManager : MonoBehaviour
 
             }
             _lastOffset = _offset;
+           
         }
 
        
