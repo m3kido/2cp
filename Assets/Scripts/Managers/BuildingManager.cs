@@ -51,7 +51,7 @@ public class BuildingManager : MonoBehaviour
 
         // Scan the map and put all the buldings in the Buildings dictionary
         ScanMapForBuildings();
-        
+      
     }
 
     private void OnEnable()

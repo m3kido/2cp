@@ -56,7 +56,7 @@ public class StatsMenu : MonoBehaviour
         if(_gameLoaded)
         {
              UpdateInfo();
-            _anim.SetTrigger("Replay");
+            
         }
 
     }
@@ -82,6 +82,7 @@ public class StatsMenu : MonoBehaviour
                 _unitRect.localPosition = _tileRect.localPosition;
                 _tileRect.localPosition = save;
                 _anim.SetTrigger("Replay");
+                
             }
         }
         else
