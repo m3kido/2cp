@@ -7,6 +7,7 @@ public class Unit : MonoBehaviour
 {
     // Managers will be needed
     private MapManager _mm;
+    private GameManager _gm;
     private UnitManager _um;
     private SpriteRenderer _rend;
 
@@ -14,9 +15,9 @@ public class Unit : MonoBehaviour
     public UnitDataSO Data => _data; // Readonly property for the _data field
 
     // Auto-properties (the compiler automatically creates private fields for them)
-    public int Health; // { get; set; }
+    public int Health  { get; set; }
     public int Provisions { get; set; }
-    public bool IsSelected; // { get; set; }
+    public bool IsSelected { get; set; }
     public bool IsMoving { get; set; }
 
     [SerializeField] private int _owner; // Serialization is temporary (just for tests)
@@ -54,6 +55,10 @@ public class Unit : MonoBehaviour
 
     void Awake()
     {
+        // Get map and unit manager from the hierarchy
+        _mm = FindAnyObjectByType<MapManager>();
+        _gm = FindAnyObjectByType<GameManager>();
+        _um = FindAnyObjectByType<UnitManager>();
         _rend = GetComponent<SpriteRenderer>();
         Health = 100;
         Provisions = _data.MaxProvisions;
@@ -62,11 +67,22 @@ public class Unit : MonoBehaviour
 
     private void Start()
     {
-        // Get map and unit manager from the hierarchy
-        _mm = FindAnyObjectByType<MapManager>();
-        _um = FindAnyObjectByType<UnitManager>();
+        AssignColor();
     }
-
+    private void AssignColor()
+    {
+        ETeamColors OwnerColor = _gm.Players[_owner].Color;
+        Color OutlineColor;
+        switch (OwnerColor)
+        {
+            case ETeamColors.Amber:OutlineColor = Color.red; break;
+            case ETeamColors.Azure: OutlineColor = Color.blue; break;
+            case ETeamColors.Gilded: OutlineColor = Color.yellow; break;
+            case ETeamColors.Verdant: OutlineColor = Color.green; break;
+            default:OutlineColor = Color.clear; break;
+        }
+        GetComponent<SpriteRenderer>().material.color = OutlineColor;
+    }
     // Highlight the accessible tiles to the unit
     public void HighlightTiles()
     {
