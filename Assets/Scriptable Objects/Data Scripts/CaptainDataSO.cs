@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(menuName = "Captain Data", order = 0)]
-public class CaptainData : ScriptableObject
+public class CaptainDataSO : ScriptableObject
 {
     public int PassiveAttack;
     public int PassiveDefense;

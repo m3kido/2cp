@@ -78,7 +78,7 @@ public class AttackManager : MonoBehaviour
 
         if (targets.Count > 0)
         {
-            Debug.Log(Attacker + " can attack");
+            Debug.Log(Attacker + " can attack : "+ targets.Count + " targets");
             selectedTargetIndex = 0;
 
             // Start target selection process
@@ -93,6 +93,8 @@ public class AttackManager : MonoBehaviour
 
     private IEnumerator TargetSelectionCoroutine(AttackingUnit attacker, List<Unit> targets)
     {
+        yield return null;// skip 1 frame so the space clicked to confirm the attack option 
+                          // selection doesn't confirm the target selection instantly 
         while (!ActionTaken)
         {
             HandleTargetSelectionInput(attacker, targets);
@@ -101,8 +103,8 @@ public class AttackManager : MonoBehaviour
             yield return null;
         }
         ActionTaken = false;
-        EndAttackPhase();
-        _um.EndMove();
+        
+        
         Debug.Log("Action finished");
     }
 
@@ -125,18 +127,15 @@ public class AttackManager : MonoBehaviour
             HighlightSelectedTarget(targets[selectedTargetIndex]);
 
             // Handle navigation keys
-            if (Input.GetKeyDown(KeyCode.Z))
+            if (Input.GetKeyDown(KeyCode.RightArrow))
             {
                 // Move to the next target (circular)
-                Debug.LogWarning("Z clicked");
                 attacker.UnHighlightTarget(targets[selectedTargetIndex]);
                 selectedTargetIndex = (selectedTargetIndex + 1) % targets.Count;
                 HighlightSelectedTarget(targets[selectedTargetIndex]);
             }
-            else if (Input.GetKeyDown(KeyCode.D))
+            else if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                // Move to the previous target (circular)
-                Debug.LogWarning("D clicked");
                 attacker.UnHighlightTarget(targets[selectedTargetIndex]);
                 selectedTargetIndex = (selectedTargetIndex - 1 + targets.Count) % targets.Count;
                 HighlightSelectedTarget(targets[selectedTargetIndex]);
@@ -144,18 +143,22 @@ public class AttackManager : MonoBehaviour
         }
 
         // Handle attack confirmation and cancellation
-        if (Input.GetKeyDown(KeyCode.A)) // Assuming "A" key is used to confirm attack
+        if (Input.GetKeyDown(KeyCode.Space)) // Assuming "Space" key is used to confirm attack
         {
             // Apply damage to the selected target
             Unit selectedTarget = targets[selectedTargetIndex];
             ApplyDamage(selectedTarget, attacker);
             ActionTaken = true;
+            EndAttackPhase();//end attack
+            _um.EndMove();//terminate move
         }
 
         if (Input.GetKeyDown(KeyCode.X)) // Assuming "X" key is used to cancel attack
         {
             attacker.UnHighlightTargets();
             ActionTaken = true;
+            EndAttackPhase();//end attack
+            _gm.CurrentStateOfPlayer = EPlayerStates.InActionsMenu;//return to action menu
 
         }
     }
@@ -218,7 +221,6 @@ public class AttackManager : MonoBehaviour
     {
         Attacker.IsAttacking = false;
         Attacker.HasAttacked = true;
-        _gm.CurrentStateOfPlayer = EPlayerStates.Idle;
         Attacker.UnHighlightTargets();
         Attacker = null;
 

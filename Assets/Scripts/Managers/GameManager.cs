@@ -13,8 +13,8 @@ public class GameManager : MonoBehaviour
 
     private EPlayerStates _currentStateOfPlayer;
     public EPlayerStates CurrentStateOfPlayer // Property for the _currentStateOfPlayer field
-    { 
-        get { return _currentStateOfPlayer; } 
+    {
+        get { return _currentStateOfPlayer; }
         set { _currentStateOfPlayer = value; OnStateChange?.Invoke(); LastStateOfPlayer = _currentStateOfPlayer; }
     }
 
@@ -26,29 +26,29 @@ public class GameManager : MonoBehaviour
     {
         CurrentStateOfPlayer = EPlayerStates.Idle;
         LastStateOfPlayer = EPlayerStates.Idle;
-        // Initialize players
+        
 
+
+    }
+
+    private void Start()
+    {
+        // Initialize players
         Players = new List<Player>
         {
-            new("Mohamed", ETeamColors.Amber, ETeams.A, CaptainManager.CaptainList[0]),
-            new("Oussama", ETeamColors.Azure, ETeams.B, CaptainManager.CaptainList[1])
+            new("Mohamed", ETeamColors.Amber, ETeams.A, ECaptains.Andrew),
+            new("Oussama", ETeamColors.Azure, ETeams.B, ECaptains.Godfrey)
         };
     }
-   
 
     private void Update()
     {
-      
-            // Handle input for turn end
-            if (Input.GetKeyDown(KeyCode.C)) EndTurn();
 
-            // Check if there are subscribers before invoking the events
-            /*if (Input.GetKeyDown(KeyCode.S) && OnSave != null)
-                OnSave.Invoke();
+        // Handle input for turn end
+        if (Input.GetKeyDown(KeyCode.C) && CurrentStateOfPlayer == EPlayerStates.Idle) EndTurn();
+        //if (Input.GetKeyDown(KeyCode.C)) EndTurn();
 
-            if (Input.GetKeyDown(KeyCode.D) && OnLoad != null)
-                OnLoad.Invoke();*/
-   
+
     }
 
     // Declare turn end and day end events
@@ -63,5 +63,11 @@ public class GameManager : MonoBehaviour
         if (PlayerTurn != 0) return;
         Day++;
         OnDayEnd?.Invoke();
+    }
+
+    public void RemovePlayer(Player player)
+    {
+        player.RemoveCaptain();
+        Players.Remove(player);
     }
 }

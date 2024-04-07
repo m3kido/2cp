@@ -5,29 +5,41 @@ using UnityEngine;
 public class CaptainManager : MonoBehaviour
 {
     GameManager _gm;
-    public static List<Captain> CaptainList=new();
+    public static Dictionary<ECaptains, CaptainDataSO> CaptainsDict = new();
+    [SerializeField] List<CaptainDataSO> _captainSOList = new();
+    public static List<Captain> LivingCaptains = new();
+    int _currentCaptain = 0;
 
-    [SerializeField] List<CaptainData> _captainSOList = new();
 
 
 
     private void Awake()
     {
         _gm = FindObjectOfType<GameManager>();
-        CaptainList.Add(new Captain(_captainSOList[0]));
-        CaptainList.Add(new Captain(_captainSOList[1]));
+        for (int i = 0; i < _captainSOList.Count; i++)
+        {
+            CaptainsDict.Add((ECaptains)i, _captainSOList[i]);
+        }
 
     }
 
-    // Use this for initialization
-    void Start()
+    private void Update()
     {
-        
+        _currentCaptain = _gm.PlayerTurn;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ActivateCeleste()
     {
+        LivingCaptains[_currentCaptain].EnableCeleste();
+    }
 
+    public void DeactivateCeleste()
+    {
+        LivingCaptains[_currentCaptain].DisableCeleste();
+    }
+
+    public static void DeleteCaptain(Captain captain)
+    {
+        LivingCaptains.Remove(captain);
     }
 }

@@ -106,7 +106,7 @@ public class ActionMenu : MonoBehaviour
         {
             _gm.CurrentStateOfPlayer = EPlayerStates.Selecting;
             _um.SelectedUnit.transform.position = _cm.SaveTile;
-            
+
             if (_um.Path.Count != 0)
             {
                 _cm.HoveredOverTile = _um.Path.Last();
@@ -131,7 +131,7 @@ public class ActionMenu : MonoBehaviour
                     _am.InitiateAttack();
                     Debug.Log("Done attacking");
 
-                    
+
 
 
 
@@ -219,7 +219,7 @@ public class ActionMenu : MonoBehaviour
         var building = _bm.BuildingFromPosition.ContainsKey(_cm.HoveredOverTile) ? _bm.BuildingFromPosition[_cm.HoveredOverTile] : null;
         if (building != null)
         {
-            if ( building.Owner != _gm.PlayerTurn)
+            if (building.Owner != _gm.PlayerTurn)
             {
                 if (_um.SelectedUnit.Data.UnitType == EUnits.Infantry || _um.SelectedUnit.Data.UnitType == EUnits.Lancers)
                 {
@@ -233,7 +233,7 @@ public class ActionMenu : MonoBehaviour
                 //heal
             }
         }
-       
+
         _waitOptionInstance.SetActive(true);
         _optionsList.Add(_waitOptionInstance);
     }

@@ -1,13 +1,17 @@
-using UnityEngine;
-
-public class Captain 
+public class Captain
 {
-    public CaptainData Data;
-    public bool IsCelesteActive = false;
+    public CaptainDataSO Data;
     public Player Player;
+    public bool IsCelesteActive = false;
 
 
-    public virtual void ApplySpecial()
+
+    public virtual void EnableCeleste()
+    {
+        
+    }
+
+    public virtual void DisableCeleste()
     {
 
     }
@@ -17,9 +21,10 @@ public class Captain
         return false;
     }
 
-    public Captain(CaptainData data) 
+    public Captain(Player player)
     {
-        Data = data;
+        Player = player;
+        CaptainManager.LivingCaptains.Add(this);
     }
 
 }

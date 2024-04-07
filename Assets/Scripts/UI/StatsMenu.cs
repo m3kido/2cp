@@ -2,7 +2,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
-using UnityEngine.Animations;
 public class StatsMenu : MonoBehaviour
 {
     GameManager _gm;
@@ -53,9 +52,9 @@ public class StatsMenu : MonoBehaviour
     private void OnEnable()
     {
         CursorManager.OnCursorMove += UpdateInfo;
-        if(_gameLoaded)
+        if (_gameLoaded)
         {
-             UpdateInfo();
+            UpdateInfo();
             _anim.SetTrigger("Replay");
         }
 
@@ -101,19 +100,19 @@ public class StatsMenu : MonoBehaviour
         _tileSprite.GetComponent<Image>().sprite = _mm.Map.GetTile<Tile>(_cm.HoveredOverTile).sprite;
         if (TileData.TerrainType == ETerrains.Building)
         {
-          _tileName.GetComponent<TextMeshProUGUI>().text =_bm.BuildingFromPosition[_cm.HoveredOverTile].BuildingType.ToString();
+            _tileName.GetComponent<TextMeshProUGUI>().text = _bm.BuildingFromPosition[_cm.HoveredOverTile].BuildingType.ToString();
         }
         else
         {
-          _tileName.GetComponent<TextMeshProUGUI>().text = TileData.TerrainType.ToString();
+            _tileName.GetComponent<TextMeshProUGUI>().text = TileData.TerrainType.ToString();
         }
         _defenceValue.GetComponent<TextMeshProUGUI>().text = TileData.DefenceStars.ToString();
         Unit RefUnit = _um.FindUnit(_cm.HoveredOverTile);
         if (RefUnit != null)
         {
             _unitStats.gameObject.SetActive(true);
-            _unitName.GetComponent<TextMeshProUGUI>().text =RefUnit.Data.UnitType.ToString();
-            _unitSprite.GetComponent<Image>().sprite=RefUnit.GetComponent<SpriteRenderer>().sprite;
+            _unitName.GetComponent<TextMeshProUGUI>().text = RefUnit.Data.UnitType.ToString();
+            _unitSprite.GetComponent<Image>().sprite = RefUnit.GetComponent<SpriteRenderer>().sprite;
             _healthValue.GetComponent<TextMeshProUGUI>().text = RefUnit.Health.ToString();
             //_ammoValue.GetComponent<TextMeshPro>().text = RefUnit.ToString();
             _provisionsValue.GetComponent<TextMeshProUGUI>().text = RefUnit.Provisions.ToString();

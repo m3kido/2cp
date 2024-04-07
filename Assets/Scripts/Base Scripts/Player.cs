@@ -1,4 +1,6 @@
 ﻿// Class to represent a player
+using System;
+
 public class Player
 {
     // Auto-properties (the compiler automatically creates private fields for them)
@@ -11,11 +13,30 @@ public class Player
     public int SuperMeter { get; set; }
 
     // Player constructor
-    public Player(string name, ETeamColors color, ETeams teamSide, Captain captain)
+    public Player(string name, ETeamColors color, ETeams teamSide, ECaptains captain)
     {
         Name = name;
         Color = color;
         TeamSide = teamSide;
-        PlayerCaptain = captain;
+        switch (captain)
+        {
+            case ECaptains.Andrew:
+                PlayerCaptain = new Andrew(this);
+                break;
+            case ECaptains.Godfrey:
+                PlayerCaptain = new Godfrey(this);
+                break;
+            case ECaptains.Maximus:
+                PlayerCaptain = new Maximus(this);
+                break;
+            case ECaptains.Melina:
+                PlayerCaptain = new Melina(this);
+                break;
+        }
+    }
+
+    public void RemoveCaptain()
+    {
+        CaptainManager.DeleteCaptain(PlayerCaptain);
     }
 }

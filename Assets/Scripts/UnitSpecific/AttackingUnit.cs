@@ -62,14 +62,14 @@ public class AttackingUnit : Unit
             bool IsEnemy = Owner != unit.Owner;
             bool IsDamageable = Weapons[CurrentWeaponIndex].DamageList[(int)unit.Data.UnitType] != 0;
 
-            print($"{L1Distance2D(attackerPos, potentialTargetPos)} / {currentWeapon.MinRange} / {currentWeapon.MaxRange} / {unit}");
+            //print($"{L1Distance2D(attackerPos, potentialTargetPos)} / {currentWeapon.MinRange} / {currentWeapon.MaxRange} / {unit}");
             if (IsInRange && IsEnemy && IsDamageable)
             {
                 
                 targets.Add(unit);
             }
         }
-        print("targets : " + targets.Count);
+        //print("targets : " + targets.Count);
         return targets;
     }
 
