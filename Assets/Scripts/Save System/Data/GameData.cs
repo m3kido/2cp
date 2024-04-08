@@ -4,7 +4,7 @@ using UnityEngine;
 
 // This class holds all the data (units, buildings, players, etc.) that will be saved to the file 
 [Serializable]
-public class SaveData
+public class GameData
 {
     // Don't use properties or auto-properties in this class because they're not serializable
 

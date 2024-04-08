@@ -2,25 +2,23 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// This class holds all the map data that will be saved to the file 
+// This class holds map data 
 [Serializable]
-public class SaveMap
+public class Map
 {
     // Don't use properties or auto-properties in this class because they're not serializable
 
-    // Map identity
-    public int MapID;
-    public string MapName;
-    public int MaxPlayers;
+    // Map properties
+    public MapSaveData MapProperties;
 
     // Datas of the map tiles
     public List<TileSaveData> TileSaveDatas;
 
     public void PrintDebugInfo() // For debug
     {
-        Debug.Log("MapID: " + MapID);
-        Debug.Log("MapName: " + MapName);
-        Debug.Log("MaxPlayers: " + MaxPlayers);
+        Debug.Log("MapID: " + MapProperties.MapID);
+        Debug.Log("MapName: " + MapProperties.MapName);
+        Debug.Log("MaxPlayers: " + MapProperties.MaxPlayers);
         Debug.Log("TileSaveDatas:");
         foreach (var tileSaveData in TileSaveDatas)
         {

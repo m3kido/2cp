@@ -2,8 +2,8 @@ using UnityEngine;
 using System;
 using System.IO;
 
-// This class is responsible of writing the SaveData class into a file
-public class FileDataHandler
+// This class is responsible of writing game data into a file
+public class GameDataFileHandler
 {
     private string _dataDirPath = "";
     private string _dataFileName = "";
@@ -11,7 +11,7 @@ public class FileDataHandler
     private readonly string _encryptionCodeWord = "zqI8UqfDdR"; // I chose a random key, even more secure
 
     // Constructor
-    public FileDataHandler(string dataDirPath, string dataFileName, bool useEncryption)
+    public GameDataFileHandler(string dataDirPath, string dataFileName, bool useEncryption)
     {
         _dataDirPath = dataDirPath;
         _dataFileName = dataFileName;
@@ -19,10 +19,10 @@ public class FileDataHandler
     }
 
     // Load SaveData from the file
-    public SaveData Load()
+    public GameData Load()
     {
         string fullPath = Path.Combine(_dataDirPath, _dataFileName);
-        SaveData loadData = null;
+        GameData loadData = null;
         if (File.Exists(fullPath))
         {
             try
@@ -46,7 +46,7 @@ public class FileDataHandler
                 Debug.Log("Serialized data: " + dataToLoad);
 
                 // Deserialize the data from Json back into a SaveData object
-                loadData = JsonUtility.FromJson<SaveData>(dataToLoad);
+                loadData = JsonUtility.FromJson<GameData>(dataToLoad);
 
                 loadData.PrintDebugInfo();
             }
@@ -59,7 +59,7 @@ public class FileDataHandler
     }
 
     // Write SaveData in the file
-    public void Save(SaveData data)
+    public void Save(GameData data)
     {
         string fullPath = Path.Combine(_dataDirPath, _dataFileName);
         try

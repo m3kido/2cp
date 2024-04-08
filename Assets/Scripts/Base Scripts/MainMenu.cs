@@ -6,12 +6,12 @@ public class MainMenu : MonoBehaviour
     // Just random functions i wrote
     public void OnNewGameClicked()
     {
-        DataPersistenceManager.Instance.NewGame();
+        GameDataSaveManager.Instance.NewGame();
     }
 
     public void OnLoadGameClicked()
     {
-        DataPersistenceManager.Instance.LoadGame();
+        GameDataSaveManager.Instance.LoadGame();
     }
 }
 */

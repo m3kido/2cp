@@ -65,8 +65,8 @@ public class StatsMenu : MonoBehaviour
             }
         }
         /*
-        TerrainDataSO TileData= _mm.GetTileData(_cm.HoveredOverTile);
-        //_tileSprite.GetComponent<Image>().sprite = _mm.Map.GetTile<Tile>(_cm.HoveredOverTile).sprite;
+        TerrainDataSO TileData= _mapManager.GetTileData(_cm.HoveredOverTile);
+        //_tileSprite.GetComponent<Image>().sprite = _mapManager.Map.GetTile<Tile>(_cm.HoveredOverTile).sprite;
         _tileName.GetComponent<TextMeshProUGUI>().text = TileData.TerrainType.ToString();
         _defenceValue.GetComponent<TextMeshProUGUI>().text = TileData.DefenceStars.ToString();
         Unit RefUnit = _um.FindUnit(_cm.HoveredOverTile);

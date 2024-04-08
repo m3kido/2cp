@@ -2,24 +2,24 @@ using UnityEngine;
 using System;
 using System.IO;
 
-// This class is responsible of writing the SaveMap class into a file
-public class FileMapDataHandler
+// This class is responsible of writing Maps into a file
+public class MapFileHandler
 {
     private string _mapDataDirPath = "";
     private string _mapDataFileName = "";
   
     // Constructor
-    public FileMapDataHandler(string dataDirPath, string dataFileName)
+    public MapFileHandler(string dataDirPath, string dataFileName)
     {
         _mapDataDirPath = dataDirPath;
         _mapDataFileName = dataFileName;
     }
 
-    // Load SaveMap from the file
-    public SaveMap Load()
+    // Load map from the file
+    public Map Load()
     {
         string fullPath = Path.Combine(_mapDataDirPath, _mapDataFileName);
-        SaveMap loadMapData = null;
+        Map loadMapData = null;
         if (File.Exists(fullPath))
         {
             try
@@ -36,8 +36,8 @@ public class FileMapDataHandler
 
                 Debug.Log("Serialized data: " + dataToLoad);
 
-                // Deserialize the data from Json back into a SaveMap object
-                loadMapData = JsonUtility.FromJson<SaveMap>(dataToLoad);
+                // Deserialize the data from Json back into a map object
+                loadMapData = JsonUtility.FromJson<Map>(dataToLoad);
 
                 loadMapData.PrintDebugInfo();
             }
@@ -49,8 +49,8 @@ public class FileMapDataHandler
         return loadMapData;
     }
 
-    // Write SaveMap in the file
-    public void Save(SaveMap mapData)
+    // Write a map in the file
+    public void Save(Map map)
     {
         string fullPath = Path.Combine(_mapDataDirPath, _mapDataFileName);
         try
@@ -58,10 +58,10 @@ public class FileMapDataHandler
             // Create the directory if it doesn't exist
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
 
-            mapData.PrintDebugInfo();
+            map.PrintDebugInfo();
 
-            // Serialize the SaveMap object into Json
-            string dataToStore = JsonUtility.ToJson(mapData, true);
+            // Serialize the Map object into Json
+            string dataToStore = JsonUtility.ToJson(map, true);
 
             Debug.Log("Serialized data: " + dataToStore);
 

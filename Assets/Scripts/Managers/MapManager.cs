@@ -18,6 +18,9 @@ public class MapManager : MonoBehaviour
     // Dictionary mapping a tile to its terrain data
     private Dictionary<Tile, TerrainDataSO> _dataFromTile = new();
 
+    // List of saved map IDs
+    private static List<int> _mapIDs = new() { 0, 1, 2 };
+
     // Readonly properties for the previous fields
     public Tilemap Map => _map;
     public Tilemap HighlightMap => _highlightMap;
@@ -28,17 +31,26 @@ public class MapManager : MonoBehaviour
     public RuleTile BorderedTiles => _borderedTile;
     public Tile[] ArrowTiles => _arrowTiles;
     public Dictionary<Tile, TerrainDataSO> DataFromTile => _dataFromTile;
+    public List<int> MapIDs => _mapIDs;
 
-    // Get tile datas of every tile type from the inspector
+    // Current map
+    public int CurrentMapID { get; set; }
+
     private void Awake()
+    {
+        FillDataFromTileDictionary();
+    }
+
+    // Get tile datas of every tile type from the inspector and fill the dictionary
+    public void FillDataFromTileDictionary()
     {
         foreach (var tileData in _tileDatas)
         {
-            foreach(var tile in tileData.TerrainsOfSameType) 
+            foreach (var tile in tileData.TerrainsOfSameType)
             {
                 _dataFromTile.Add(tile, tileData);
             }
-        }    
+        }
     }
 
     // Get data of given tile
