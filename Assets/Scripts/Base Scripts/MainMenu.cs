@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 
 // Class to represent the main menu
 public class MainMenu : MonoBehaviour
@@ -14,3 +14,4 @@ public class MainMenu : MonoBehaviour
         DataPersistenceManager.Instance.LoadGame();
     }
 }
+*/

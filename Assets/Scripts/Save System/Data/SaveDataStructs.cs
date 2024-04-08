@@ -109,7 +109,7 @@ public struct LoadingUnitSaveData
     }
 }
 
-// Struct for building data to be saved
+// Struct for building data to save
 [Serializable]
 public struct BuildingSaveData
 {
@@ -125,5 +125,37 @@ public struct BuildingSaveData
         Position = position;
         Health = health;
         Owner = owner;
+    }
+}
+
+// Struct for map data to save
+[Serializable]
+public class MapSaveData
+{
+    public int MapID;
+    public string MapName;
+    public int MaxPlayers;
+
+    // Constructor
+    public MapSaveData(int mapID, string mapName, int maxPlayers)
+    {
+        MapID = mapID;
+        MapName = mapName;
+        MaxPlayers = maxPlayers;
+    }
+}
+
+// Struct for tile data to save
+[Serializable]
+public class TileSaveData
+{
+    public ETerrains TerrainType;
+    public Vector3Int Position;
+
+    // Constructor
+    public TileSaveData(ETerrains terrainType, Vector3Int position)
+    {
+        TerrainType = terrainType;
+        Position = position;
     }
 }

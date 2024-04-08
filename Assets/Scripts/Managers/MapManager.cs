@@ -53,7 +53,6 @@ public class MapManager : MonoBehaviour
         var tile = _map.GetTile<Tile>(Pos);
         if (tile == null) { return null; }
         return _dataFromTile[tile];
-
     }
 
     // Highlight the given grid position

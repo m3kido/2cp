@@ -5,29 +5,29 @@ using System.IO;
 // This class is responsible of writing the SaveData class into a file
 public class FileDataHandler
 {
-    private string dataDirPath = "";
-    private string dataFileName = "";
-    private bool useEncryption = false; // For security. Can be disabled
-    private readonly string encryptionCodeWord = "zqI8UqfDdR"; // I chose a random key, even more secure
+    private string _dataDirPath = "";
+    private string _dataFileName = "";
+    private bool _useEncryption = false; // For security. Can be disabled
+    private readonly string _encryptionCodeWord = "zqI8UqfDdR"; // I chose a random key, even more secure
 
     // Constructor
     public FileDataHandler(string dataDirPath, string dataFileName, bool useEncryption)
     {
-        this.dataDirPath = dataDirPath;
-        this.dataFileName = dataFileName;
-        this.useEncryption = useEncryption;
+        _dataDirPath = dataDirPath;
+        _dataFileName = dataFileName;
+        _useEncryption = useEncryption;
     }
 
     // Load SaveData from the file
     public SaveData Load()
     {
-        string fullPath = Path.Combine(dataDirPath, dataFileName);
+        string fullPath = Path.Combine(_dataDirPath, _dataFileName);
         SaveData loadData = null;
         if (File.Exists(fullPath))
         {
             try
             {
-                // load the serialized data from the file
+                // Load the serialized data from the file
                 string dataToLoad = "";
                 using (FileStream stream = new FileStream(fullPath, FileMode.Open))
                 {
@@ -37,15 +37,15 @@ public class FileDataHandler
                     }
                 }
 
-                // decrypt the data (optional)
-                if (useEncryption)
+                // Decrypt the data (if encrypted)
+                if (_useEncryption)
                 {
                     dataToLoad = EncryptDecrypt(dataToLoad);
                 }
 
                 Debug.Log("Serialized data: " + dataToLoad);
 
-                // deserialize the data from Json back into a GameData object
+                // Deserialize the data from Json back into a SaveData object
                 loadData = JsonUtility.FromJson<SaveData>(dataToLoad);
 
                 loadData.PrintDebugInfo();
@@ -61,7 +61,7 @@ public class FileDataHandler
     // Write SaveData in the file
     public void Save(SaveData data)
     {
-        string fullPath = Path.Combine(dataDirPath, dataFileName);
+        string fullPath = Path.Combine(_dataDirPath, _dataFileName);
         try
         {
             // Create the directory if it doesn't exist
@@ -69,11 +69,11 @@ public class FileDataHandler
 
             data.PrintDebugInfo();
 
-            // Serialize the C# GameSaveData object into Json
+            // Serialize the SaveData object into Json
             string dataToStore = JsonUtility.ToJson(data, true);
 
             // Encrypt the data
-            if (useEncryption)
+            if (_useEncryption)
             {
                 dataToStore = EncryptDecrypt(dataToStore);
             }
@@ -101,7 +101,7 @@ public class FileDataHandler
         string modifiedData = "";
         for (int i = 0; i < data.Length; i++)
         {
-            modifiedData += (char)(data[i] ^ encryptionCodeWord[i % encryptionCodeWord.Length]);
+            modifiedData += (char)(data[i] ^ _encryptionCodeWord[i % _encryptionCodeWord.Length]);
         }
         return modifiedData;
     }
