@@ -57,7 +57,7 @@ public class MapFileHandler
         {
             // Create the directory if it doesn't exist
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
-
+            Debug.Log("K");
             map.PrintDebugInfo();
 
             // Serialize the Map object into Json

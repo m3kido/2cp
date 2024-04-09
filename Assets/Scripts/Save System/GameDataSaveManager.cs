@@ -78,7 +78,7 @@ public class GameDataSaveManager : MonoBehaviour
     public void OnApplicationQuit() // When the player leaves the game
     {
         SaveGame();
-        DestroyAllUnits();
+        // DestroyAllUnits();
     }
 
     // Put the game data in _saveData

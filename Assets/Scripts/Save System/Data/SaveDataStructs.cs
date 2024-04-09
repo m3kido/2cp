@@ -130,7 +130,7 @@ public struct BuildingSaveData
 
 // Struct for map data to save
 [Serializable]
-public class MapSaveData
+public  struct MapSaveData
 {
     public int MapID;
     public string MapName;
@@ -147,7 +147,7 @@ public class MapSaveData
 
 // Struct for tile data to save
 [Serializable]
-public class TileSaveData
+public struct TileSaveData
 {
     public ETerrains TerrainType;
     public Vector3Int Position;
