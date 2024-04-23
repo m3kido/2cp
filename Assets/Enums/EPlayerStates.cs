@@ -4,6 +4,7 @@ public enum EPlayerStates
     Selecting,
     InSettingsMenu,
     InActionsMenu,
+    Attacking,
     InBuildingMenu,
     EndedTurn
 }

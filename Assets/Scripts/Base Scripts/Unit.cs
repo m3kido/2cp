@@ -6,20 +6,40 @@ using UnityEngine.Tilemaps;
 public class Unit : MonoBehaviour
 {
     // Managers will be needed
-    private MapManager _mm;
-    private GameManager _gm;
-    private UnitManager _um;
-    private SpriteRenderer _rend;
+    protected MapManager _mm;
+    protected GameManager _gm;
+    protected UnitManager _um;
+    public SpriteRenderer _rend;
 
     [SerializeField] private UnitDataSO _data;
     public UnitDataSO Data => _data; // Readonly property for the _data field
 
     // Auto-properties (the compiler automatically creates private fields for them)
-    public int Health  { get; set; }
+    public int _health;
+
     public int Provisions { get; set; }
     public bool IsSelected { get; set; }
     public bool IsMoving { get; set; }
+    public int Health
+    {
+        get
+        {
+            return _health;
+        }
 
+        set
+        {
+            if (value <= 0)
+            {
+                _health = 0;
+                Die();
+            }
+            else
+            {
+                _health = value;
+            }
+        }
+    }
     [SerializeField] private int _owner; // Serialization is temporary (just for tests)
     public int Owner // Property for the _hasMoved field
     {
@@ -72,6 +92,7 @@ public class Unit : MonoBehaviour
     private void AssignColor()
     {
         ETeamColors OwnerColor = _gm.Players[_owner].Color;
+        
         Color OutlineColor;
         switch (OwnerColor)
         {
@@ -186,4 +207,22 @@ public class Unit : MonoBehaviour
         SeekTile(left, currentProvisions);
         SeekTile(right, currentProvisions);
     }
+    public void Die()
+    {
+        print("I'm Going To Die!");
+        _um.Units.Remove(this);
+        Destroy(gameObject);
+
+    }
+
+    public static float L1Distance2D(Vector3 A, Vector3 B)
+    {
+        return Mathf.Abs(A.x - B.x) + Mathf.Abs(A.y - B.y);//+ Mathf.Abs(A.z - B.z)
+    }
+
+    public Vector3Int GetGridPosition()
+    {
+        return _mm.Map.WorldToCell(transform.position);
+    }
+
 }

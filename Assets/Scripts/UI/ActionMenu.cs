@@ -10,6 +10,7 @@ public class ActionMenu : MonoBehaviour
     private GameManager _gm;
     private UnitManager _um;
     private BuildingManager _bm;
+    private AttackManager _am;
     private Camera _camera;
     private RectTransform _rect;
 
@@ -39,6 +40,7 @@ public class ActionMenu : MonoBehaviour
         _um = FindAnyObjectByType<UnitManager>();
         _gm = FindAnyObjectByType<GameManager>();
         _bm = FindAnyObjectByType<BuildingManager>();
+        _am = FindAnyObjectByType<AttackManager>();
         _camera = Camera.main;
         _rect = GetComponent<RectTransform>();
 
@@ -110,6 +112,7 @@ public class ActionMenu : MonoBehaviour
             }
             _um.SelectUnit(_um.SelectedUnit);
         }
+
         else if (Input.GetKeyDown(KeyCode.Space))
         {
             if (_optionsList[_selectedOption] == _waitOptionInstance)
@@ -117,11 +120,23 @@ public class ActionMenu : MonoBehaviour
                 _um.EndMove();
                 _gm.CurrentStateOfPlayer = EPlayerStates.Idle;
             }
+            else if (_optionsList[_selectedOption] == _attackOptionInstance)
+            {
+
+                if (_um.SelectedUnit is AttackingUnit)
+                {
+                    _am.Attacker = _um.SelectedUnit as AttackingUnit;
+
+                    Debug.Log("We're attacking");
+                    _am.InitiateAttack();
+                    Debug.Log("Done attacking");
+                }
+            }
             else if (_optionsList[_selectedOption] == _captureOptionInstance)
             {
                 _bm.CaptureBuilding(_cm.HoveredOverTile);
                 _um.EndMove();
-                _gm.CurrentStateOfPlayer = EPlayerStates.Idle;
+                
             }
         }
         //change selected option
@@ -147,7 +162,7 @@ public class ActionMenu : MonoBehaviour
 
     private void CalculateOptions()
     {
-        // CheckFire();// if is an attacking unit
+         CheckFire();// if is an attacking unit
         //CheckLoad // if loading unit
        
         CheckAbility();
@@ -156,13 +171,15 @@ public class ActionMenu : MonoBehaviour
         _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(true);
     }
 
-    /* private void CheckFire()
+     private void CheckFire()
       {
-          if (Um.SelectedUnit.CanAttack())
+          if (_um.SelectedUnit is AttackingUnit && _am.CheckAttack(_um.SelectedUnit as AttackingUnit))
           {
-              OptionsList.Add(FireOption);
-          }
-      } */
+            _attackOptionInstance.SetActive(true);
+            _optionsList.Add(_attackOptionInstance);
+            return;
+        }
+      } 
 
     private void CheckAbility()
     {

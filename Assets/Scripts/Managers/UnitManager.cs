@@ -145,6 +145,7 @@ public class UnitManager : MonoBehaviour
         PathCost = 0;
         SelectedUnit.HasMoved = true;
         SelectedUnit = null;
+        _gm.CurrentStateOfPlayer = EPlayerStates.Idle;
         OnMoveEnd?.Invoke();
     }
 }
