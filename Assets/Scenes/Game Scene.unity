@@ -2159,7 +2159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unitPrefabs:
-  - {fileID: 0}
+  - {fileID: -2360867654628988444, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
   _buildingDatas:
   - {fileID: 11400000, guid: 9b47325992dabbe4d966684c8ae254b7, type: 2}
   - {fileID: 11400000, guid: 8394ac3aaaa938143a4c7d8643477c8a, type: 2}
@@ -4341,7 +4341,7 @@ MonoBehaviour:
   _unitsList: {fileID: 252936797}
   _unitDetails: {fileID: 117699112}
   _unitsPrefabs:
-  - {fileID: 0}
+  - {fileID: -2360867654628988444, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
   ListElement: {fileID: 6994648940590423946, guid: 593414ab9eab9cf4db6ca94738533649, type: 3}
 --- !u!95 &1165555573
 Animator:

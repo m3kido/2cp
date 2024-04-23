@@ -97,15 +97,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2aaba460256748499cbe2ed1d930efa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rend: {fileID: 0}
   _data: {fileID: 11400000, guid: 35af56c91dff4954c922141f844583c4, type: 2}
   _health: 100
   _owner: 0
   _weapons:
-  - _damageList: 05000000
+  - _damageList: 3c000000
     _ammo: 999
     _weaponType: 2
     _ammoPerAttack: 0
     _minRange: 1
-    _maxRange: 4
+    _maxRange: 2
   CurrentWeaponIndex: 0
   HasAttacked: 0

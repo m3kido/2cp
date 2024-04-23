@@ -161,7 +161,8 @@ public class AttackManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.X)) // Assuming "X" key is used to cancel attack
         {
-            attacker.UnHighlightTargets();
+            //attacker.UnHighlightTargets();
+            attacker._rend.color = Color.white;
             ActionTaken = true;
             EndAttackPhase(targets);//end attack
             _gm.CurrentStateOfPlayer = EPlayerStates.InActionsMenu;//return to action menu
