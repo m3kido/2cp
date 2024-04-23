@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 // Class to represent a unit, associated to every unit prefab on the scene
 public class Unit : MonoBehaviour
 {
+    #region Variables
     // Managers will be needed
     private MapManager _mm;
     private GameManager _gm;
@@ -52,7 +53,9 @@ public class Unit : MonoBehaviour
         get => _validTiles;
         set => _validTiles = value;
     }
+    #endregion
 
+    #region UnityMethods
     void Awake()
     {
         // Get map and unit manager from the hierarchy
@@ -69,6 +72,9 @@ public class Unit : MonoBehaviour
     {
         AssignColor();
     }
+    #endregion
+
+    #region Methods
     private void AssignColor()
     {
         ETeamColors OwnerColor = _gm.Players[_owner].Color;
@@ -83,6 +89,7 @@ public class Unit : MonoBehaviour
         }
         GetComponent<SpriteRenderer>().material.color = OutlineColor;
     }
+
     // Highlight the accessible tiles to the unit
     public void HighlightTiles()
     {
@@ -132,7 +139,6 @@ public class Unit : MonoBehaviour
         }
         return false;
     }
-
 
     // A recursive function to fill the ValidTiles dictionary
     private void SeekTile(Vector3Int currentPosition, int currentProvisions)
@@ -186,4 +192,5 @@ public class Unit : MonoBehaviour
         SeekTile(left, currentProvisions);
         SeekTile(right, currentProvisions);
     }
+    #endregion
 }

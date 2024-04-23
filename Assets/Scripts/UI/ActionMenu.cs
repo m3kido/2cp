@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
+// Class to manage action selection menu
 public class ActionMenu : MonoBehaviour
 {
+    #region Variables
     // Managers will be needed
     private CursorManager _cm;
     private GameManager _gm;
@@ -32,7 +33,9 @@ public class ActionMenu : MonoBehaviour
     private GameObject _loadOptionInstance;
     private GameObject _dropOptionInstance;
     private GameObject _refillOptionInstance;
+    #endregion
 
+    #region UnityMethods
     private void Awake()
     {
         _cm = FindAnyObjectByType<CursorManager>();
@@ -144,7 +147,9 @@ public class ActionMenu : MonoBehaviour
             _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(true);
         }
     }
+    #endregion
 
+    #region Methods
     private void CalculateOptions()
     {
         // CheckFire();// if is an attacking unit
@@ -187,4 +192,5 @@ public class ActionMenu : MonoBehaviour
         _waitOptionInstance.SetActive(true);
         _optionsList.Add(_waitOptionInstance);
     }
+    #endregion
 }

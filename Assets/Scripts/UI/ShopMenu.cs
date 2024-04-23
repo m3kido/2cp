@@ -1,12 +1,13 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Class to manage the shop menu
 public class ShopMenu : MonoBehaviour
 {
+    #region Variables
     private CursorManager _cm;
     private GameManager _gm;
     private BuildingManager _bm;
@@ -21,7 +22,9 @@ public class ShopMenu : MonoBehaviour
 
     private Dictionary<GameObject,Unit> _unitElements;
     private int _selectedUnit;
+    #endregion
 
+    #region UnityMethods
     private void Awake()
     {
         _cm = FindAnyObjectByType<CursorManager>();
@@ -42,11 +45,13 @@ public class ShopMenu : MonoBehaviour
         }
         
     }
+
     private void OnEnable()
     {
         _unitDetails.SetActive(false);
         _unitsList.SetActive(false);
     }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.X))
@@ -83,6 +88,9 @@ public class ShopMenu : MonoBehaviour
             UpdateUI();
         }
     }
+    #endregion
+
+    #region Methods
     private void ShowUI()
     {
         _unitDetails.SetActive(true);
@@ -92,12 +100,11 @@ public class ShopMenu : MonoBehaviour
         _unitElements.Keys.ToList()[_selectedUnit].transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = Color.red;
         UpdateUI();
     }
+
     private void UpdateUI()
     {
-        
         foreach(var unit in _unitsPrefabs)
         {
-           
             if (_unitElements[_unitElements.Keys.ToList()[_selectedUnit]] == unit)
             {
                 _unitDetails.transform.GetChild(1).GetComponent<Image>().sprite = unit.GetComponent<SpriteRenderer>().sprite;
@@ -107,7 +114,6 @@ public class ShopMenu : MonoBehaviour
                 return;
             }
         }
-        
-
     }
+    #endregion
 }

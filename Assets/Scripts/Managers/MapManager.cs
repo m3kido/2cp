@@ -4,6 +4,7 @@ using UnityEngine.Tilemaps;
 
 public class MapManager : MonoBehaviour
 {
+    #region Variables
     // Access to different tilemaps
     [SerializeField] private Tilemap _map;
     [SerializeField] private Tilemap _highlightMap;
@@ -28,7 +29,9 @@ public class MapManager : MonoBehaviour
     public RuleTile BorderedTiles => _borderedTile;
     public Tile[] ArrowTiles => _arrowTiles;
     public Dictionary<Tile, TerrainDataSO> DataFromTile => _dataFromTile;
+    #endregion
 
+    #region UnityMethods
     // Get tile datas of every tile type from the inspector
     private void Awake()
     {
@@ -40,7 +43,11 @@ public class MapManager : MonoBehaviour
             }
         }    
     }
+    #endregion
 
+    #region Methods
+
+    #region GetMethods
     // Get data of given tile
     public TerrainDataSO GetTileData(Tile tile)
     {
@@ -53,9 +60,10 @@ public class MapManager : MonoBehaviour
         var tile = _map.GetTile<Tile>(Pos);
         if (tile == null) { return null; }
         return _dataFromTile[tile];
-
     }
+    #endregion
 
+    #region HighlightMethods
     // Highlight the given grid position
     public void HighlightTile(Vector3Int pos)
     {
@@ -71,6 +79,7 @@ public class MapManager : MonoBehaviour
         _borderMap.SetTile(pos, null);
       
     }
+    #endregion
 
     // Select the adequate arrow sprite based on the next tile and the previous one
     public void DrawArrow(Vector3Int prev, Vector3Int curr, Vector3Int next)
@@ -160,4 +169,5 @@ public class MapManager : MonoBehaviour
         }
         _arrowMap.SetTile(curr, _arrowTiles[(int)arrow]);
     }
+    #endregion
 }

@@ -4,10 +4,11 @@ using System.Linq;
 using UnityEngine;
 using System;
 
-// This script handles unit interactions and
-// keeps track of units and the path drawn by the cursor
+// This script handles unit interactions
+// Keeps track of units and the path drawn by the cursor
 public class UnitManager : MonoBehaviour
 {
+    #region Variables
     // Managers will be needed
     private GameManager _gm;
     private MapManager _mm;
@@ -20,7 +21,9 @@ public class UnitManager : MonoBehaviour
     public int PathCost { get; set; }
 
     public static event Action OnMoveEnd;
+    #endregion
 
+    #region UnityMethods
     private void Awake()
     {
         // Get map and game managers from the hierarchy
@@ -41,7 +44,9 @@ public class UnitManager : MonoBehaviour
         // Unsubscribe from the day end event
         GameManager.OnTurnEnd -= ResetUnits;
     }
+    #endregion
 
+    #region Methods
     // Get unit from given grid position
     public Unit FindUnit(Vector3Int pos)
     {
@@ -67,7 +72,6 @@ public class UnitManager : MonoBehaviour
     // Draw the arrow path
     public void DrawPath()
     {
-       
             for (int i = 0; i < Path.Count; i++)
             {
                 if (i == 0)
@@ -147,4 +151,5 @@ public class UnitManager : MonoBehaviour
         SelectedUnit = null;
         OnMoveEnd?.Invoke();
     }
+    #endregion
 }

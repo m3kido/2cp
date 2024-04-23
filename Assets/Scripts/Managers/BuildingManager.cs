@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 // Class to manage Buildings
 public class BuildingManager : MonoBehaviour
 {
+    #region Variables
     // Managers will be needed
     private MapManager _mm;
     private UnitManager _um;
@@ -28,7 +29,9 @@ public class BuildingManager : MonoBehaviour
     public BuildingDataSO[] BuildingDatas => _buildingDatas;
     public Dictionary<Tile, BuildingDataSO> BuildingDataFromTile => _buildingDataFromTile;
     public Dictionary<Vector3Int, Building> BuildingFromPosition => _buildingFromPosition;
+    #endregion
 
+    #region UnityMethods
     private void Awake()
     {
         // Fill the _buildingDataFromTile dictionary
@@ -65,7 +68,9 @@ public class BuildingManager : MonoBehaviour
         // GetGoldFromBuildings unsubscribes from day end event
       //  GameManager.OnDayEnd -= GetGoldFromBuildings;
     }
+    #endregion
 
+    #region Methods
     // Scan the map and put all the buldings in the Buildings dictionary
     private void ScanMapForBuildings()
     {
@@ -139,4 +144,5 @@ public class BuildingManager : MonoBehaviour
             }
         }
     }
+    #endregion
 }
