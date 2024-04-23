@@ -78,7 +78,7 @@ public class GameDataSaveManager : MonoBehaviour
     public void OnApplicationQuit() // When the player leaves the game
     {
         SaveGame();
-        // DestroyAllUnits();
+        DestroyAllUnits();
     }
 
     // Put the game data in _saveData
@@ -165,11 +165,14 @@ public class GameDataSaveManager : MonoBehaviour
             {
                 // Instantiate it in the right saved position
                 GameObject unitObject = Instantiate(unitPrefab, _mm.Map.CellToWorld(attackingUnitSave.Position),
-                    Quaternion.identity);
+                    Quaternion.identity, _um.transform);
                 if (unitObject.TryGetComponent<AttackingUnit>(out var unitComponent))
                 {
                     // Assign saved data to that prefab
                     unitComponent.SetSavedData(attackingUnitSave);
+
+                    // Add the unit to the units list
+                    _um.Units.Add(unitComponent);
                 }
                 else
                 {
@@ -196,6 +199,9 @@ public class GameDataSaveManager : MonoBehaviour
                 {
                     // Assign saved data to that prefab
                     unitComponent.SetSavedData(loadingUnitSave);
+
+                    // Add the unit to the units list
+                    _um.Units.Add(unitComponent);
                 }
                 else
                 {
@@ -227,9 +233,31 @@ public class GameDataSaveManager : MonoBehaviour
 
     public void DestroyAllUnits()
     {
-        foreach(AttackingUnit unit in FindObjectsOfType<AttackingUnit>()) {
-            Destroy(unit);
+        AttackingUnit[] attackingUnits = FindObjectsOfType<AttackingUnit>();
+        LoadingUnit[] loadingUnits = FindObjectsOfType<LoadingUnit>();
+
+        if (attackingUnits.Length == 0 && loadingUnits.Length == 0)
+        {
+            Debug.Log("No units found to destroy.");
+            return;
         }
-        Debug.Log("Destroyed all units.");
+
+        if (attackingUnits.Length != 0)
+        {
+            foreach (AttackingUnit unit in attackingUnits)
+            {
+                Destroy(unit.gameObject);
+            }
+        }
+
+        if (loadingUnits.Length != 0)
+        {
+            foreach (LoadingUnit unit in loadingUnits)
+            {
+                Destroy(unit.gameObject);
+            }
+        }
+
+        Debug.Log("Destroyed all units: " + (attackingUnits.Length + loadingUnits.Length));
     }
 }

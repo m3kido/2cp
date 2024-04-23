@@ -1,4 +1,4 @@
-// Class to hold the global data
+// Class to hold the main menu player data
 public class GlobalPlayerData
 {
     public int PlayerId { get; set; }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 // This script handles unit interactions and
@@ -10,20 +11,26 @@ public class UnitManager : MonoBehaviour
     private GameManager _gm;
     private MapManager _mm;
 
-    public List<Unit> Units { get; set; }
+    public List<Unit> Units { get; set; } = new();
 
     public GameObject[] UnitPrefabs; // We will need access to unit prefabs.
-                                     // Check save system : LoadUnits()
+                                     // Check GameDataSaveManager : LoadUnits()
     public Unit SelectedUnit { get; set; }
     public Vector3Int SaveTile { get; set; }
     public List<Vector3Int> Path { get; set; } = new();
     public int PathCost { get; set; }
 
-    void Start()
+    private void Start()
     {
         _mm = FindAnyObjectByType<MapManager>();
         _gm = FindAnyObjectByType<GameManager>();
 
+        // Spawn unit
+        Instantiate(UnitPrefabs[0], Vector3Int.zero, Quaternion.identity, transform);
+    }
+
+    private void Update()
+    {
         // Seek for units in the scene
         Units = FindObjectsOfType<Unit>().ToList();
     }
