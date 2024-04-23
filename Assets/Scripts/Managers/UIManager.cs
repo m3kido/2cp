@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// Class to manage UI
 public class UIManager : MonoBehaviour
 {
     // This class should handle :
@@ -9,9 +10,9 @@ public class UIManager : MonoBehaviour
     // Captain bar
     // Building menu
 
+    #region Variables
     private GameManager _gm;
    
-    
     [SerializeField] private GameObject _actionMenu;
 
     [SerializeField] private GameObject _settingMenu;
@@ -21,7 +22,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject _CaptainsBar;
 
     [SerializeField] private GameObject _ShopMenu;
+    #endregion
 
+    #region UnityMethods
     private void OnEnable()
     {
         GameManager.OnStateChange += ChangeActiveUI;
@@ -42,7 +45,9 @@ public class UIManager : MonoBehaviour
         _actionMenu.SetActive(false);
         _settingMenu.SetActive(false);
     }
+    #endregion
 
+    #region Methods
     private void ChangeActiveUI()
     {
         switch (_gm.LastStateOfPlayer)
@@ -62,4 +67,5 @@ public class UIManager : MonoBehaviour
             default: { break; }
         }
     }
+    #endregion
 }

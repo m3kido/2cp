@@ -2,9 +2,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
-using UnityEngine.Animations;
+
+// Class to manage the stats menu
 public class StatsMenu : MonoBehaviour
 {
+    #region Variables
     GameManager _gm;
     UnitManager _um;
     MapManager _mm;
@@ -31,9 +33,10 @@ public class StatsMenu : MonoBehaviour
     [SerializeField] private GameObject _tileName;
     [SerializeField] private GameObject _tileSprite;
 
-
     bool _gameLoaded = false;
+    #endregion
 
+    #region UnityMethods
     // Start is called before the first frame update
     void Awake()
     {
@@ -70,11 +73,14 @@ public class StatsMenu : MonoBehaviour
         _anim.SetTrigger("Replay");
         _gameLoaded = true;
     }
+    #endregion
+
+    #region Methods
     private void UpdateInfo()
     {
         if (_camera.transform.position.x - _cm.transform.position.x >= 0)
         {
-            //if the menu is on the left of the screen
+            // If the menu is on the left of the screen
             if (_rect.localPosition.x < 0)
             {
                 _rect.localPosition = new Vector3(-1 * _rect.localPosition.x + _rect.rect.width, _rect.localPosition.y, _rect.localPosition.z);
@@ -82,12 +88,11 @@ public class StatsMenu : MonoBehaviour
                 _unitRect.localPosition = _tileRect.localPosition;
                 _tileRect.localPosition = save;
                 _anim.SetTrigger("Replay");
-                
             }
         }
         else
         {
-            //if the menu is on the right of the screen
+            // If the menu is on the right of the screen
             if (_rect.localPosition.x > 0)
             {
                 _rect.localPosition = new Vector3(-1 * _rect.localPosition.x + _rect.rect.width, _rect.localPosition.y, _rect.localPosition.z);
@@ -108,15 +113,17 @@ public class StatsMenu : MonoBehaviour
         {
           _tileName.GetComponent<TextMeshProUGUI>().text = TileData.TerrainType.ToString();
         }
+
         _defenceValue.GetComponent<TextMeshProUGUI>().text = TileData.DefenceStars.ToString();
         Unit RefUnit = _um.FindUnit(_cm.HoveredOverTile);
+
         if (RefUnit != null)
         {
             _unitStats.gameObject.SetActive(true);
             _unitName.GetComponent<TextMeshProUGUI>().text =RefUnit.Data.UnitType.ToString();
             _unitSprite.GetComponent<Image>().sprite=RefUnit.GetComponent<SpriteRenderer>().sprite;
             _healthValue.GetComponent<TextMeshProUGUI>().text = RefUnit.Health.ToString();
-            //_ammoValue.GetComponent<TextMeshPro>().text = RefUnit.ToString();
+            // _ammoValue.GetComponent<TextMeshPro>().text = RefUnit.ToString();
             _provisionsValue.GetComponent<TextMeshProUGUI>().text = RefUnit.Provisions.ToString();
         }
         else
@@ -124,7 +131,6 @@ public class StatsMenu : MonoBehaviour
             _unitStats.gameObject.SetActive(false);
         }
     }
-
-
+    #endregion
 }
 

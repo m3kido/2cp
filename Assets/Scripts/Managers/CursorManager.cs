@@ -6,6 +6,7 @@ using System;
 // Class to manage the cursor
 public class CursorManager : MonoBehaviour
 {
+    #region Variables
     // Managers will be needed
     private UnitManager _um;
     private MapManager _mm;
@@ -18,8 +19,8 @@ public class CursorManager : MonoBehaviour
     private Vector3Int _lastOffset = Vector3Int.zero;
     private Vector3Int _offset = Vector3Int.zero;
 
-
     public static event Action OnCursorMove;
+
     // This is a property that holds the tile which the cursor is hovering over
     public Vector3Int HoveredOverTile
     {
@@ -34,7 +35,9 @@ public class CursorManager : MonoBehaviour
     // Auto-property (the compiler automatically creates a private field for it)
     public Vector3Int SaveTile { get; set; }
     public Vector3 SaveCamera { get; set; }
+    #endregion
 
+    #region UnityMethods
     private void Awake()
     {
         // Get the unit, map, game and building managers from the hierarchy
@@ -44,20 +47,18 @@ public class CursorManager : MonoBehaviour
         _bm = FindAnyObjectByType<BuildingManager>();
         _camera = Camera.main;
         HoveredOverTile = _mm.Map.WorldToCell(transform.position);
-    }
-   
+    } 
 
     void Update()
-    {
-        
-       
-        
+    { 
         // Handle input every frame
         if(_gm.CurrentStateOfPlayer == EPlayerStates.Idle || _gm.CurrentStateOfPlayer == EPlayerStates.Selecting) {
             HandleInput();
         }
     }
+    #endregion
 
+    #region Methods
     // Handles keyboard input
     void HandleInput()
     {
@@ -277,6 +278,5 @@ public class CursorManager : MonoBehaviour
         _camera.transform.position = new Vector3(math.clamp( _camera.transform.position.x + offset.x,bounds.xMin+9,bounds.xMax-9), math.clamp(_camera.transform.position.y + offset.y, bounds.yMin+5, bounds.yMax-5), _camera.transform.position.z);
         }
     }
-    
-    
+    #endregion
 }
