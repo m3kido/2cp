@@ -8,5 +8,20 @@ public class Melina : Captain
     {
         Player = player;
         Data = CaptainManager.CaptainsDict[ECaptains.Melina];
+        PassiveDefense = Data.PassiveDefense;
+        PassiveAttack = Data.PassiveAttack;
+    }
+    public override void EnableCeleste()
+    {
+        base.EnableCeleste();
+    }
+
+    public override void DisableCeleste()
+    {
+        base.DisableCeleste();
+    }
+    public override bool IsCelesteReady()
+    {
+        return base.IsCelesteReady();
     }
 }

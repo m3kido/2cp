@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CaptainManager : MonoBehaviour
 {
-    GameManager _gm;
+    public static GameManager Gm;
+    public static UnitManager Um;
     public static Dictionary<ECaptains, CaptainDataSO> CaptainsDict = new();
     [SerializeField] List<CaptainDataSO> _captainSOList = new();
     public static List<Captain> LivingCaptains = new();
@@ -15,7 +16,8 @@ public class CaptainManager : MonoBehaviour
 
     private void Awake()
     {
-        _gm = FindObjectOfType<GameManager>();
+        Gm = FindObjectOfType<GameManager>();
+        Um = FindObjectOfType<UnitManager>();
         for (int i = 0; i < _captainSOList.Count; i++)
         {
             CaptainsDict.Add((ECaptains)i, _captainSOList[i]);
@@ -23,9 +25,14 @@ public class CaptainManager : MonoBehaviour
 
     }
 
+    private void Start()
+    {
+        
+    }
+
     private void Update()
     {
-        _currentCaptain = _gm.PlayerTurn;
+        _currentCaptain = Gm.PlayerTurn;
     }
 
     public void ActivateCeleste()

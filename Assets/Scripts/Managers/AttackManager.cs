@@ -7,7 +7,7 @@ public class AttackManager : MonoBehaviour
     GameManager _gm;
     UnitManager _um;
     MapManager _mm;
-    
+
     public AttackingUnit Attacker;
     private int selectedTargetIndex = -1;
     private bool _actionTaken = false;
@@ -78,7 +78,7 @@ public class AttackManager : MonoBehaviour
 
         if (targets.Count > 0)
         {
-            Debug.Log(Attacker + " can attack : "+ targets.Count + " targets");
+            Debug.Log(Attacker + " can attack : " + targets.Count + " targets");
             selectedTargetIndex = 0;
 
             // Start target selection process
@@ -103,8 +103,8 @@ public class AttackManager : MonoBehaviour
             yield return null;
         }
         ActionTaken = false;
-        
-        
+
+
         Debug.Log("Action finished");
     }
 
@@ -200,14 +200,14 @@ public class AttackManager : MonoBehaviour
         Player attackerPlayer = _gm.Players[attacker.Owner];
         Captain attackerCaptain = attackerPlayer.PlayerCaptain;
         int celesteAttack = attackerCaptain.IsCelesteActive ? attackerCaptain.Data.CelesteDefense : 0;
-        float attackDamage = baseDamage * (1 + attackerCaptain.Data.PassiveAttack) * (1 + celesteAttack);
-
+        float attackDamage = baseDamage * (1 + attackerCaptain.PassiveAttack) * (1 + celesteAttack)*attackerCaptain.AttackMultiplier ;
+      
 
         int terrainStars = _mm.GetTileData(_mm.Map.WorldToCell(target.transform.position)).DefenceStars;
         Player targetPlayer = _gm.Players[attacker.Owner];
         Captain targetCaptain = targetPlayer.PlayerCaptain;
         int celesteDefense = targetCaptain.IsCelesteActive ? targetCaptain.Data.CelesteDefense : 0;
-        float defenseDamage = (1 - terrainStars * target.Health / 1000) * (1 - targetCaptain.Data.PassiveDefense) * (1 - celesteDefense);
+        float defenseDamage = (1 - terrainStars * target.Health / 1000) * (1 - targetCaptain.PassiveDefense) * (1 - celesteDefense)*targetCaptain.DefenseMultiplier;
 
 
         int chance = (attackerCaptain.Data.Name == ECaptains.Andrew) ? UnityEngine.Random.Range(2, 10) : UnityEngine.Random.Range(1, 10);

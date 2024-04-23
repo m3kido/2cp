@@ -60,13 +60,19 @@ public class Unit : MonoBehaviour
                 _health = 0;
                 Die();
             }
+            else if (value > MaxHealth) 
+            {
+
+                _health = MaxHealth;
+            }
             else
             {
                 _health = value;
             }
         }
     }
-
+    public static int MaxHealth = 100;
+    public int MoveRange; 
     // Dictionary to hold the grid position of the valid tiles along with the fuel consumed to reach them
 
     public Dictionary<Vector3Int, int> ValidTiles = new();
@@ -74,9 +80,10 @@ public class Unit : MonoBehaviour
     private void Awake()
     {
         _rend = GetComponent<SpriteRenderer>();
-        Health = 100;
+        Health = MaxHealth;
         Provisions = _data.MaxProvisions;
         _hasMoved = false;
+        MoveRange = Data.MoveRange; 
     }
 
     private void Start()

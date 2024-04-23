@@ -145,7 +145,7 @@ public class UnitManager : MonoBehaviour
     // Confirm the move had ended
     public void EndMove()
     {
-        SelectedUnit.Provisions -= PathCost;
+        SelectedUnit.Provisions -=PathCost;
         Path.Clear();
         PathCost = 0;
         SelectedUnit.HasMoved = true;
