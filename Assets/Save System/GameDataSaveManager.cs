@@ -115,6 +115,7 @@ public class GameDataSaveManager : MonoBehaviour
     // Load data from _saveData to players
     public void LoadPlayers()
     {
+        _gm.InGamePlayers.Clear();
         // Get saved players
         foreach(var playerSave in _gameData.PlayerSaveDatas)
         {

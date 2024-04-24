@@ -21,7 +21,6 @@ public class CursorManager : MonoBehaviour
         set 
         { 
             transform.position = new Vector3Int( math.clamp( value.x,_mm.Map.cellBounds.xMin, _mm.Map.cellBounds.xMax-1), math.clamp(value.y, _mm.Map.cellBounds.yMin, _mm.Map.cellBounds.yMax-1),value.z); 
-            
         }
     }
 
@@ -192,6 +191,7 @@ public class CursorManager : MonoBehaviour
             }
         }
     }
+
     private void MoveCamera(Vector3Int offset)
     {
         var bounds = _mm.Map.cellBounds;

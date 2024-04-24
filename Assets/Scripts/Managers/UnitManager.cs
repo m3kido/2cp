@@ -27,10 +27,8 @@ public class UnitManager : MonoBehaviour
 
         // Spawn unit
         Instantiate(UnitPrefabs[0], Vector3Int.zero, Quaternion.identity, transform);
-    }
+        Instantiate(UnitPrefabs[0], Vector3Int.right, Quaternion.identity, transform);
 
-    private void Update()
-    {
         // Seek for units in the scene
         Units = FindObjectsOfType<Unit>().ToList();
     }

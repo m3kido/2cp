@@ -43,12 +43,8 @@ public class GameDataFileHandler
                     dataToLoad = EncryptDecrypt(dataToLoad);
                 }
 
-                Debug.Log("Serialized data: " + dataToLoad);
-
                 // Deserialize the data from Json back into a SaveData object
                 loadData = JsonUtility.FromJson<GameData>(dataToLoad);
-
-                loadData.PrintDebugInfo();
             }
             catch (Exception e)
             {
@@ -67,8 +63,6 @@ public class GameDataFileHandler
             // Create the directory if it doesn't exist
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
 
-            data.PrintDebugInfo();
-
             // Serialize the SaveData object into Json
             string dataToStore = JsonUtility.ToJson(data, true);
 
@@ -77,8 +71,6 @@ public class GameDataFileHandler
             {
                 dataToStore = EncryptDecrypt(dataToStore);
             }
-
-            Debug.Log("Serialized data: " + dataToStore);
 
             // Write the serialized data to the file
             using (FileStream stream = new FileStream(fullPath, FileMode.Create))

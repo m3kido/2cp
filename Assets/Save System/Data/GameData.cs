@@ -28,8 +28,8 @@ public class GameData
         Debug.Log("PlayerSaveDatas :");
         foreach (var playerData in PlayerSaveDatas)
         {
-            Debug.Log(" - PlayerName : " + playerData.Color);
-            Debug.Log(" - PlayerScore : " + playerData.CPCharge);
+            Debug.Log(" - PlayerColor : " + playerData.Color);
+            Debug.Log(" - PlayerCPCharge : " + playerData.CPCharge);
         }
 
         Debug.Log("AttackingUnitSaveDatas :");

@@ -63,12 +63,11 @@ public struct AttackingUnitSaveData
     public int EnergyOrbs;
     public Weapon CurrentWeapon;
     public int CurrentWeaponIndex;
-    public bool HasAttacked;
     public Vector3Int Position;
 
     // Constructor
     public AttackingUnitSaveData(EUnits unitType, int health, int provisions, int owner, bool hasMoved,
-        int energyOrbs, Weapon currentWeapon, int currentWeaponIndex, bool hasAttacked, Vector3Int position)
+        int energyOrbs, Weapon currentWeapon, int currentWeaponIndex, Vector3Int position)
     {
         UnitType = unitType;
         Health = health;
@@ -78,7 +77,6 @@ public struct AttackingUnitSaveData
         EnergyOrbs = energyOrbs;
         CurrentWeapon = currentWeapon;
         CurrentWeaponIndex = currentWeaponIndex;
-        HasAttacked = hasAttacked;
         Position = position;
     }
 }
