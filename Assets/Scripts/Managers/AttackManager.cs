@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AttackManager : MonoBehaviour
 {
+    #region Variables
     GameManager _gm;
     UnitManager _um;
     MapManager _mm;
@@ -23,14 +24,18 @@ public class AttackManager : MonoBehaviour
             print($"-----------ActionTaken : {value}");
         }
     }
+    #endregion
 
+    #region UnityMethods
     private void Awake()
     {
         _gm = FindAnyObjectByType<GameManager>();
         _um = FindAnyObjectByType<UnitManager>();
         _mm = FindAnyObjectByType<MapManager>();
     }
+    #endregion
 
+    #region Methods
     public bool UnitCanAttack(AttackingUnit attacker)
     {
         if (attacker == null) print("NO ATTACKER FOUND ");
@@ -58,7 +63,9 @@ public class AttackManager : MonoBehaviour
             Debug.Log("Attacker has been damaged!");
         }
     }
+
     public bool CheckAttack(AttackingUnit attacker) { return attacker.CanAttack(); }
+
     public void InitiateAttack()
     {
         Debug.Log("Initiating Attack from the AM");
@@ -88,13 +95,12 @@ public class AttackManager : MonoBehaviour
         {
             Debug.Log("No valid targets found.");
         }
-
     }
 
     private IEnumerator TargetSelectionCoroutine(AttackingUnit attacker, List<Unit> targets)
     {
-        yield return null;// skip 1 frame so the space clicked to confirm the attack option 
-                          // selection doesn't confirm the target selection instantly 
+        yield return null; // Skip 1 frame so the space clicked to confirm the attack option 
+                           // Selection doesn't confirm the target selection instantly 
         while (!ActionTaken)
         {
             HandleTargetSelectionInput(attacker, targets);
@@ -103,7 +109,6 @@ public class AttackManager : MonoBehaviour
             yield return null;
         }
         ActionTaken = false;
-        
         
         Debug.Log("Action finished");
     }
@@ -125,25 +130,25 @@ public class AttackManager : MonoBehaviour
         }
         else
         {
-            //HighlightSelectedTarget(targets[selectedTargetIndex]);
+            // HighlightSelectedTarget(targets[selectedTargetIndex]);
             targets[selectedTargetIndex]._rend.color = Color.blue;
 
             // Handle navigation keys
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
                 // Move to the next target (circular)
-                //attacker.UnHighlightTarget(targets[selectedTargetIndex]);
+                // attacker.UnHighlightTarget(targets[selectedTargetIndex]);
                 targets[selectedTargetIndex]._rend.color=Color.white;
                 selectedTargetIndex = (selectedTargetIndex + 1) % targets.Count;
-                //HighlightSelectedTarget(targets[selectedTargetIndex]);
+                // HighlightSelectedTarget(targets[selectedTargetIndex]);
                 targets[selectedTargetIndex]._rend.color = Color.blue;
             }
             else if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                //attacker.UnHighlightTarget(targets[selectedTargetIndex]);
+                // attacker.UnHighlightTarget(targets[selectedTargetIndex]);
                 targets[selectedTargetIndex]._rend.color = Color.white;
                 selectedTargetIndex = (selectedTargetIndex - 1 + targets.Count) % targets.Count;
-                //HighlightSelectedTarget(targets[selectedTargetIndex]);
+                // HighlightSelectedTarget(targets[selectedTargetIndex]);
                 targets[selectedTargetIndex]._rend.color = Color.blue;
             }
         }
@@ -155,18 +160,17 @@ public class AttackManager : MonoBehaviour
             Unit selectedTarget = targets[selectedTargetIndex];
             ApplyDamage(selectedTarget, attacker);
             ActionTaken = true;
-            EndAttackPhase(targets);//end attack
-            _um.EndMove();//terminate move
+            EndAttackPhase(targets); // End attack
+            _um.EndMove(); // Terminate move
         }
 
         if (Input.GetKeyDown(KeyCode.X)) // Assuming "X" key is used to cancel attack
         {
-            //attacker.UnHighlightTargets();
+            // attacker.UnHighlightTargets();
             attacker._rend.color = Color.white;
             ActionTaken = true;
             EndAttackPhase(targets);//end attack
-            _gm.CurrentStateOfPlayer = EPlayerStates.InActionsMenu;//return to action menu
-
+            _gm.CurrentStateOfPlayer = EPlayerStates.InActionsMenu; // Return to action menu
         }
     }
 
@@ -202,13 +206,11 @@ public class AttackManager : MonoBehaviour
 
     public float CalculateDamage(Unit target, AttackingUnit attacker)
     {
-
         int baseDamage = attacker.Weapons[attacker.CurrentWeaponIndex].DamageList[(int)target.Data.UnitType];
         Player attackerPlayer = _gm.Players[attacker.Owner];
         Captain attackerCaptain = attackerPlayer.PlayerCaptain;
         //int celesteAttack = attackerCaptain.IsCelesteActive ? attackerCaptain.Data.CelesteDefense : 0;
         float attackDamage = baseDamage; //* (1 + attackerCaptain.Data.PassiveAttack) * (1 + celesteAttack);
-
 
         int terrainStars = _mm.GetTileData(_mm.Map.WorldToCell(target.transform.position)).DefenceStars;
         Player targetPlayer = _gm.Players[attacker.Owner];
@@ -216,13 +218,10 @@ public class AttackManager : MonoBehaviour
         //int celesteDefense = targetCaptain.IsCelesteActive ? targetCaptain.Data.CelesteDefense : 0;
         float defenseDamage = (1 - terrainStars * target.Health / 1000);//* (1 - targetCaptain.Data.PassiveDefense) * (1 - celesteDefense);
 
-
         // int chance = (attackerCaptain.Data.Name == ECaptains.Andrew) ? UnityEngine.Random.Range(2, 10) : UnityEngine.Random.Range(1, 10);
         float totalDamage = (float)attacker.Health / 100 * attackDamage * defenseDamage;//* (1 + (float)chance / 100);
         return totalDamage;
     }
-
-
 
     public void EndAttackPhase(List<Unit> targets)
     {
@@ -232,13 +231,8 @@ public class AttackManager : MonoBehaviour
         foreach (var target in targets)
         {
             target._rend.color = Color.white;
-          
         }
         Attacker = null;
-
-
     }
-
-
-
+    #endregion
 }
