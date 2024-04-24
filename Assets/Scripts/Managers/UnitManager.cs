@@ -52,14 +52,23 @@ public class UnitManager : MonoBehaviour
     {
         foreach (Unit unit in Units)
         {
+            if (unit.gameObject.activeInHierarchy == false) { continue; }
             if (_mm.Map.WorldToCell(unit.transform.position) == pos)
             {
-                return unit;
+                if (_gm.CurrentStateOfPlayer == EPlayerStates.InActionsMenu)
+                {
+                    if(unit != SelectedUnit) { return unit; }
+                }
+                else
+                {
+                    return unit;
+                }
+                
             }
         }
         return null;
     }
-
+   
     // Check if the given position is an obstacle
     public bool IsObstacle(Vector3Int pos, Unit unit)
     {

@@ -85,16 +85,16 @@ public class AttackingUnit : Unit
         
         foreach (var unit in _um.Units)
         {
-            if (unit == this) continue;
+            if (unit == this || !unit.gameObject.activeInHierarchy) continue;
 
-            var potentialTargetPos = _mm.Map.WorldToCell(unit.transform.position);
+            var potentialTargetPos = unit.GetGridPosition();
 
             var currentWeapon = Weapons[CurrentWeaponIndex];// getting the current weapon from the attacker
 
             bool IsInRange = (L1Distance2D(attackerPos, potentialTargetPos) >= currentWeapon.MinRange) && (L1Distance2D(attackerPos, potentialTargetPos) < currentWeapon.MaxRange);
             bool IsEnemy = Owner != unit.Owner;
             bool IsDamageable = Weapons[CurrentWeaponIndex].DamageList[(int)unit.Data.UnitType] != 0;
-            print(IsInRange.ToString() +IsEnemy.ToString());
+            //print(IsDamageable);
             //print($"{L1Distance2D(attackerPos, potentialTargetPos)} / {currentWeapon.MinRange} / {currentWeapon.MaxRange} / {unit}");
             if (IsInRange && IsEnemy && IsDamageable)
             {
@@ -131,26 +131,7 @@ public class AttackingUnit : Unit
         }
     }
 
-    public bool CanAttack()
-    {
-        List<Unit> targets = ScanTargets();
-
-        if (targets == null)
-        {
-            Debug.LogWarning("Targets list is null. Unable to check if attacker can attack.");
-            return false;
-        }
-
-        // Now, check if the attacker has any valid targets to attack
-        if (targets.Count > 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+    
 
     public void MoveToNextWeapon()
     {

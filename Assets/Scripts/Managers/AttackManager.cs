@@ -36,11 +36,7 @@ public class AttackManager : MonoBehaviour
     #endregion
 
     #region Methods
-    public bool UnitCanAttack(AttackingUnit attacker)
-    {
-        if (attacker == null) print("NO ATTACKER FOUND ");
-        return attacker.CanAttack();
-    }
+    
 
     public void ApplyDamage(Unit target, AttackingUnit attacker)
     {
@@ -64,7 +60,7 @@ public class AttackManager : MonoBehaviour
         }
     }
 
-    public bool CheckAttack(AttackingUnit attacker) { return attacker.CanAttack(); }
+    public bool CheckAttack(AttackingUnit attacker) { return attacker.CheckAttack(); }
 
     public void InitiateAttack()
     {

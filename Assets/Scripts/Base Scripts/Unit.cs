@@ -11,7 +11,7 @@ public class Unit : MonoBehaviour
     protected GameManager _gm;
     protected UnitManager _um;
     public SpriteRenderer _rend;
-
+    
     [SerializeField] private UnitDataSO _data;
     public UnitDataSO Data => _data; // Readonly property for the _data field
 

@@ -125,7 +125,15 @@ public class BuildingManager : MonoBehaviour
     // Spawn a unit from a building
     public void SpawnUnit(EUnits unitType, Vector3Int pos, int owner)
     {
-        Unit newUnit = Instantiate<Unit>(_unitPrefabs[(int)unitType], pos, Quaternion.identity,_um.transform);
+        Unit unitPrefab = null ;
+        foreach(var prefab in _unitPrefabs)
+        {
+            if(prefab.Data.UnitType== unitType)
+            {
+                unitPrefab = prefab;
+            }
+        }
+        Unit newUnit = Instantiate<Unit>(unitPrefab, pos, Quaternion.identity,_um.transform);
         newUnit.Owner = owner;
         newUnit.HasMoved = true;
         if (newUnit == null) { print("d"); return; }

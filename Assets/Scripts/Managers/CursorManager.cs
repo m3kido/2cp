@@ -232,15 +232,18 @@ public class CursorManager : MonoBehaviour
             // Can't select an another unit when one is selected 
             if (_um.SelectedUnit != null)
             {
-                if (_um.SelectedUnit == refUnit) {  StartCoroutine(_um.MoveUnit());  }
+                bool loadcase = (refUnit is LoadingUnit) && (refUnit as LoadingUnit).CanLoadUnit(_um.SelectedUnit);
+                if (_um.SelectedUnit == refUnit || loadcase ) {  StartCoroutine(_um.MoveUnit());  }
                 return;
             }
 
             // Can't select an enemy unit
-            if (refUnit.Owner != _gm.PlayerTurn) { return; }
+            if (refUnit.Owner != _gm.PlayerTurn || refUnit.HasMoved) {
+                _gm.CurrentStateOfPlayer = EPlayerStates.InSettingsMenu;
+                return; 
+            }
 
-            // Can't select a unit that has already moved
-            if (refUnit.HasMoved) { return; }
+           
             SaveTile = HoveredOverTile;
             SaveCamera = _camera.transform.position;
             _um.SelectUnit(refUnit);

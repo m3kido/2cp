@@ -38,10 +38,7 @@ public class ShopMenu : MonoBehaviour
             _unitElements.Add(ListUnit,unit);
             ListUnit.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text= unit.Data.UnitType.ToString();
             ListUnit.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = unit.Data.Cost.ToString();
-            var ListUnit2 = Instantiate(ListElement, _unitsList.transform);
-            _unitElements.Add(ListUnit2, unit);
-            ListUnit2.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = unit.Data.UnitType.ToString();
-            ListUnit2.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = unit.Data.Cost.ToString();
+            
         }
         
     }

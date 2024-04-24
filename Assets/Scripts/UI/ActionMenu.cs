@@ -141,6 +141,24 @@ public class ActionMenu : MonoBehaviour
                 _um.EndMove();
                 
             }
+            else if (_optionsList[_selectedOption] == _captureOptionInstance)
+            {
+                _bm.CaptureBuilding(_cm.HoveredOverTile);
+                _um.EndMove();
+
+            }
+            else if (_optionsList[_selectedOption] == _loadOptionInstance)
+            {
+                (_um.FindUnit(_um.SelectedUnit.GetGridPosition()) as LoadingUnit).LoadUnit(_um.SelectedUnit);
+                _um.EndMove();
+
+            }
+            else if (_optionsList[_selectedOption] == _dropOptionInstance)
+            {
+                (_um.SelectedUnit as LoadingUnit).InisitateDropUnit();
+                
+
+            }
         }
         //change selected option
         else if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -167,10 +185,21 @@ public class ActionMenu : MonoBehaviour
     #region Methods
     private void CalculateOptions()
     {
-         CheckFire();// if is an attacking unit
-        //CheckLoad // if loading unit
-       
-        CheckAbility();
+        if (_um.FindUnit(_um.SelectedUnit.GetGridPosition()))
+        {
+            _loadOptionInstance.SetActive(true);
+            _optionsList.Add(_loadOptionInstance);
+
+        }
+        else
+        {
+            CheckFire();// if is an attacking unit
+
+            CheckDrop();
+            CheckAbility();
+            
+        }
+        
        
         _selectedOption = 0;
         _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(true);
@@ -185,7 +214,15 @@ public class ActionMenu : MonoBehaviour
             return;
         }
       } 
-
+    private void CheckDrop()
+    {
+        if (_um.SelectedUnit is LoadingUnit && (_um.SelectedUnit as LoadingUnit).LoadedUnit != null&& (_um.SelectedUnit as LoadingUnit).GetDropTiles() )
+        {
+            _dropOptionInstance.SetActive(true);
+            _optionsList.Add(_dropOptionInstance);
+            return;
+        }
+    }
     private void CheckAbility()
     {
         var building = _bm.BuildingFromPosition.ContainsKey(_cm.HoveredOverTile) ? _bm.BuildingFromPosition[_cm.HoveredOverTile] : null;
