@@ -9,13 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca34aedce99af674bba139dabc779452, type: 3}
-  m_Name: StrayHorse
+  m_Script: {fileID: 11500000, guid: d2e8be8a81d03cd4fa8a12f25c3ac928, type: 3}
+  m_Name: CarrackSO
   m_EditorClassIdentifier: 
-  _unitType: 4
+  _unitType: 10
   _moveRange: 5
   _maxProvisions: 99
-  _lineOfSight: 0
+  _lineOfSight: 2
   _cost: 0
-  _walkableTerrains: 000000000100000005000000
-  _loadableUnits: 00000000020000000100000003000000
+  _walkableTerrains: 0500000006000000
+  _minAttackRange: 0
+  _maxAttackRange: 0
+  _hasTwoWeapons: 0
+  _maxEnergyOrbs: 0

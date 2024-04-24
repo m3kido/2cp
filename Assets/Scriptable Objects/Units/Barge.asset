@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca34aedce99af674bba139dabc779452, type: 3}
-  m_Name: StrayHorse
+  m_Name: Barge
   m_EditorClassIdentifier: 
-  _unitType: 4
-  _moveRange: 5
+  _unitType: 11
+  _moveRange: 9
   _maxProvisions: 99
   _lineOfSight: 0
   _cost: 0
-  _walkableTerrains: 000000000100000005000000
-  _loadableUnits: 00000000020000000100000003000000
+  _walkableTerrains: 040000000500000006000000
+  _loadableUnits: 00000000010000000200000003000000
