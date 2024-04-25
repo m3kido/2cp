@@ -106,7 +106,7 @@ MonoBehaviour:
     _ammo: 999
     _weaponType: 2
     _ammoPerAttack: 0
-    _minRange: 3
+    _minRange: 1
     _maxRange: 4
   CurrentWeaponIndex: 0
   HasAttacked: 0
