@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     {
         CurrentStateOfPlayer = EPlayerStates.Idle;
         LastStateOfPlayer = EPlayerStates.Idle;
-        
+
 
 
     }
@@ -37,7 +37,9 @@ public class GameManager : MonoBehaviour
         Players = new List<Player>
         {
             new("Mohamed", ETeamColors.Amber, ETeams.A, ECaptains.Andrew),
-            new("Oussama", ETeamColors.Azure, ETeams.B, ECaptains.Godfrey)
+            new("Oussama1", ETeamColors.Azure, ETeams.B, ECaptains.Melina),
+            new("Oussama2", ETeamColors.Azure, ETeams.C, ECaptains.Godfrey),
+            new("Oussama3", ETeamColors.Azure, ETeams.D, ECaptains.Maximus)
         };
     }
 
@@ -46,6 +48,7 @@ public class GameManager : MonoBehaviour
 
         // Handle input for turn end
         if (Input.GetKeyDown(KeyCode.C) && CurrentStateOfPlayer == EPlayerStates.Idle) EndTurn();
+
         //if (Input.GetKeyDown(KeyCode.C)) EndTurn();
 
 
@@ -53,6 +56,7 @@ public class GameManager : MonoBehaviour
 
     // Declare turn end and day end events
     public static event Action OnTurnEnd;
+    public static event Action OnTurnStart;
     public static event Action OnDayEnd;
 
     // Method to end a turn
@@ -60,9 +64,14 @@ public class GameManager : MonoBehaviour
     {
         PlayerTurn = (PlayerTurn + 1) % Players.Count;
         OnTurnEnd?.Invoke();
-        if (PlayerTurn != 0) return;
-        Day++;
-        OnDayEnd?.Invoke();
+        if (PlayerTurn == 0)
+        {
+            Day++;
+            OnDayEnd?.Invoke();
+        };
+
+
+        OnTurnStart?.Invoke();
     }
 
     public void RemovePlayer(Player player)
@@ -70,4 +79,5 @@ public class GameManager : MonoBehaviour
         player.RemoveCaptain();
         Players.Remove(player);
     }
+
 }

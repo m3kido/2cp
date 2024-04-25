@@ -5,6 +5,7 @@ public enum EPlayerStates
     InBuildingMenu,
     InActionsMenu,
     Attacking,
+    SuperPower , 
     Animating,
     finished,
     MainMenu,

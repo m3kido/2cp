@@ -10,7 +10,8 @@ public class Godfrey : Captain
         Data = CaptainManager.CaptainsDict[ECaptains.Godfrey];
         PassiveDefense = Data.PassiveDefense;
         PassiveAttack = Data.PassiveAttack;
-        DefenseMultiplier += 0.05f;  
+        DefenseMultiplier += 0.05f;
+        GameManager.OnTurnStart += DisableCeleste;
     }
     public override void EnableCeleste()
     {
@@ -23,6 +24,8 @@ public class Godfrey : Captain
                 //REDUCE PROVISION
             }
         }
+
+        UnityEngine.Debug.Log("Godfrey");
     }
 
     public override void DisableCeleste()
@@ -37,8 +40,10 @@ public class Godfrey : Captain
             }
         }
     }
-    public override bool IsCelesteReady()
+
+    public override void UnsubscribeWhenDestroyed()
     {
-        return base.IsCelesteReady();
+        GameManager.OnTurnStart -= DisableCeleste;
     }
+
 }

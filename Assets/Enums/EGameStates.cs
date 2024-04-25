@@ -5,6 +5,7 @@ public enum EGameStates
     BuildingMenu,
     ActionMenu,
     Attacking,
+    SuperMater , 
     Animating,
     finished,
     MainMenu,

@@ -20,7 +20,6 @@ public class AttackManager : MonoBehaviour
         set
         {
             _actionTaken = value;
-            print($"-----------ActionTaken : {value}");
         }
     }
 
@@ -193,22 +192,21 @@ public class AttackManager : MonoBehaviour
         }
     }
 
+
+
     public float CalculateDamage(Unit target, AttackingUnit attacker)
     {
 
         int baseDamage = attacker.Weapons[attacker.CurrentWeaponIndex].DamageList[(int)target.Data.UnitType];
-        Player attackerPlayer = _gm.Players[attacker.Owner];
-        Captain attackerCaptain = attackerPlayer.PlayerCaptain;
+        Captain attackerCaptain = attacker.GetUnitCaptain;
         int celesteAttack = attackerCaptain.IsCelesteActive ? attackerCaptain.Data.CelesteDefense : 0;
-        float attackDamage = baseDamage * (1 + attackerCaptain.PassiveAttack) * (1 + celesteAttack)*attackerCaptain.AttackMultiplier ;
+        float attackDamage = baseDamage * (1 + attackerCaptain.PassiveAttack) * (1 + celesteAttack)*attackerCaptain.AttackMultiplier ;Debug.Log("AttackMultiplier" + attackerCaptain.AttackMultiplier); 
       
 
         int terrainStars = _mm.GetTileData(_mm.Map.WorldToCell(target.transform.position)).DefenceStars;
-        Player targetPlayer = _gm.Players[attacker.Owner];
-        Captain targetCaptain = targetPlayer.PlayerCaptain;
+        Captain targetCaptain = target.GetUnitCaptain;
         int celesteDefense = targetCaptain.IsCelesteActive ? targetCaptain.Data.CelesteDefense : 0;
-        float defenseDamage = (1 - terrainStars * target.Health / 1000) * (1 - targetCaptain.PassiveDefense) * (1 - celesteDefense)*targetCaptain.DefenseMultiplier;
-
+        float defenseDamage = (1 - terrainStars * target.Health / 1000) * (1 - targetCaptain.PassiveDefense) * (1 - celesteDefense)*targetCaptain.DefenseMultiplier; Debug.Log("DefenseMultiplier : " + targetCaptain.DefenseMultiplier);
 
         int chance = (attackerCaptain.Data.Name == ECaptains.Andrew) ? UnityEngine.Random.Range(2, 10) : UnityEngine.Random.Range(1, 10);
         float totalDamage = (float)attacker.Health / 100 * attackDamage * defenseDamage * (1 + (float)chance / 100);

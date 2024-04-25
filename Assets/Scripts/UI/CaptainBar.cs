@@ -14,6 +14,7 @@ public class CaptainBar : MonoBehaviour
     private void Awake()
     {
         _gm = FindAnyObjectByType<GameManager>();
+
     }
 
 
@@ -26,7 +27,7 @@ public class CaptainBar : MonoBehaviour
     private void UpdateSuperMeter()
     {
         //idk how the captains will be held
-        _superMeterSprite.GetComponent<Image>().fillAmount = _gm.Players[_gm.PlayerTurn].SuperMeter;
+        _superMeterSprite.GetComponent<Image>().fillAmount = _gm.Players[_gm.PlayerTurn].PlayerCaptain.SuperMeter;
     }
     private void UpdateCaptain()
     {
@@ -38,4 +39,6 @@ public class CaptainBar : MonoBehaviour
 
         
     }
+
+    
 }

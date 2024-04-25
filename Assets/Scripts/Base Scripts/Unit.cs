@@ -9,7 +9,7 @@ public class Unit : MonoBehaviour
     protected MapManager _mm;
     protected UnitManager _um;
     protected GameManager _gm;
-    protected SpriteRenderer _rend;
+    public SpriteRenderer _rend;
 
     [SerializeField] private UnitDataSO _data;
     public UnitDataSO Data => _data; // Readonly property for the _data field
@@ -60,7 +60,7 @@ public class Unit : MonoBehaviour
                 _health = 0;
                 Die();
             }
-            else if (value > MaxHealth) 
+            else if (value > MaxHealth)
             {
 
                 _health = MaxHealth;
@@ -72,7 +72,7 @@ public class Unit : MonoBehaviour
         }
     }
     public static int MaxHealth = 100;
-    public int MoveRange; 
+    public int MoveRange;
     // Dictionary to hold the grid position of the valid tiles along with the fuel consumed to reach them
 
     public Dictionary<Vector3Int, int> ValidTiles = new();
@@ -83,7 +83,7 @@ public class Unit : MonoBehaviour
         Health = MaxHealth;
         Provisions = _data.MaxProvisions;
         _hasMoved = false;
-        MoveRange = Data.MoveRange; 
+        MoveRange = Data.MoveRange;
     }
 
     private void Start()
@@ -215,6 +215,18 @@ public class Unit : MonoBehaviour
     public Vector3Int GetGridPosition()
     {
         return _mm.Map.WorldToCell(transform.position);
+    }
+
+    public Captain GetUnitCaptain
+    {
+        get
+        {
+            var player = _gm.Players[Owner];
+            return player.PlayerCaptain;
+        }
+
+        private set { }
+
     }
 
 }

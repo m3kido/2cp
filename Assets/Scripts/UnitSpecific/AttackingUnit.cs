@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 [Serializable]
@@ -57,8 +58,9 @@ public class AttackingUnit : Unit
             var potentialTargetPos = _mm.Map.WorldToCell(unit.transform.position);
 
             var currentWeapon = Weapons[CurrentWeaponIndex];// getting the current weapon from the attacker
-
-            bool IsInRange = (L1Distance2D(attackerPos, potentialTargetPos) >= currentWeapon.MinRange) && (L1Distance2D(attackerPos, potentialTargetPos) < currentWeapon.MaxRange);
+            Player player = _gm.Players[Owner];
+            Captain captain = player.PlayerCaptain;
+            bool IsInRange = (L1Distance2D(attackerPos, potentialTargetPos) >= currentWeapon.MinRange) && (L1Distance2D(attackerPos, potentialTargetPos) < currentWeapon.MaxRange + captain.AttackRangeAdditioner);Debug.Log("Attack range additionner : " + captain.AttackRangeAdditioner); 
             bool IsEnemy = Owner != unit.Owner;
             bool IsDamageable = Weapons[CurrentWeaponIndex].DamageList[(int)unit.Data.UnitType] != 0;
 

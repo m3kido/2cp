@@ -12,7 +12,7 @@ public class BuildingManager : MonoBehaviour
     private GameManager _gm;
 
     // List to store units that can be bought in the building (provided in the inspector)
-    [FormerlySerializedAs("UnitPrefabs")] [SerializeField] private List<Unit> _unitPrefabs;
+    [FormerlySerializedAs("UnitPrefabs")][SerializeField] private List<Unit> _unitPrefabs;
 
     // Array containing building datas of all buildings (provided in the inspector)
     [SerializeField] private BuildingDataSO[] _buildingDatas;
@@ -38,7 +38,7 @@ public class BuildingManager : MonoBehaviour
             // Put the Building tile as a key, and the building data as a value
             _buildingDataFromTile.Add(buildingData.BuildingTile, buildingData);
         }
-        
+
     }
 
     void Start()
@@ -47,23 +47,23 @@ public class BuildingManager : MonoBehaviour
         _mm = FindAnyObjectByType<MapManager>();
         _gm = FindAnyObjectByType<GameManager>();
         _um = FindAnyObjectByType<UnitManager>();
-        
+
 
         // Scan the map and put all the buldings in the Buildings dictionary
         ScanMapForBuildings();
-        
+
     }
 
     private void OnEnable()
     {
         // GetGoldFromBuildings subscribes to day end event
-       // GameManager.OnDayEnd += GetGoldFromBuildings;
+        // GameManager.OnDayEnd += GetGoldFromBuildings;
     }
 
     private void OnDisable()
     {
         // GetGoldFromBuildings unsubscribes from day end event
-      //  GameManager.OnDayEnd -= GetGoldFromBuildings;
+        //  GameManager.OnDayEnd -= GetGoldFromBuildings;
     }
 
     // Scan the map and put all the buldings in the Buildings dictionary
@@ -81,11 +81,12 @@ public class BuildingManager : MonoBehaviour
         }
     }
     //change the sprite
-    private void ChangeBuildingOwner(Building building,int owner)
+    private void ChangeBuildingOwner(Building building, int owner)
     {
-        foreach(var SO in _buildingDatas)
+        foreach (var SO in _buildingDatas)
         {
-            if(SO.Color == _gm.Players[_gm.PlayerTurn].Color && SO.BuildingType==building.BuildingType) {
+            if (SO.Color == _gm.Players[_gm.PlayerTurn].Color && SO.BuildingType == building.BuildingType)
+            {
                 _mm.Map.SetTile(building.Position, SO.BuildingTile);
             }
         }
@@ -101,18 +102,18 @@ public class BuildingManager : MonoBehaviour
     // Capture building
     public void CaptureBuilding(Vector3Int pos)
     {
-        
-        BuildingFromPosition[pos].Health -= _um.SelectedUnit.Health;
+
+        BuildingFromPosition[pos].Health -= (int)(_um.SelectedUnit.Health * _um.SelectedUnit.GetUnitCaptain.CaptureMultiplier);
         if (BuildingFromPosition[pos].Health <= 0)
         {
             ChangeBuildingOwner(BuildingFromPosition[pos], _gm.PlayerTurn);
         }
     }
-    
+
     // Spawn a unit from a building
     public void SpawnUnit(EUnits unitType, Vector3Int pos, int owner)
     {
-        Unit newUnit = Instantiate<Unit>(_unitPrefabs[(int)unitType], pos, Quaternion.identity,_um.transform);
+        Unit newUnit = Instantiate<Unit>(_unitPrefabs[(int)unitType], pos, Quaternion.identity, _um.transform);
         newUnit.Owner = owner;
         newUnit.HasMoved = true;
         if (newUnit == null) { print("d"); return; }

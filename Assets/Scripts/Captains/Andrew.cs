@@ -7,6 +7,8 @@ public class Andrew : Captain
         Data = CaptainManager.CaptainsDict[ECaptains.Andrew];
         PassiveDefense = Data.PassiveDefense;
         PassiveAttack = Data.PassiveAttack;
+
+        GameManager.OnTurnEnd += DisableCeleste;
     }
 
     public override void EnableCeleste()
@@ -22,6 +24,7 @@ public class Andrew : Captain
             }
         }
         DefenseMultiplier += 0.2f;
+        UnityEngine.Debug.Log("Andrew");
     }
 
     public override void DisableCeleste()
@@ -30,9 +33,10 @@ public class Andrew : Captain
         DefenseMultiplier -= 0.2f;
 
     }
-    public override bool IsCelesteReady()
+
+    public override void UnsubscribeWhenDestroyed()
     {
-        return base.IsCelesteReady();
+        GameManager.OnTurnEnd -= DisableCeleste;
     }
 
 }

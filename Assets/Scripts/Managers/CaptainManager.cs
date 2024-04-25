@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -27,17 +28,31 @@ public class CaptainManager : MonoBehaviour
 
     private void Start()
     {
-        
+
     }
 
     private void Update()
     {
         _currentCaptain = Gm.PlayerTurn;
+        if (Input.GetKeyDown(KeyCode.S) && Gm.CurrentStateOfPlayer == EPlayerStates.Idle)
+        {
+            
+            ActivateCeleste();
+
+        }
     }
 
     public void ActivateCeleste()
     {
-        LivingCaptains[_currentCaptain].EnableCeleste();
+        Captain captain = LivingCaptains[_currentCaptain];
+        captain.EnableCeleste(); Debug.Log("MIMI");
+        if (captain is Melina)
+        {
+            Debug.Log("MELINAA");
+            Melina melina = captain as Melina;
+            StartCoroutine(melina.ReviveSelectionCoroutine(Gm));
+        }
+
     }
 
     public void DeactivateCeleste()
@@ -47,6 +62,17 @@ public class CaptainManager : MonoBehaviour
 
     public static void DeleteCaptain(Captain captain)
     {
+        captain.UnsubscribeWhenDestroyed();
         LivingCaptains.Remove(captain);
     }
+
+    public void StartCoroutineWithMethod(IEnumerator method)
+    {
+        if (method != null)
+        {
+            StartCoroutine(method);
+        }
+
+    }
+
 }

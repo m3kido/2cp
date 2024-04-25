@@ -13,6 +13,7 @@ public class ActionMenu : MonoBehaviour
     private Camera _camera;
     private RectTransform _rect;
     private AttackManager _am;
+    private CaptainManager _cp;
 
     [SerializeField] private Sprite _cursor;
     [SerializeField] private GameObject _options;
@@ -41,6 +42,7 @@ public class ActionMenu : MonoBehaviour
         _gm = FindAnyObjectByType<GameManager>();
         _bm = FindAnyObjectByType<BuildingManager>();
         _am = FindAnyObjectByType<AttackManager>();
+        _cp = FindAnyObjectByType<CaptainManager>();
 
         _camera = Camera.main;
         _rect = GetComponent<RectTransform>();
@@ -64,6 +66,8 @@ public class ActionMenu : MonoBehaviour
 
         _refillOptionInstance = Instantiate(_refillOption, _options.transform);
         _refillOptionInstance.SetActive(false);
+
+        
     }
 
     private void OnEnable()
@@ -237,4 +241,6 @@ public class ActionMenu : MonoBehaviour
         _waitOptionInstance.SetActive(true);
         _optionsList.Add(_waitOptionInstance);
     }
+
+    
 }
