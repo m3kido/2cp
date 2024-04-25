@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca34aedce99af674bba139dabc779452, type: 3}
-  m_Name: Barge
+  m_Name: BargeSO
   m_EditorClassIdentifier: 
   _unitType: 11
   _moveRange: 9

@@ -102,11 +102,11 @@ MonoBehaviour:
   _health: 100
   _owner: 1
   _weapons:
-  - _damageList: 3c0000003c0000003c0000003c0000003c0000003c0000003c0000003c0000003c0000003c0000003c0000003c000000
+  - _damageList: 4b00000046000000370000000f0000004b0000004600000055000000190000001400000005000000010000000a000000
     _ammo: 999
     _weaponType: 2
     _ammoPerAttack: 0
     _minRange: 1
-    _maxRange: 2
+    _maxRange: 3
   CurrentWeaponIndex: 0
   HasAttacked: 0
