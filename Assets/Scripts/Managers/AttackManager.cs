@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class AttackManager : MonoBehaviour
 {
     GameManager _gm;
     UnitManager _um;
     MapManager _mm;
-
+    List<EUnits> directAttacker = new List<EUnits> { EUnits.Catapult, EUnits.Cannoneers, EUnits.Ballista };
     public AttackingUnit Attacker;
     private int selectedTargetIndex = -1;
     private bool _actionTaken = false;
@@ -49,12 +51,17 @@ public class AttackManager : MonoBehaviour
         target.Health -= (int)damageToTarget;
         Debug.Log("Target has been damaged!");
 
-        if (target.Health > 0 && target is AttackingUnit)
+        if (target.Health > 0 && target is AttackingUnit && !directAttacker.Contains(attacker.Data.UnitType)) //We need to check if target unit can attack the attacker)
         {
-            var damageToAttacker = CalculateDamage(attacker, target as AttackingUnit);
-            attacker.Health -= (int)damageToAttacker;
-            Debug.Log("Damage to attacker: " + damageToAttacker);
-            Debug.Log("Attacker has been damaged!");
+            AttackingUnit newAttacker = target as AttackingUnit;
+            if (newAttacker.CanAttackThis(attacker))
+            {
+                var damageToAttacker = CalculateDamage(attacker, newAttacker);
+                attacker.Health -= (int)damageToAttacker;
+                Debug.Log("Damage to attacker: " + damageToAttacker);
+                Debug.Log("Attacker has been damaged!");
+            }
+
         }
     }
 
@@ -200,13 +207,13 @@ public class AttackManager : MonoBehaviour
         int baseDamage = attacker.Weapons[attacker.CurrentWeaponIndex].DamageList[(int)target.Data.UnitType];
         Captain attackerCaptain = attacker.GetUnitCaptain;
         int celesteAttack = attackerCaptain.IsCelesteActive ? attackerCaptain.Data.CelesteDefense : 0;
-        float attackDamage = baseDamage * (1 + attackerCaptain.PassiveAttack) * (1 + celesteAttack)*attackerCaptain.AttackMultiplier ;Debug.Log("AttackMultiplier" + attackerCaptain.AttackMultiplier); 
-      
+        float attackDamage = baseDamage * (1 + attackerCaptain.PassiveAttack) * (1 + celesteAttack) * attackerCaptain.AttackMultiplier; Debug.Log("AttackMultiplier" + attackerCaptain.AttackMultiplier);
+
 
         int terrainStars = _mm.GetTileData(_mm.Map.WorldToCell(target.transform.position)).DefenceStars;
         Captain targetCaptain = target.GetUnitCaptain;
         int celesteDefense = targetCaptain.IsCelesteActive ? targetCaptain.Data.CelesteDefense : 0;
-        float defenseDamage = (1 - terrainStars * target.Health / 1000) * (1 - targetCaptain.PassiveDefense) * (1 - celesteDefense)*targetCaptain.DefenseMultiplier; Debug.Log("DefenseMultiplier : " + targetCaptain.DefenseMultiplier);
+        float defenseDamage = (1 - terrainStars * target.Health / 1000) * (1 - targetCaptain.PassiveDefense) * (1 - celesteDefense) * targetCaptain.DefenseMultiplier; Debug.Log("DefenseMultiplier : " + targetCaptain.DefenseMultiplier);
 
         int chance = (attackerCaptain.Data.Name == ECaptains.Andrew) ? UnityEngine.Random.Range(2, 10) : UnityEngine.Random.Range(1, 10);
         float totalDamage = (float)attacker.Health / 100 * attackDamage * defenseDamage * (1 + (float)chance / 100);

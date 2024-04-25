@@ -1917,42 +1917,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3484352629421914706, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
-      propertyPath: _owner
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3484352629421914706, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
-      propertyPath: _weapons.Array.data[0]._maxRange
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5833795191632274733, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
-      propertyPath: m_UpdateMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8267132482223208449, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
-      propertyPath: m_Color.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8267132482223208449, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8267132482223208449, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8267132482223208449, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8267132482223208449, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
-      propertyPath: m_SortingOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8267132482223208449, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
-      propertyPath: m_SpriteSortPoint
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3985,7 +3949,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3484352629421914706, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
       propertyPath: _weapons.Array.data[0]._maxRange
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5833795191632274733, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
       propertyPath: m_UpdateMode
@@ -4376,7 +4340,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3484352629421914706, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
       propertyPath: _weapons.Array.data[0]._maxRange
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5833795191632274733, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
       propertyPath: m_UpdateMode
@@ -5707,7 +5671,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3484352629421914706, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
       propertyPath: _weapons.Array.data[0]._maxRange
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5833795191632274733, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
       propertyPath: m_UpdateMode

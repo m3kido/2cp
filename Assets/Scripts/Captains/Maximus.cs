@@ -7,6 +7,7 @@ public class Maximus : Captain
         PassiveDefense = Data.PassiveDefense;
         PassiveAttack = Data.PassiveAttack;
         CaptureMultiplier += 0.2f;
+        AttackRangeAdditioner = 0;
         GameManager.OnTurnEnd += DisableCeleste;
     }
     public override void EnableCeleste()
@@ -15,7 +16,7 @@ public class Maximus : Captain
 
         DefenseMultiplier -= 0.2f;
         AttackMultiplier += 0.25f;
-        AttackRangeAdditioner += 1;
+        AttackRangeAdditioner++; 
         UnityEngine.Debug.Log("Maximus");
 
     }
@@ -25,7 +26,7 @@ public class Maximus : Captain
         base.DisableCeleste();
         DefenseMultiplier += 0.2f;
         AttackMultiplier -= 0.25f;
-        AttackRangeAdditioner = -1;
+        AttackRangeAdditioner--;
 
     }
     public override void UnsubscribeWhenDestroyed()

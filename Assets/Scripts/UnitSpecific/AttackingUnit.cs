@@ -60,7 +60,8 @@ public class AttackingUnit : Unit
             var currentWeapon = Weapons[CurrentWeaponIndex];// getting the current weapon from the attacker
             Player player = _gm.Players[Owner];
             Captain captain = player.PlayerCaptain;
-            bool IsInRange = (L1Distance2D(attackerPos, potentialTargetPos) >= currentWeapon.MinRange) && (L1Distance2D(attackerPos, potentialTargetPos) < currentWeapon.MaxRange + captain.AttackRangeAdditioner);Debug.Log("Attack range additionner : " + captain.AttackRangeAdditioner); 
+            Debug.Log("Attack range additionner : " + captain.AttackRangeAdditioner);
+            bool IsInRange = (L1Distance2D(attackerPos, potentialTargetPos) >= currentWeapon.MinRange) && (L1Distance2D(attackerPos, potentialTargetPos) < (currentWeapon.MaxRange + captain.AttackRangeAdditioner));
             bool IsEnemy = Owner != unit.Owner;
             bool IsDamageable = Weapons[CurrentWeaponIndex].DamageList[(int)unit.Data.UnitType] != 0;
 
@@ -142,6 +143,13 @@ public class AttackingUnit : Unit
         }
     }
 
+    public bool CanAttackThis(Unit target)
+    {
+        List<Unit> targets = ScanTargets();
+        if (!targets.Contains(target))
+        { return false; }
+        return true; 
+    }
     public void MoveToNextWeapon()
     {
         if (CurrentWeaponIndex < Weapons.Count - 1) CurrentWeaponIndex++; // Cannot exceed last weapon index

@@ -22,11 +22,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 1a9d96f7703b59a4183b6bfd77c55566, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 1a9d96f7703b59a4183b6bfd77c55566, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 1a9d96f7703b59a4183b6bfd77c55566, type: 3}
       propertyPath: m_LocalPosition.z
@@ -85,9 +85,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9831ef94986d2d44da8f80a91dfc36b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rend: {fileID: 0}
   _data: {fileID: 11400000, guid: 35af56c91dff4954c922141f844583c4, type: 2}
   IsSelected: 0
-  _owner: 1
+  _owner: 0
+  MoveRange: 0
   _weapons:
   - _damageList: 05000000
     _ammo: 9999
