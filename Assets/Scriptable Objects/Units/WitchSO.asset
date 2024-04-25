@@ -17,7 +17,7 @@ MonoBehaviour:
   _maxProvisions: 99
   _lineOfSight: 3
   _cost: 0
-  _walkableTerrains: 
+  _walkableTerrains: 0000000001000000020000000300000004000000050000000600000008000000
   _minAttackRange: 0
   _maxAttackRange: 0
   _hasTwoWeapons: 0
