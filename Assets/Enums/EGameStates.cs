@@ -1,9 +1,7 @@
-public enum  EGameStates
+public enum EGameStates
 {
-    Idle,
-    Selecting,
-    BuildingMenu,
-    ActionMenu,
-    finished
-
+    MainMenu,
+    InGame,
+    WinScreen,
+    DefeatScreen
 }

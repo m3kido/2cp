@@ -1,65 +1,85 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class MapManager : MonoBehaviour
 {
-    public Tilemap Map;
-    public Tilemap HighlightMap;
-    public Tilemap Bordermap;
-    public Tilemap ArrowMap;
+    #region Variables
+    // Access to different tilemaps
+    [SerializeField] private Tilemap _map;
+    [SerializeField] private Tilemap _highlightMap;
+    [SerializeField] private Tilemap _borderMap;
+    [SerializeField] private Tilemap _arrowMap;
 
-    [SerializeField] private List<TileData> _tileDatas;
+    [SerializeField] private List<TerrainDataSO> _tileDatas;
     [SerializeField] private AnimatedTile _highlightedTile;
     [SerializeField] private RuleTile _borderedTile;
     [SerializeField] private Tile[] _arrowTiles;
 
-    private Dictionary<Tile, TileData> _dataFromTile = new Dictionary<Tile, TileData>();
-    
+    // Dictionary mapping a tile to its terrain data
+    private Dictionary<Tile, TerrainDataSO> _dataFromTile = new();
+
+    // Readonly properties for the previous fields
+    public Tilemap Map => _map;
+    public Tilemap HighlightMap => _highlightMap;
+    public Tilemap Bordermap => _borderMap;
+    public Tilemap ArrowMap => _arrowMap;
+    public List<TerrainDataSO> TileDatas => _tileDatas;
+    public AnimatedTile HighlightedTile => _highlightedTile;
+    public RuleTile BorderedTiles => _borderedTile;
+    public Tile[] ArrowTiles => _arrowTiles;
+    public Dictionary<Tile, TerrainDataSO> DataFromTile => _dataFromTile;
+    #endregion
+
+    #region UnityMethods
     // Get tile datas of every tile type from the inspector
     private void Awake()
     {
         foreach (var tileData in _tileDatas)
         {
-            foreach(var tile in tileData.Tiles) 
+            foreach(var tile in tileData.TerrainsOfSameType) 
             {
                 _dataFromTile.Add(tile, tileData);
             }
         }    
     }
+    #endregion
 
+    #region Methods
+
+    #region GetMethods
     // Get data of given tile
-    public TileData GetTileData(Tile tile)
+    public TerrainDataSO GetTileData(Tile tile)
     {
         return _dataFromTile[tile];
     }
 
     // Get data of given grid position - Overloading GetTileData()
-    public TileData GetTileData(Vector3Int Pos)
+    public TerrainDataSO GetTileData(Vector3Int Pos)
     {
-        var tile = Map.GetTile<Tile>(Pos);
+        var tile = _map.GetTile<Tile>(Pos);
         if (tile == null) { return null; }
         return _dataFromTile[tile];
-
     }
+    #endregion
 
+    #region HighlightMethods
     // Highlight the given grid position
     public void HighlightTile(Vector3Int pos)
     {
-        HighlightMap.SetTile(pos, _highlightedTile);
-        Bordermap.SetTile(pos, _borderedTile);
-        Bordermap.SetColor(pos, Color.yellow);
+        _highlightMap.SetTile(pos, _highlightedTile);
+        _borderMap.SetTile(pos, _borderedTile);
+        _borderMap.SetColor(pos, Color.yellow);
     }
 
     // Unhighlight the given grid position
     public void UnHighlightTile(Vector3Int pos)
     {
-        HighlightMap.SetTile(pos, null);
-        Bordermap.SetTile(pos, null);
+        _highlightMap.SetTile(pos, null);
+        _borderMap.SetTile(pos, null);
       
     }
+    #endregion
 
     // Select the adequate arrow sprite based on the next tile and the previous one
     public void DrawArrow(Vector3Int prev, Vector3Int curr, Vector3Int next)
@@ -147,6 +167,7 @@ public class MapManager : MonoBehaviour
                 arrow = EArrowDirections.TopRight;
             }
         }
-        ArrowMap.SetTile(curr, _arrowTiles[(int)arrow]);
+        _arrowMap.SetTile(curr, _arrowTiles[(int)arrow]);
     }
+    #endregion
 }
