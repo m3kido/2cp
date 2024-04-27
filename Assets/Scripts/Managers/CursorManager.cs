@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System;
 using Unity.Netcode;
+using UnityEngine.Windows;
+using System.Xml.Serialization;
+using Input = UnityEngine.Input;
 // Class to manage the cursor
 public class CursorManager : NetworkBehaviour
 {
@@ -65,7 +68,11 @@ public class CursorManager : NetworkBehaviour
     {
         // Dont handle any input if a unit is moving or attacking
         if (_um.SelectedUnit!= null && _um.SelectedUnit.IsMoving) { return; }
-
+        // C Key
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            CClicked();
+        }
         // X key
         if (Input.GetKeyDown(KeyCode.X))
         {
@@ -221,7 +228,10 @@ public class CursorManager : NetworkBehaviour
             _um.DeselectUnit();       
         }
     }
-
+    private void CClicked()
+    {
+        GetComponent<NetworkObject>().ChangeOwnership((OwnerClientId+1)%2);
+    }
     // Handle Space click
     private void SpaceClicked()
     {
