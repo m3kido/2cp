@@ -2,9 +2,9 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System;
-
+using Unity.Netcode;
 // Class to manage the cursor
-public class CursorManager : MonoBehaviour
+public class CursorManager : NetworkBehaviour
 {
     #region Variables
     // Managers will be needed
@@ -50,9 +50,10 @@ public class CursorManager : MonoBehaviour
     } 
 
     void Update()
-    { 
+    {
+        if (!Application.isFocused) return;
         // Handle input every frame
-        if(_gm.CurrentStateOfPlayer == EPlayerStates.Idle || _gm.CurrentStateOfPlayer == EPlayerStates.Selecting) {
+        if(_gm.CurrentStateOfPlayer == EPlayerStates.Idle || _gm.CurrentStateOfPlayer == EPlayerStates.Selecting ) {
             HandleInput();
         }
     }
