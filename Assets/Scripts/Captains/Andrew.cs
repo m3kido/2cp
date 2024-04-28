@@ -29,6 +29,7 @@ public class Andrew : Captain
 
     public override void DisableCeleste()
     {
+        if (!IsCelesteActive) { return; }
         base.DisableCeleste();
         DefenseMultiplier -= 0.2f;
 

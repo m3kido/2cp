@@ -7,13 +7,23 @@ public class Captain
     public int PassiveDefense;
     public float AttackMultiplier = 1.0f;
     public float DefenseMultiplier = 1.0f;
-    public int AttackRangeAdditioner = 0;
+    private int _attackRangeAdditioner = 0;
     public float CaptureMultiplier = 1.0f;
     public float PriceMultiplier = 1.0f;
     public int SuperMeter { get; set; } = 100;
 
 
-
+    public int AttackRangeAdditioner
+    {
+        get
+        {
+            return _attackRangeAdditioner;
+        }
+        set {
+            _attackRangeAdditioner = value;
+            UnityEngine.Debug.Log("AttackRangeAdditioner : " + value);
+        }
+    }
 
     public virtual void EnableCeleste()
     {
@@ -25,7 +35,7 @@ public class Captain
 
     public virtual void DisableCeleste()
     {
-        if (!IsCelesteActive) { return; }
+        
         IsCelesteActive = false;
     }
 

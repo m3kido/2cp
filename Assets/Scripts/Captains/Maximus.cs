@@ -23,6 +23,7 @@ public class Maximus : Captain
 
     public override void DisableCeleste()
     {
+        if (!IsCelesteActive) { return; }
         base.DisableCeleste();
         DefenseMultiplier += 0.2f;
         AttackMultiplier -= 0.25f;

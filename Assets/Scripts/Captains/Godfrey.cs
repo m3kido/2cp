@@ -30,6 +30,7 @@ public class Godfrey : Captain
 
     public override void DisableCeleste()
     {
+        if (!IsCelesteActive) { return; }
         base.DisableCeleste();
         foreach (var unit in CaptainManager.Um.Units)
         {

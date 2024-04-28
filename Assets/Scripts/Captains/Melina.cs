@@ -57,7 +57,7 @@ public class Melina : Captain
     public override void DisableCeleste()
     {
         base.DisableCeleste();
-        AttackMultiplier -= 0.4f;
+
     }
 
 
@@ -124,7 +124,6 @@ public class Melina : Captain
             {
                 HighlightSelectedTarget(_tiredUnits[selectedUnitIndex], Color.white);
                 selectedTarget.HasMoved = false;
-                AttackMultiplier -= 0.4f; 
             }
             ActionTaken = true;
 

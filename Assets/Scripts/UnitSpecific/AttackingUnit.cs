@@ -60,7 +60,7 @@ public class AttackingUnit : Unit
             var currentWeapon = Weapons[CurrentWeaponIndex];// getting the current weapon from the attacker
             Player player = _gm.Players[Owner];
             Captain captain = player.PlayerCaptain;
-            Debug.Log("Attack range additionner : " + captain.AttackRangeAdditioner);
+            //Debug.Log("Attack range additionner : " + captain.AttackRangeAdditioner);
             bool IsInRange = (L1Distance2D(attackerPos, potentialTargetPos) >= currentWeapon.MinRange) && (L1Distance2D(attackerPos, potentialTargetPos) < (currentWeapon.MaxRange + captain.AttackRangeAdditioner));
             bool IsEnemy = Owner != unit.Owner;
             bool IsDamageable = Weapons[CurrentWeaponIndex].DamageList[(int)unit.Data.UnitType] != 0;
