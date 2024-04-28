@@ -9,6 +9,7 @@ public class CaptainBar : MonoBehaviour
     [SerializeField] private GameObject _superMeterSprite;
     [SerializeField] private GameObject _goldValue;
     [SerializeField] private Image _captainSprite;
+    [SerializeField] private Image _captainColor;
 
     private GameManager _gm;
     #endregion
@@ -33,9 +34,26 @@ public class CaptainBar : MonoBehaviour
         //idk how the captains will be held
         _superMeterSprite.GetComponent<Image>().fillAmount = _gm.Players[_gm.PlayerTurn].SuperMeter;
     }
-    private void UpdateCaptain()
+    public void UpdateCaptain()
     {
-        //_captainSprite.sprite = _gm.Players[_gm.PlayerTurn].PlayerCaptain.FrameSprite;
+        var col = _gm.Players[_gm.PlayerTurn].Color;
+        if(col==ETeamColors.Azure)
+        {
+            _captainColor.GetComponent<Image>().color=Color.blue;
+        }
+        else if(col==ETeamColors.Amber)
+        {
+            _captainColor.GetComponent<Image>().color = Color.red;
+        }
+        else if ( col==ETeamColors.Gilded)
+        {
+            _captainColor.GetComponent<Image>().color = Color.yellow;
+        }
+        else if (col == ETeamColors.Verdant)
+        {
+            _captainColor.GetComponent<Image>().color = Color.green;
+        }
+
         _goldValue.GetComponent<TextMeshProUGUI>().text = _gm.Players[_gm.PlayerTurn].Gold.ToString();
     }
     #endregion

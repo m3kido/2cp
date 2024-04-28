@@ -60,13 +60,13 @@ public class BuildingManager : MonoBehaviour
     private void OnEnable()
     {
         // GetGoldFromBuildings subscribes to day end event
-       // GameManager.OnDayEnd += GetGoldFromBuildings;
+       GameManager.OnDayEnd += GetGoldFromBuildings;
     }
 
     private void OnDisable()
     {
         // GetGoldFromBuildings unsubscribes from day end event
-      //  GameManager.OnDayEnd -= GetGoldFromBuildings;
+       GameManager.OnDayEnd -= GetGoldFromBuildings;
     }
     #endregion
 
@@ -94,7 +94,7 @@ public class BuildingManager : MonoBehaviour
     //change the sprite
     private void ChangeBuildingOwner(Building building,int owner)
     {
-        print("3");
+       ;
         foreach(var SO in _buildingDatas)
         {
             if(SO.Color == _gm.Players[_gm.PlayerTurn].Color && SO.BuildingType==building.BuildingType) {
@@ -145,8 +145,8 @@ public class BuildingManager : MonoBehaviour
     {
         foreach (var building in _buildingFromPosition.Values)
         {
-            // MODIFICATION NEEDED : We have to check whether the building can provide gold or not (only villages can)
-            if (building.Owner < 4)
+            
+            if (building.Owner < 4 && building.BuildingType==EBuildings.Village)
             {
                 _gm.Players[building.Owner].Gold += 1000;
             }

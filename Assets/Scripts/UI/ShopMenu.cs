@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 // Class to manage the shop menu
@@ -11,6 +12,8 @@ public class ShopMenu : MonoBehaviour
     private CursorManager _cm;
     private GameManager _gm;
     private BuildingManager _bm;
+    private MapManager _mm;
+    private CaptainBar _bar;
 
     [SerializeField] private Color32 textColor = new Color32(115, 42, 28, 255);
 
@@ -30,14 +33,21 @@ public class ShopMenu : MonoBehaviour
         _cm = FindAnyObjectByType<CursorManager>();
         _gm = FindAnyObjectByType<GameManager>();
         _bm = FindAnyObjectByType<BuildingManager>();  
+        _mm = FindAnyObjectByType<MapManager>();
+        _bar = FindAnyObjectByType<CaptainBar>();
         _unitElements = new();
+        var pos = _cm.HoveredOverTile;
+        var data = _bm.BuildingDataFromTile[_mm.Map.GetTile<Tile>(pos)] as SpawnerBuildingDataSO;
         foreach (var unit in _unitsPrefabs)
         {
-            
-            var ListUnit =  Instantiate(ListElement, _unitsList.transform);
-            _unitElements.Add(ListUnit,unit);
-            ListUnit.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text= unit.Data.UnitType.ToString();
-            ListUnit.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = unit.Data.Cost.ToString();
+            if( data.DeployableUnits.Contains(unit.Data.UnitType))
+            {
+                var ListUnit = Instantiate(ListElement, _unitsList.transform);
+                _unitElements.Add(ListUnit, unit);
+                ListUnit.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = unit.Data.UnitType.ToString();
+                ListUnit.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = unit.Data.Cost.ToString();
+            }
+           
             
         }
         
@@ -62,6 +72,7 @@ public class ShopMenu : MonoBehaviour
             {
                 _bm.SpawnUnit(NewUnit.Data.UnitType, _cm.HoveredOverTile, _gm.PlayerTurn);
                 _gm.Players[_gm.PlayerTurn].Gold -= NewUnit.Data.Cost;
+                _bar.UpdateCaptain();
                 _gm.CurrentStateOfPlayer = EPlayerStates.Idle;
             }
         }

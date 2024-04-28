@@ -287,10 +287,19 @@ public class CursorManager : MonoBehaviour
             }
             else
             {
-                if (_bm.BuildingFromPosition.ContainsKey(HoveredOverTile) && _bm.BuildingFromPosition[HoveredOverTile].Owner==_gm.PlayerTurn)
+                if (_bm.BuildingFromPosition.ContainsKey(HoveredOverTile) && _bm.BuildingFromPosition[HoveredOverTile].Owner == _gm.PlayerTurn )
                 {
-                    //_bm.SpawnUnit(EUnits.Infantry, _bm.BuildingFromPosition[HoveredOverTile], _gm.PlayerTurn);
-                    _gm.CurrentStateOfPlayer = EPlayerStates.InBuildingMenu;
+                     var CurrBuilingType= _bm.BuildingDataFromTile[_mm.Map.GetTile<Tile>(HoveredOverTile)].BuildingType;
+                     bool Isspawner = CurrBuilingType == EBuildings.Port || CurrBuilingType == EBuildings.Camp;
+               
+                    if( Isspawner )
+                    {
+                        _gm.CurrentStateOfPlayer = EPlayerStates.InBuildingMenu;
+                    }
+                    else
+                    {
+                        _gm.CurrentStateOfPlayer = EPlayerStates.InSettingsMenu;
+                    }
                 }
                 else
                 {
