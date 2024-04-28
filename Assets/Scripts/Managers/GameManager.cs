@@ -35,8 +35,8 @@ public class GameManager : MonoBehaviour
         // Initialize players
         Players = new List<Player>
         {
-            new("Mohamed", ETeamColors.Amber, ETeams.A, null),
-            new("Oussama", ETeamColors.Azure, ETeams.B, null)
+            new("Mohamed", ETeamColors.Amber, ETeams.A, ECaptains.Andrew,null),
+            new("Oussama", ETeamColors.Azure, ETeams.B, ECaptains.Maximus, null)
         };
     }
    

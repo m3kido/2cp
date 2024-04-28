@@ -11,6 +11,12 @@ public class CaptainBar : MonoBehaviour
     [SerializeField] private Image _captainSprite;
     [SerializeField] private Image _captainColor;
 
+
+    [SerializeField] private Sprite AndrewSprite;
+    [SerializeField] private Sprite MaximusSprite;
+    [SerializeField] private Sprite MelinaSprite;
+    [SerializeField] private Sprite GodfretSprite;
+
     private GameManager _gm;
     #endregion
 
@@ -53,7 +59,28 @@ public class CaptainBar : MonoBehaviour
         {
             _captainColor.GetComponent<Image>().color = Color.green;
         }
-
+        var cap = _gm.Players[_gm.PlayerTurn].PlayerCaptain;
+        if (cap==ECaptains.Andrew)
+        {
+            _captainSprite.GetComponent<Image>().sprite =AndrewSprite;
+        }
+        else if (cap == ECaptains.Maximus)
+        {
+            _captainSprite.GetComponent<Image>().sprite = MaximusSprite;
+        }
+        else if (cap == ECaptains.Melina)
+        {
+            _captainSprite.GetComponent<Image>().sprite = MelinaSprite;
+        }
+        else if (cap == ECaptains.Godfrey)
+        {
+            _captainSprite.GetComponent<Image>().sprite = GodfretSprite;
+        }
+        UpdateGold();
+       
+    }
+    public void UpdateGold()
+    {
         _goldValue.GetComponent<TextMeshProUGUI>().text = _gm.Players[_gm.PlayerTurn].Gold.ToString();
     }
     #endregion

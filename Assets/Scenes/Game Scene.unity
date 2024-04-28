@@ -2569,8 +2569,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0, y: -0.000025392}
-  m_SizeDelta: {x: 120, y: 120}
+  m_AnchoredPosition: {x: -0.0342, y: 0.0187}
+  m_SizeDelta: {x: 130.7664, y: 130.7971}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &612856058
 MonoBehaviour:
@@ -10264,8 +10264,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0000040531, y: -0.000025392}
-  m_SizeDelta: {x: 120, y: 120}
+  m_AnchoredPosition: {x: -0.03397, y: 0.01938}
+  m_SizeDelta: {x: 130.77, y: 130.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1824272828
 MonoBehaviour:
@@ -10287,7 +10287,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2c6607012eaea94479d33ecba998799d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 11110b6db3d436c4a93f2bde0bbdb71a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -11147,6 +11147,10 @@ MonoBehaviour:
   _goldValue: {fileID: 946006794}
   _captainSprite: {fileID: 1824272828}
   _captainColor: {fileID: 612856058}
+  AndrewSprite: {fileID: 21300000, guid: 11110b6db3d436c4a93f2bde0bbdb71a, type: 3}
+  MaximusSprite: {fileID: 21300000, guid: 5d484fcc56b0fe84f936dfd1217fc206, type: 3}
+  MelinaSprite: {fileID: 21300000, guid: e726b28609e82a54aabd39e1bfadbb25, type: 3}
+  GodfretSprite: {fileID: 21300000, guid: db04e9fae2b0585469910c05eb47793f, type: 3}
 --- !u!1 &2139156696
 GameObject:
   m_ObjectHideFlags: 0

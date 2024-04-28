@@ -34,7 +34,7 @@ public class ShopMenu : MonoBehaviour
         _gm = FindAnyObjectByType<GameManager>();
         _bm = FindAnyObjectByType<BuildingManager>();  
         _mm = FindAnyObjectByType<MapManager>();
-        _bar = FindAnyObjectByType<CaptainBar>();
+        
         _unitElements = new();
         var pos = _cm.HoveredOverTile;
         var data = _bm.BuildingDataFromTile[_mm.Map.GetTile<Tile>(pos)] as SpawnerBuildingDataSO;
@@ -51,6 +51,10 @@ public class ShopMenu : MonoBehaviour
             
         }
         
+    }
+    private void Start()
+    {
+        _bar = FindAnyObjectByType<CaptainBar>();
     }
 
     private void OnEnable()
@@ -72,7 +76,7 @@ public class ShopMenu : MonoBehaviour
             {
                 _bm.SpawnUnit(NewUnit.Data.UnitType, _cm.HoveredOverTile, _gm.PlayerTurn);
                 _gm.Players[_gm.PlayerTurn].Gold -= NewUnit.Data.Cost;
-                _bar.UpdateCaptain();
+                _bar.UpdateGold();
                 _gm.CurrentStateOfPlayer = EPlayerStates.Idle;
             }
         }

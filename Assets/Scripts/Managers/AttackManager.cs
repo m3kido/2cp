@@ -204,13 +204,13 @@ public class AttackManager : MonoBehaviour
     {
         int baseDamage = attacker.Weapons[attacker.CurrentWeaponIndex].DamageList[(int)target.Data.UnitType];
         Player attackerPlayer = _gm.Players[attacker.Owner];
-        Captain attackerCaptain = attackerPlayer.PlayerCaptain;
+        Captain attackerCaptain = attackerPlayer.Captain;
         //int celesteAttack = attackerCaptain.IsCelesteActive ? attackerCaptain.Data.CelesteDefense : 0;
         float attackDamage = baseDamage; //* (1 + attackerCaptain.Data.PassiveAttack) * (1 + celesteAttack);
 
         int terrainStars = _mm.GetTileData(_mm.Map.WorldToCell(target.transform.position)).DefenceStars;
         Player targetPlayer = _gm.Players[attacker.Owner];
-        Captain targetCaptain = targetPlayer.PlayerCaptain;
+        Captain targetCaptain = targetPlayer.Captain;
         //int celesteDefense = targetCaptain.IsCelesteActive ? targetCaptain.Data.CelesteDefense : 0;
         float defenseDamage = (1 - terrainStars * target.Health / 1000);//* (1 - targetCaptain.Data.PassiveDefense) * (1 - celesteDefense);
 
