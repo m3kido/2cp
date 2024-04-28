@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 // Class to represent a unit, associated to every unit prefab on the scene
 public class Unit : MonoBehaviour
 {
+    #region Variables
     // Managers will be needed
     protected MapManager _mm;
     protected UnitManager _um;
@@ -20,6 +21,29 @@ public class Unit : MonoBehaviour
     public bool IsSelected; // { get; set; }
     public bool IsMoving { get; set; }
 
+    public int Provisions { get; set; }
+    public bool IsSelected { get; set; }
+    public bool IsMoving { get; set; }
+    public int Health
+    {
+        get
+        {
+            return _health;
+        }
+
+        set
+        {
+            if (value <= 0)
+            {
+                _health = 0;
+                Die();
+            }
+            else
+            {
+                _health = value;
+            }
+        }
+    }
     [SerializeField] private int _owner; // Serialization is temporary (just for tests)
     public int Owner // Property for the _hasMoved field
     {
@@ -75,10 +99,19 @@ public class Unit : MonoBehaviour
     public int MoveRange;
     // Dictionary to hold the grid position of the valid tiles along with the fuel consumed to reach them
 
-    public Dictionary<Vector3Int, int> ValidTiles = new();
+    private Dictionary<Vector3Int, int> _validTiles = new();
+    public Dictionary<Vector3Int, int> ValidTiles
+    {
+        get => _validTiles;
+        set => _validTiles = value;
+    }
 
     private void Awake()
     {
+        // Get map and unit manager from the hierarchy
+        _mm = FindAnyObjectByType<MapManager>();
+        _gm = FindAnyObjectByType<GameManager>();
+        _um = FindAnyObjectByType<UnitManager>();
         _rend = GetComponent<SpriteRenderer>();
         Health = MaxHealth;
         Provisions = _data.MaxProvisions;
@@ -92,6 +125,23 @@ public class Unit : MonoBehaviour
         _mm = FindAnyObjectByType<MapManager>();
         _um = FindAnyObjectByType<UnitManager>();
         _gm = FindAnyObjectByType<GameManager>();
+        AssignColor();
+    }
+    
+    private void AssignColor()
+    {
+        ETeamColors OwnerColor = _gm.Players[_owner].Color;
+        
+        Color OutlineColor;
+        switch (OwnerColor)
+        {
+            case ETeamColors.Amber:OutlineColor = Color.red; break;
+            case ETeamColors.Azure: OutlineColor = Color.blue; break;
+            case ETeamColors.Gilded: OutlineColor = Color.yellow; break;
+            case ETeamColors.Verdant: OutlineColor = Color.green; break;
+            default:OutlineColor = Color.clear; break;
+        }
+        GetComponent<SpriteRenderer>().material.color = OutlineColor;
     }
 
     // Highlight the accessible tiles to the unit
@@ -121,6 +171,10 @@ public class Unit : MonoBehaviour
                 ValidTiles.Remove(pos);
             }
         }
+        
+      
+       
+        
     }
 
     // Unhighlight the accessible tiles to the unit
@@ -145,9 +199,8 @@ public class Unit : MonoBehaviour
         return false;
     }
 
-
     // A recursive function to fill the ValidTiles dictionary
-    private void SeekTile(Vector3Int currentPosition, int currentProvisions)
+    protected void SeekTile(Vector3Int currentPosition, int currentProvisions)
     {
         // Access the current tile
         Tile currTile = _mm.Map.GetTile<Tile>(currentPosition);
@@ -198,7 +251,6 @@ public class Unit : MonoBehaviour
         SeekTile(left, currentProvisions);
         SeekTile(right, currentProvisions);
     }
-
     public void Die()
     {
         print("I'm Going To Die!");

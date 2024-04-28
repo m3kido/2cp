@@ -22,6 +22,7 @@ public class AttackManager : MonoBehaviour
         set
         {
             _actionTaken = value;
+            
         }
     }
 
@@ -94,7 +95,6 @@ public class AttackManager : MonoBehaviour
         {
             Debug.Log("No valid targets found.");
         }
-
     }
 
     private IEnumerator TargetSelectionCoroutine(AttackingUnit attacker, List<Unit> targets)
@@ -126,25 +126,31 @@ public class AttackManager : MonoBehaviour
 
         if (targets.Count == 1)
         {
-            HighlightSelectedTarget(targets[0]);
+            // HighlightSelectedTarget(targets[0]);
+            targets[selectedTargetIndex]._rend.color = Color.blue;
         }
         else
         {
-            HighlightSelectedTarget(targets[selectedTargetIndex]);
+            // HighlightSelectedTarget(targets[selectedTargetIndex]);
+            targets[selectedTargetIndex]._rend.color = Color.blue;
 
             // Handle navigation keys
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
                 // Move to the next target (circular)
-                attacker.UnHighlightTarget(targets[selectedTargetIndex]);
+                // attacker.UnHighlightTarget(targets[selectedTargetIndex]);
+                targets[selectedTargetIndex]._rend.color=Color.white;
                 selectedTargetIndex = (selectedTargetIndex + 1) % targets.Count;
-                HighlightSelectedTarget(targets[selectedTargetIndex]);
+                // HighlightSelectedTarget(targets[selectedTargetIndex]);
+                targets[selectedTargetIndex]._rend.color = Color.blue;
             }
             else if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                attacker.UnHighlightTarget(targets[selectedTargetIndex]);
+                // attacker.UnHighlightTarget(targets[selectedTargetIndex]);
+                targets[selectedTargetIndex]._rend.color = Color.white;
                 selectedTargetIndex = (selectedTargetIndex - 1 + targets.Count) % targets.Count;
-                HighlightSelectedTarget(targets[selectedTargetIndex]);
+                // HighlightSelectedTarget(targets[selectedTargetIndex]);
+                targets[selectedTargetIndex]._rend.color = Color.blue;
             }
         }
 

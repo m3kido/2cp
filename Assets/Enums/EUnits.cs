@@ -2,9 +2,9 @@ public enum EUnits
 {
     Infantry,
     Lancers,
-    EliteArchers,
-    Cannoneers,
-    StrayHorses,
+    EliteArcher,
+    Cannoneer,
+    StrayHorse,
     Catapult,
     Ballista,
     Witch,

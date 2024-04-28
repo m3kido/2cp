@@ -1,15 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
+// Class to manage the settings menu
 public class SettingMenu : MonoBehaviour
 {
-   
+    #region Variables
     private GameManager _gm;
-    
 
     private List<GameObject> _settingsList;
 
@@ -20,25 +17,30 @@ public class SettingMenu : MonoBehaviour
     [SerializeField] GameObject EndSetting;
 
     [SerializeField] private Color32 textColor = new Color32(115, 42, 28,255);
+    #endregion
+
+    #region UnityMethods
     // Start is called before the first frame update
     private void Awake()
     {
-    
-        
         _gm = FindAnyObjectByType<GameManager>();
 
-        _settingsList = new List<GameObject>();
-        _settingsList.Add(SaveSetting);
-        _settingsList.Add(OptionsSetting);
-        _settingsList.Add(EndSetting);
+        _settingsList = new List<GameObject>
+        {
+            SaveSetting,
+            OptionsSetting,
+            EndSetting
+        };
         _selectedSetting = 0;
         ShowSelection(_settingsList[_selectedSetting]);
     }
+
     private void OnEnable()
     {
         _selectedSetting = 0;
         ShowSelection(_settingsList[_selectedSetting]);
     }
+
     private void OnDisable()
     {
         HideSelection(_settingsList[_selectedSetting]);
@@ -87,6 +89,9 @@ public class SettingMenu : MonoBehaviour
             ShowSelection(_settingsList[_selectedSetting]);
         }
     }
+    #endregion
+
+    #region Methods
     private void ShowSelection(GameObject Setting)
     {
         _settingsList[_selectedSetting].transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().color = Color.white;
@@ -95,6 +100,7 @@ public class SettingMenu : MonoBehaviour
         _settingsList[_selectedSetting].transform.GetChild(3).gameObject.SetActive(false);
         _settingsList[_selectedSetting].transform.GetChild(4).gameObject.SetActive(false);
     }
+
     private void HideSelection(GameObject Setting)
     {
         _settingsList[_selectedSetting].transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().color = textColor;
@@ -103,4 +109,5 @@ public class SettingMenu : MonoBehaviour
         _settingsList[_selectedSetting].transform.GetChild(3).gameObject.SetActive(true);
         _settingsList[_selectedSetting].transform.GetChild(4).gameObject.SetActive(true);
     }
+    #endregion
 }

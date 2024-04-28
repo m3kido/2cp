@@ -2,6 +2,7 @@ public enum EPlayerStates
 {
     Idle,
     Selecting,
+    Droping,
     InBuildingMenu,
     InActionsMenu,
     Attacking,

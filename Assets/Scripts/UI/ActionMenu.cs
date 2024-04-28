@@ -1,15 +1,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
+// Class to manage action selection menu
 public class ActionMenu : MonoBehaviour
 {
+    #region Variables
     // Managers will be needed
     private CursorManager _cm;
     private GameManager _gm;
     private UnitManager _um;
     private BuildingManager _bm;
+    private AttackManager _am;
     private Camera _camera;
     private RectTransform _rect;
     private AttackManager _am;
@@ -34,7 +36,9 @@ public class ActionMenu : MonoBehaviour
     private GameObject _loadOptionInstance;
     private GameObject _dropOptionInstance;
     private GameObject _refillOptionInstance;
+    #endregion
 
+    #region UnityMethods
     private void Awake()
     {
         _cm = FindAnyObjectByType<CursorManager>();
@@ -117,6 +121,7 @@ public class ActionMenu : MonoBehaviour
             }
             _um.SelectUnit(_um.SelectedUnit);
         }
+
         else if (Input.GetKeyDown(KeyCode.Space))
         {
             if (_optionsList[_selectedOption] == _waitOptionInstance)
@@ -141,11 +146,41 @@ public class ActionMenu : MonoBehaviour
 
                 }
             }
+            else if (_optionsList[_selectedOption] == _attackOptionInstance)
+            {
+
+                if (_um.SelectedUnit is AttackingUnit)
+                {
+                    _am.Attacker = _um.SelectedUnit as AttackingUnit;
+
+                    Debug.Log("We're attacking");
+                    _am.InitiateAttack();
+                    Debug.Log("Done attacking");
+                }
+            }
             else if (_optionsList[_selectedOption] == _captureOptionInstance)
             {
                 _bm.CaptureBuilding(_cm.HoveredOverTile);
                 _um.EndMove();
-                _gm.CurrentStateOfPlayer = EPlayerStates.Idle;
+                
+            }
+            else if (_optionsList[_selectedOption] == _captureOptionInstance)
+            {
+                _bm.CaptureBuilding(_cm.HoveredOverTile);
+                _um.EndMove();
+
+            }
+            else if (_optionsList[_selectedOption] == _loadOptionInstance)
+            {
+                (_um.FindUnit(_um.SelectedUnit.GetGridPosition()) as LoadingUnit).LoadUnit(_um.SelectedUnit);
+                _um.EndMove();
+
+            }
+            else if (_optionsList[_selectedOption] == _dropOptionInstance)
+            {
+                (_um.SelectedUnit as LoadingUnit).InisitateDropUnit();
+                
+
             }
         }
         //change selected option
@@ -168,57 +203,50 @@ public class ActionMenu : MonoBehaviour
             _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(true);
         }
     }
+    #endregion
 
+    #region Methods
     private void CalculateOptions()
     {
-        //Hna n3amr ola list te3 option 
-
-        CheckAttackOption();
-        CheckCapture();
-
-
-        if (_optionsList.Count > 0)
+        if (_um.FindUnit(_um.SelectedUnit.GetGridPosition()))
         {
-            _selectedOption = 0;
-            _optionsList[_selectedOption].transform.GetChild(0).GetComponent<Image>().color = Color.white;
+            _loadOptionInstance.SetActive(true);
+            _optionsList.Add(_loadOptionInstance);
 
-        }
-
-    }
-
-    private void CheckAttackOption()
-    {
-        if (_um.SelectedUnit == null)
-        {
-            Debug.LogWarning("SelectedUnit is null. Unable to check attack option.");
-            return;
-        }
-
-        if (_um.SelectedUnit is AttackingUnit)
-        {
-            _am.Attacker = _um.SelectedUnit as AttackingUnit;
-            if (_am.Attacker == null)
-            {
-                Debug.Log("Attacker is null");
-            }
-            else
-            {
-                print($"{_am.Attacker} Value(CanAttack) = {_am.Attacker.CanAttack()}");
-                if (_am.Attacker.CanAttack())
-                {
-                    _attackOptionInstance.SetActive(true);
-                    _optionsList.Add(_attackOptionInstance);
-                }
-            }
         }
         else
         {
-            Debug.LogWarning("SelectedUnit is not an AttackingUnit. Unable to check attack option.");
+            CheckFire();// if is an attacking unit
+
+            CheckDrop();
+            CheckAbility();
+            
         }
+        
+       
+        _selectedOption = 0;
+        _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(true);
     }
 
-
-    private void CheckCapture()
+     private void CheckFire()
+      {
+          if (_um.SelectedUnit is AttackingUnit && _am.CheckAttack(_um.SelectedUnit as AttackingUnit))
+          {
+            _attackOptionInstance.SetActive(true);
+            _optionsList.Add(_attackOptionInstance);
+            return;
+        }
+      } 
+    private void CheckDrop()
+    {
+        if (_um.SelectedUnit is LoadingUnit && (_um.SelectedUnit as LoadingUnit).LoadedUnit != null&& (_um.SelectedUnit as LoadingUnit).GetDropTiles() )
+        {
+            _dropOptionInstance.SetActive(true);
+            _optionsList.Add(_dropOptionInstance);
+            return;
+        }
+    }
+    private void CheckAbility()
     {
         var building = _bm.BuildingFromPosition.ContainsKey(_cm.HoveredOverTile) ? _bm.BuildingFromPosition[_cm.HoveredOverTile] : null;
         if (building != null)

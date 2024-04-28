@@ -4,23 +4,26 @@ using System.Linq;
 using UnityEngine;
 using System;
 
-// This script handles unit interactions and
-// keeps track of units and the path drawn by the cursor
+// This script handles unit interactions
+// Keeps track of units and the path drawn by the cursor
 public class UnitManager : MonoBehaviour
 {
+    #region Variables
     // Managers will be needed
     private GameManager _gm;
     private MapManager _mm;
-  
+    private Pathfinding Pathfinder;
     // Auto-properties (the compiler automatically creates private fields for them)
     public List<Unit> Units { get; set; }
     public Unit SelectedUnit { get; set; }
     public Vector3Int SaveTile { get; set; }
-    public List<Vector3Int> Path { get; set; } = new();
+    public List<Vector3Int> Path  = new();
     public int PathCost { get; set; }
 
     public static event Action OnMoveEnd;
+    #endregion
 
+    #region UnityMethods
     private void Awake()
     {
         // Get map and game managers from the hierarchy
@@ -29,6 +32,7 @@ public class UnitManager : MonoBehaviour
       
         // Seek for units in the hierarchy
         Units = FindObjectsOfType<Unit>().ToList();
+        Pathfinder = FindObjectOfType<Pathfinding>();
     }
 
     private void OnEnable()
@@ -41,20 +45,31 @@ public class UnitManager : MonoBehaviour
         // Unsubscribe from the day end event
         GameManager.OnTurnEnd -= ResetUnits;
     }
+    #endregion
 
+    #region Methods
     // Get unit from given grid position
     public Unit FindUnit(Vector3Int pos)
     {
         foreach (Unit unit in Units)
         {
+            if (unit.gameObject.activeInHierarchy == false) { continue; }
             if (_mm.Map.WorldToCell(unit.transform.position) == pos)
             {
-                return unit;
+                if (_gm.CurrentStateOfPlayer == EPlayerStates.InActionsMenu)
+                {
+                    if(unit != SelectedUnit) { return unit; }
+                }
+                else
+                {
+                    return unit;
+                }
+                
             }
         }
         return null;
     }
-
+   
     // Check if the given position is an obstacle
     public bool IsObstacle(Vector3Int pos, Unit unit)
     {
@@ -133,7 +148,26 @@ public class UnitManager : MonoBehaviour
         
         _gm.CurrentStateOfPlayer = EPlayerStates.InActionsMenu;
     }
+    public void CallPathfinding(Vector3Int end)
+    {
+        
+        List<Vector3Int> paths = new List<Vector3Int>();
+        paths = Pathfinder.FindPath(SelectedUnit,SelectedUnit.GetGridPosition(),end);
+        if (paths.Count > 0)
+        {
+            UndrawPath();
+            Path.Clear();
+            PathCost = 0;
+            foreach (var pos in paths)
+            {
+                Path.Add(pos);
+                PathCost += _mm.GetTileData(pos).ProvisionsCost;
+            }
+            DrawPath();
+        }
 
+    }
+    
     // Runs at the end of the day 
     private void ResetUnits()
     {

@@ -5,6 +5,7 @@ using UnityEngine;
 // Class to handle the game logic
 public class GameManager : MonoBehaviour
 {
+    #region Variables
     // Auto-properties (the compiler automatically creates private fields for them)
     public int PlayerTurn { get; set; }
     public int Day { get; set; } = 1;
@@ -20,7 +21,6 @@ public class GameManager : MonoBehaviour
 
     // Event to let know that the state of the player has changed
     public static event Action OnStateChange;
-
 
     private void Awake()
     {
@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
 
 
     }
+    #endregion
 
     // Declare turn end and day end events
     public static event Action OnTurnEnd;
