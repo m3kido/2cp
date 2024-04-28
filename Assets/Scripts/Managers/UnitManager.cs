@@ -12,12 +12,12 @@ public class UnitManager : MonoBehaviour
     // Managers will be needed
     private GameManager _gm;
     private MapManager _mm;
-  
+    private Pathfinding Pathfinder;
     // Auto-properties (the compiler automatically creates private fields for them)
     public List<Unit> Units { get; set; }
     public Unit SelectedUnit { get; set; }
     public Vector3Int SaveTile { get; set; }
-    public List<Vector3Int> Path { get; set; } = new();
+    public List<Vector3Int> Path  = new();
     public int PathCost { get; set; }
 
     public static event Action OnMoveEnd;
@@ -32,6 +32,7 @@ public class UnitManager : MonoBehaviour
       
         // Seek for units in the hierarchy
         Units = FindObjectsOfType<Unit>().ToList();
+        Pathfinder = FindObjectOfType<Pathfinding>();
     }
 
     private void OnEnable()
@@ -141,6 +142,25 @@ public class UnitManager : MonoBehaviour
         
         _gm.CurrentStateOfPlayer = EPlayerStates.InActionsMenu;
     }
+    public void CallPathfinding(Vector3Int end)
+    {
+        
+        List<Vector3Int> paths = new List<Vector3Int>();
+        paths = Pathfinder.FindPath(SelectedUnit,SelectedUnit.GetGridPosition(),end);
+        if (paths.Count > 0)
+        {
+            UndrawPath();
+            Path.Clear();
+            PathCost = 0;
+            foreach (var pos in paths)
+            {
+                Path.Add(pos);
+                PathCost += _mm.GetTileData(pos).ProvisionsCost;
+            }
+            DrawPath();
+        }
+
+    }
     
     // Runs at the end of the day 
     private void ResetUnits()
@@ -161,5 +181,6 @@ public class UnitManager : MonoBehaviour
         _gm.CurrentStateOfPlayer = EPlayerStates.Idle;
         OnMoveEnd?.Invoke();
     }
+
     #endregion
 }

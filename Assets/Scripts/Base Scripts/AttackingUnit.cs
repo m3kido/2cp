@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [Serializable]
 public class AttackingUnit : Unit
@@ -141,6 +142,64 @@ public class AttackingUnit : Unit
     public void ResetWeapons()
     {
         CurrentWeaponIndex = 0;
+    }
+    public void AttackTiles()
+    {
+        SeekTile(GetGridPosition(), -1);
+        List<Vector3Int> extraTiles = new();
+        foreach (var pos in ValidTiles.Keys)
+        {
+            ExpandFromTiles(extraTiles, pos, Weapons[CurrentWeaponIndex].MaxRange + 1);
+        }
+        foreach (var pos in ValidTiles.Keys)
+        {
+            if (ValidTiles[pos] <= Provisions)
+            {
+                _mm.Map.SetTileFlags(pos, TileFlags.None);
+                _mm.HighlightAttackTile(pos);
+            }
+        }
+        foreach (var pos in extraTiles)
+        {
+
+            _mm.Map.SetTileFlags(pos, TileFlags.None);
+            _mm.HighlightAttackTile(pos);
+            if (!ValidTiles.ContainsKey(pos))
+            {
+                ValidTiles.Add(pos, 0);
+            }
+
+
+        }
+
+    }
+    private void ExpandFromTiles(List<Vector3Int> list, Vector3Int currentPosition, int range)
+    {
+        if (range == 0) { return; }
+        if (range != Weapons[CurrentWeaponIndex].MaxRange + 1)
+        {
+            if (!ValidTiles.ContainsKey(currentPosition) && !list.Contains(currentPosition))
+            {
+                if (_mm.Map.GetTile<Tile>(currentPosition))
+                {
+                    list.Add(currentPosition);
+                }
+                else { return; }
+            }
+            else { return; }
+        }
+
+
+        Vector3Int up = currentPosition + Vector3Int.up;
+        Vector3Int down = currentPosition + Vector3Int.down;
+        Vector3Int left = currentPosition + Vector3Int.left;
+        Vector3Int right = currentPosition + Vector3Int.right;
+
+        ExpandFromTiles(list, up, range - 1);
+        ExpandFromTiles(list, down, range - 1);
+        ExpandFromTiles(list, left, range - 1);
+        ExpandFromTiles(list, right, range - 1);
+
     }
 
     //public void InitiateTargetSelection()

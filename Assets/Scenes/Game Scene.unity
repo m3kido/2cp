@@ -9616,6 +9616,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1694422650}
   - component: {fileID: 1694422649}
+  - component: {fileID: 1694422651}
   m_Layer: 0
   m_Name: Map Manager
   m_TagString: Untagged
@@ -9678,6 +9679,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1694422651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1694422648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f75585795ebfdf64ab5725fc2c64b75d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1764711104
 GameObject:
   m_ObjectHideFlags: 0
@@ -10961,6 +10974,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ffa086c721c8fc45bf3ef823e6a729e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Path: []
 --- !u!1 &2110874118
 GameObject:
   m_ObjectHideFlags: 0

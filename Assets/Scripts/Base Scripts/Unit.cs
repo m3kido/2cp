@@ -137,6 +137,10 @@ public class Unit : MonoBehaviour
                 _validTiles.Remove(pos);
             }
         }
+        
+      
+       
+        
     }
 
     // Unhighlight the accessible tiles to the unit
@@ -162,7 +166,7 @@ public class Unit : MonoBehaviour
     }
 
     // A recursive function to fill the ValidTiles dictionary
-    private void SeekTile(Vector3Int currentPosition, int currentProvisions)
+    protected void SeekTile(Vector3Int currentPosition, int currentProvisions)
     {
         // Access the current tile
         Tile currTile = _mm.Map.GetTile<Tile>(currentPosition);

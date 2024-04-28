@@ -2,6 +2,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System;
+using System.Collections;
 
 // Class to manage the cursor
 public class CursorManager : MonoBehaviour
@@ -180,12 +181,20 @@ public class CursorManager : MonoBehaviour
                 int index = _um.Path.IndexOf(HoveredOverTile + offset); // Returns -1 if not found
                 if (index < 0)
                 {
-                    // Add tile to path
-                    int cost = _mm.GetTileData(_mm.Map.GetTile<Tile>(HoveredOverTile + offset)).ProvisionsCost;
-                    if (_um.PathCost + cost > _um.SelectedUnit.Provisions) { return; }
-                    _um.UndrawPath();
-                    _um.Path.Add(HoveredOverTile + offset);
-                    _um.PathCost += cost;
+                    if(_um.Path.Count >= _um.SelectedUnit.Data.MoveRange)
+                    {
+                        _um.CallPathfinding(HoveredOverTile + offset);
+                    }
+                    else
+                    {
+                        // Add tile to path
+                        int cost = _mm.GetTileData(_mm.Map.GetTile<Tile>(HoveredOverTile + offset)).ProvisionsCost;
+                        if (_um.PathCost + cost > _um.SelectedUnit.Provisions) { return; }
+                        _um.UndrawPath();
+                        _um.Path.Add(HoveredOverTile + offset);
+                        _um.PathCost += cost;
+                    }
+                  
                 }
                 else
                 {
@@ -219,7 +228,28 @@ public class CursorManager : MonoBehaviour
             Camera.main.transform.position = SaveCamera;
             _um.DeselectUnit();       
         }
+        else if (_gm.CurrentStateOfPlayer == EPlayerStates.Idle)
+        {
+            var unit = _um.FindUnit(HoveredOverTile);
+            if (unit != null && unit is AttackingUnit)
+            {
+                (unit as AttackingUnit).AttackTiles();
+                StartCoroutine(UnhighlightAttackTiles(unit));
+            }
+
+        }
     }
+    private IEnumerator UnhighlightAttackTiles(Unit unit)
+    {
+
+        while (!Input.GetKeyUp(KeyCode.X))
+        {
+            yield return null;
+        }
+        unit.ResetTiles();
+
+    }
+
 
     // Handle Space click
     private void SpaceClicked()
