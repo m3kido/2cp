@@ -41,7 +41,6 @@ public class BuildingManager : MonoBehaviour
             // Put the Building tile as a key, and the building data as a value
             _buildingDataFromTile.Add(buildingData.BuildingTile, buildingData);
         }
-        
     }
 
     void Start()
@@ -50,11 +49,9 @@ public class BuildingManager : MonoBehaviour
         _mm = FindAnyObjectByType<MapManager>();
         _gm = FindAnyObjectByType<GameManager>();
         _um = FindAnyObjectByType<UnitManager>();
-        
 
         // Scan the map and put all the buldings in the Buildings dictionary
         ScanMapForBuildings();
-      
     }
 
     private void OnEnable()
