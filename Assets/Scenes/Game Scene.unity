@@ -9890,6 +9890,7 @@ MonoBehaviour:
   - {fileID: 7633969906094387417, guid: 331007640a9cb7a4f923d916a2ff55c1, type: 3}
   - {fileID: 9145702504275897213, guid: be7d5db68eae8884a936650f00632d4a, type: 3}
   - {fileID: 2098983014080714334, guid: 9520f677f5a0566418f9525df05d5dd1, type: 3}
+  - {fileID: 2098983014080714334, guid: 4eb938da1a8ae084bb74188f0749bc33, type: 3}
 --- !u!4 &1577000068
 Transform:
   m_ObjectHideFlags: 0

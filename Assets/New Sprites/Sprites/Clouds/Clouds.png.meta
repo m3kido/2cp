@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 042f69b4e13b646448705e1f48211247
+guid: 488476f75b725f54f92632cfc0e305c4
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,13 +123,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Clouds V2_1
+      name: Clouds_0
       rect:
         serializedVersion: 2
         x: 8
-        y: 80
-        width: 60
-        height: 35
+        y: 152
+        width: 85
+        height: 87
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,20 +137,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c552f16b8083bfc41a10d7bc0c451e26
-      internalID: 1700239153
+      spriteID: 40c4d0c8a1bfeb248a18863105387eec
+      internalID: 383300022
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Clouds V2_2
+      name: Clouds_1
       rect:
         serializedVersion: 2
-        x: 81
-        y: 84
-        width: 30
-        height: 20
+        x: 108
+        y: 168
+        width: 48
+        height: 63
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -158,20 +158,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: db9fd50a98ec0fd4d9f4a66ae8a51a6f
-      internalID: 891040615
+      spriteID: 7b2bc7149c0648946bc3539d23f46893
+      internalID: -1548046962
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Clouds V2_4
+      name: Clouds_2
       rect:
         serializedVersion: 2
-        x: 67
-        y: 44
-        width: 50
-        height: 29
+        x: 189
+        y: 163
+        width: 51
+        height: 68
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -179,20 +179,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8f99036dd7c0f9c4da7c120a204505d9
-      internalID: -1878656994
+      spriteID: 6f68eed5b8597dd4694c54349e86b5ec
+      internalID: -1803614126
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Clouds V2_5
+      name: Clouds_3
       rect:
         serializedVersion: 2
-        x: 16
-        y: 14
-        width: 41
-        height: 28
+        x: 190
+        y: 41
+        width: 44
+        height: 69
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -200,20 +200,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 88151699d1d0a964eb72d86e8f36b21c
-      internalID: -1028274309
+      spriteID: ce35125cf802d8d43aab05e9bf769faf
+      internalID: -2145828449
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Clouds V2_6
+      name: Clouds_4
       rect:
         serializedVersion: 2
-        x: 72
-        y: 11
-        width: 31
-        height: 24
+        x: 104
+        y: 37
+        width: 59
+        height: 75
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -221,8 +221,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 68b390a7ea749bc42ae9b8d418159229
-      internalID: 343163099
+      spriteID: 020fcb0f291c15045a631aaca3f91bfd
+      internalID: 226556121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Clouds_5
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 38
+        width: 70
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5b76e2ccc205b04988c7b7751c2e1b6
+      internalID: 148913075
       vertices: []
       indices: 
       edges: []
@@ -238,13 +259,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Clouds V2_0: 320150418
-      Clouds V2_1: 1700239153
-      Clouds V2_2: 891040615
-      Clouds V2_3: 1300946842
-      Clouds V2_4: -1878656994
-      Clouds V2_5: -1028274309
-      Clouds V2_6: 343163099
+      Clouds_0: 383300022
+      Clouds_1: -1548046962
+      Clouds_2: -1803614126
+      Clouds_3: -1363028108
+      Clouds_4: 139567103
+      Clouds_5: -2145828449
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

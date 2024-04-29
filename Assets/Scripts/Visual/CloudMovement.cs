@@ -1,16 +1,25 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class CloudMovement : MonoBehaviour
 {
-    [SerializeField] private float _speed = 0.3f;
+    private float _speed;
+    private Tilemap _map; // Reference to the tilemap
 
-    void Update()
+    private void Start()
+    {
+        _map = FindAnyObjectByType<MapManager>().Map;
+        _speed = Random.Range(0.37f, 0.54f);
+    }
+
+    private void Update()
     {
         // Move the cloud from right to left
         transform.Translate(_speed * Time.deltaTime * Vector3.left);
 
-        // If the cloud moves off the left side of the screen, destroy it
-        if (transform.position.x < -10.0f)
+        // If the cloud moves off the left side of the tilemap, destroy it
+        float leftEdge = _map.transform.position.x - (_map.size.x * _map.cellSize.x) / 2 - 3.0f;
+        if (transform.position.x < leftEdge)
         {
             Destroy(gameObject);
         }
