@@ -114,7 +114,7 @@ public class LightManager : MonoBehaviour
 
         // Define day and night intensity and color thresholds
         float dayIntensity = 1.0f;
-        float nightIntensity = 0.4f;
+        float nightIntensity = 0.45f;
         Color nightColor = new(159f / 255f, 111f / 255f, 229f / 255f);
         Color dayColor = Color.white;
         Color dawnColor = new(255f / 255f, 185f / 255f, 129f / 255f);
