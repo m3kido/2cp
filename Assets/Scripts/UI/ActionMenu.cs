@@ -14,7 +14,7 @@ public class ActionMenu : MonoBehaviour
     private AttackManager _am;
     private Camera _camera;
     private RectTransform _rect;
-    private AttackManager _am;
+
     private CaptainManager _cp;
 
     [SerializeField] private Sprite _cursor;
@@ -24,7 +24,7 @@ public class ActionMenu : MonoBehaviour
 
     [SerializeField] private GameObject _waitOption;
     [SerializeField] private GameObject _captureOption;
-    [SerializeField] private GameObject _attackOption;
+    [SerializeField] private GameObject _attackoption;
     [SerializeField] private GameObject _loadOption;
     [SerializeField] private GameObject _dropOption;
     [SerializeField] private GameObject _refillOption;
@@ -59,8 +59,8 @@ public class ActionMenu : MonoBehaviour
         _captureOptionInstance = Instantiate(_captureOption, _options.transform);
         _captureOptionInstance.SetActive(false);
 
-        _attackOptionInstance = Instantiate(_attackOption, _options.transform);
-        _attackOptionInstance.SetActive(false);
+        //_attackOptionInstance = Instantiate(_attackOption, _options.transform);
+        //_attackOptionInstance.SetActive(false);
 
         _loadOptionInstance = Instantiate(_loadOption, _options.transform);
         _loadOptionInstance.SetActive(false);
@@ -230,7 +230,7 @@ public class ActionMenu : MonoBehaviour
 
      private void CheckFire()
       {
-          if (_um.SelectedUnit is AttackingUnit && _am.CheckAttack(_um.SelectedUnit as AttackingUnit))
+          if (_um.SelectedUnit is AttackingUnit && _am.UnitCanAttack(_um.SelectedUnit as AttackingUnit))
           {
             _attackOptionInstance.SetActive(true);
             _optionsList.Add(_attackOptionInstance);
@@ -272,3 +272,4 @@ public class ActionMenu : MonoBehaviour
 
     
 }
+#endregion

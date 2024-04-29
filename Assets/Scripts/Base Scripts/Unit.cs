@@ -18,32 +18,9 @@ public class Unit : MonoBehaviour
     // Auto-properties (the compiler automatically creates private fields for them)
     private int _health; // { get; set; }
     public int Provisions { get; set; }
-    public bool IsSelected; // { get; set; }
-    public bool IsMoving { get; set; }
-
-    public int Provisions { get; set; }
     public bool IsSelected { get; set; }
     public bool IsMoving { get; set; }
-    public int Health
-    {
-        get
-        {
-            return _health;
-        }
 
-        set
-        {
-            if (value <= 0)
-            {
-                _health = 0;
-                Die();
-            }
-            else
-            {
-                _health = value;
-            }
-        }
-    }
     [SerializeField] private int _owner; // Serialization is temporary (just for tests)
     public int Owner // Property for the _hasMoved field
     {
@@ -283,3 +260,4 @@ public class Unit : MonoBehaviour
 
 }
 
+#endregion

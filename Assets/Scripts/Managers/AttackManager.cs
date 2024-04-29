@@ -9,7 +9,7 @@ public class AttackManager : MonoBehaviour
     GameManager _gm;
     UnitManager _um;
     MapManager _mm;
-    List<EUnits> directAttacker = new List<EUnits> { EUnits.Catapult, EUnits.Cannoneers, EUnits.Ballista };
+    List<EUnits> directAttacker = new List<EUnits> { EUnits.Catapult, EUnits.Cannoneer, EUnits.Ballista };
     public AttackingUnit Attacker;
     private int selectedTargetIndex = -1;
     private bool _actionTaken = false;
@@ -36,7 +36,7 @@ public class AttackManager : MonoBehaviour
     public bool UnitCanAttack(AttackingUnit attacker)
     {
         if (attacker == null) print("NO ATTACKER FOUND ");
-        return attacker.CanAttack();
+        return attacker.CheckAttack();
     }
 
     public void ApplyDamage(Unit target, AttackingUnit attacker)

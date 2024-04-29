@@ -8,7 +8,7 @@ public class Player
     public bool Lost { get; set; }
     public ETeamColors Color { get; set; }
     public ETeams TeamSide { get; set; }
-    public ECaptains PlayerCaptain { get; set; }
+    public Captain PlayerCaptain { get; set; }
     public Captain Captain { get; set; }
     public int Gold { get; set; }
     
