@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7173521739195678753}
   - component: {fileID: 2105127721835662414}
   m_Layer: 0
-  m_Name: Canoneer
+  m_Name: Cannoneer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
