@@ -32,8 +32,6 @@ public class CloudSpawner : MonoBehaviour
         float verticalCenter = (mapMin.y + mapMax.y) / 2;
         float verticalExtent = (mapMax.y - mapMin.y) / 2;
 
-        Debug.Log($"Right Edge: {rightEdge}, Vertical Center: {verticalCenter}, Vertical Extent: {verticalExtent}");
-
         // Calculate a random Y position within the vertical bounds
         float randomY = Random.Range(verticalCenter - verticalExtent, verticalCenter + verticalExtent);
 
