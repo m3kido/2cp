@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -24,7 +24,7 @@ public class ActionMenu : MonoBehaviour
 
     [SerializeField] private GameObject _waitOption;
     [SerializeField] private GameObject _captureOption;
-    [SerializeField] private GameObject _attackoption;
+    [SerializeField] private GameObject _attackOption;
     [SerializeField] private GameObject _loadOption;
     [SerializeField] private GameObject _dropOption;
     [SerializeField] private GameObject _refillOption;
@@ -59,8 +59,8 @@ public class ActionMenu : MonoBehaviour
         _captureOptionInstance = Instantiate(_captureOption, _options.transform);
         _captureOptionInstance.SetActive(false);
 
-        //_attackOptionInstance = Instantiate(_attackOption, _options.transform);
-        //_attackOptionInstance.SetActive(false);
+        _attackOptionInstance = Instantiate(_attackOption, _options.transform);
+        _attackOptionInstance.SetActive(false);
 
         _loadOptionInstance = Instantiate(_loadOption, _options.transform);
         _loadOptionInstance.SetActive(false);
@@ -217,7 +217,6 @@ public class ActionMenu : MonoBehaviour
         else
         {
             CheckFire();// if is an attacking unit
-
             CheckDrop();
             CheckAbility();
             
@@ -228,19 +227,36 @@ public class ActionMenu : MonoBehaviour
         _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(true);
     }
 
-     private void CheckFire()
-      {
-          if (_um.SelectedUnit is AttackingUnit && _am.UnitCanAttack(_um.SelectedUnit as AttackingUnit))
-          {
-            if((_um.SelectedUnit as AttackingUnit).IndirectUnit && _um.Path.Count == 0)
-            {
-                _attackOptionInstance.SetActive(true);
-                _optionsList.Add(_attackOptionInstance);
-                return;
-            }
-           
+    private void CheckFire()
+    {
+        if (_um.SelectedUnit == null)
+        {
+            Debug.LogWarning("SelectedUnit is null. Unable to check attack option.");
+            return;
         }
-      } 
+
+        if (_um.SelectedUnit is AttackingUnit)
+        {
+            _am.Attacker = _um.SelectedUnit as AttackingUnit;
+            if (_am.Attacker == null)
+            {
+                Debug.Log("Attacker is null");
+            }
+            else
+            {
+                print($"{_am.Attacker} Value(CanAttack) = {_am.Attacker.CheckAttack()}");
+                if (_am.Attacker.CheckAttack())
+                {
+                    _attackOptionInstance.SetActive(true);
+                    _optionsList.Add(_attackOptionInstance);
+                }
+            }
+        }
+        else
+        {
+            Debug.LogWarning("SelectedUnit is not an AttackingUnit. Unable to check attack option.");
+        }
+    }
     private void CheckDrop()
     {
         if (_um.SelectedUnit is LoadingUnit && (_um.SelectedUnit as LoadingUnit).LoadedUnit != null&& (_um.SelectedUnit as LoadingUnit).GetDropTiles() )

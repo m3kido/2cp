@@ -59,69 +59,56 @@ public class AttackingUnit : Unit
 
             var potentialTargetPos = _mm.Map.WorldToCell(unit.transform.position);
 
-            var currentWeapon = Weapons[CurrentWeaponIndex]; // getting the current weapon from the attacker
-
-            bool IsInRange = (L1Distance2D(attackerPos, potentialTargetPos) >= currentWeapon.MinRange) && (L1Distance2D(attackerPos, potentialTargetPos) < currentWeapon.MaxRange);
+            var currentWeapon = Weapons[CurrentWeaponIndex];// getting the current weapon from the attacker
+            Player player = _gm.Players[Owner];
+            Captain captain = player.PlayerCaptain;
+            //Debug.Log("Attack range additionner : " + captain.AttackRangeAdditioner);
+            bool IsInRange = (L1Distance2D(attackerPos, potentialTargetPos) >= currentWeapon.MinRange) && (L1Distance2D(attackerPos, potentialTargetPos) < (currentWeapon.MaxRange + captain.AttackRangeAdditioner));
             bool IsEnemy = Owner != unit.Owner;
             bool IsDamageable = Weapons[CurrentWeaponIndex].DamageList[(int)unit.Data.UnitType] != 0;
 
-            // print($"{L1Distance2D(attackerPos, potentialTargetPos)} / {currentWeapon.MinRange} / {currentWeapon.MaxRange} / {unit}");
+            //print($"{L1Distance2D(attackerPos, potentialTargetPos)} / {currentWeapon.MinRange} / {currentWeapon.MaxRange} / {unit}");
             if (IsInRange && IsEnemy && IsDamageable)
             {
 
                 targets.Add(unit);
             }
         }
-        // print("targets : " + targets.Count);
+        //print("targets : " + targets.Count);
         return targets;
     }
 
-    
 
 
-    public void HighlightTargets()
-    {
-        List<Unit> targets = ScanTargets();
-        Debug.Log("You can attack " + targets.Count + " enemies");
-        foreach (var target in targets)
-        {
-            // Change the material color of the target to blue
-            if (target.TryGetComponent<Renderer>(out var renderer))
-            {
-                MaterialPropertyBlock propBlock = new();
-                renderer.GetPropertyBlock(propBlock);
-                propBlock.SetColor("_Color", Color.blue); // Set the color to blue
-                renderer.SetPropertyBlock(propBlock);
-            }
-        }
-    }
+
+    //public void HighlightTargets()
+    //{
+    //    List<Unit> targets = ScanTargets();
+    //    Debug.Log("You can attack " + targets.Count + " enemies");
+    //    foreach (var target in targets)
+    //    {
+    //        // Change the material color of the target to blue
+    //        if (target.TryGetComponent<Renderer>(out var renderer))
+    //        {
+    //            MaterialPropertyBlock propBlock = new();
+    //            renderer.GetPropertyBlock(propBlock);
+    //            propBlock.SetColor("_Color", Color.blue); // Set the color to blue
+    //            renderer.SetPropertyBlock(propBlock);
+    //        }
+    //    }
+    //}
     public void UnHighlightTargets()
     {
         List<Unit> targets = ScanTargets();
         foreach (var target in targets)
         {
-            // Change the material color of the target to white
-            if (target.TryGetComponent<Renderer>(out var renderer))
-            {
-                MaterialPropertyBlock propBlock = new();
-                renderer.GetPropertyBlock(propBlock);
-                propBlock.SetColor("_Color", Color.white); // Set the color to white
-                renderer.SetPropertyBlock(propBlock);
-            }
+            target._rend.color = Color.white;
         }
     }
 
     public void UnHighlightTarget(Unit target)
     {
-
-        if (target.TryGetComponent<Renderer>(out var renderer))
-        {
-            MaterialPropertyBlock propBlock = new();
-            renderer.GetPropertyBlock(propBlock);
-            propBlock.SetColor("_Color", Color.white); // Set the color to red
-            renderer.SetPropertyBlock(propBlock);
-        }
-
+        target._rend.color = Color.white;
     }
 
     public bool CheckAttack()
@@ -137,10 +124,12 @@ public class AttackingUnit : Unit
         // Now, check if the attacker has any valid targets to attack
         if (targets.Count > 0)
         {
+            Debug.Log("ATTACK AZ7I");
             return true;
         }
         else
         {
+            Debug.Log("Count is 0");
             return false;
         }
     }
