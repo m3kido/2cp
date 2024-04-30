@@ -171,18 +171,15 @@ public class AttackingUnit : Unit
         if (IndirectUnit)
         {
             extraTiles.Clear();
-            foreach (var pos in ValidTiles.Keys)
-            {
-                float dis = L1Distance2D(GetGridPosition(), pos);
-                if ((dis >= Weapons[CurrentWeaponIndex].MinRange && dis < Weapons[CurrentWeaponIndex].MaxRange))
-                {
-                    extraTiles.Add(pos);
-                }
-            }
             ValidTiles.Clear();
-            foreach (var pos in extraTiles)
+            
+            AttackFromTiles(extraTiles, GetGridPosition(), Weapons[CurrentWeaponIndex].MaxRange);
+            foreach(var pos in extraTiles)
             {
-                ValidTiles.Add(pos, 0);
+                if (L1Distance2D(GetGridPosition(), pos) >= Weapons[CurrentWeaponIndex].MinRange)
+                {
+                    ValidTiles.Add(pos, 0);
+                }
             }
 
         }
@@ -212,7 +209,7 @@ public class AttackingUnit : Unit
                 }
                 else { return; }
             }
-            else { return; }
+            
         }
 
 
@@ -225,6 +222,34 @@ public class AttackingUnit : Unit
         ExpandFromTiles(list, down, range - 1);
         ExpandFromTiles(list, left, range - 1);
         ExpandFromTiles(list, right, range - 1);
+
+    }
+    private void AttackFromTiles(List<Vector3Int> list, Vector3Int currentPosition, int range)
+    {
+        if (range == 0) { return; }
+        if (range != Weapons[CurrentWeaponIndex].MaxRange)
+        {
+            if ( !list.Contains(currentPosition))
+            {
+                if (_mm.Map.GetTile<Tile>(currentPosition))
+                {
+                    list.Add(currentPosition);
+                }
+                else { return; }
+            }
+            
+        }
+
+
+        Vector3Int up = currentPosition + Vector3Int.up;
+        Vector3Int down = currentPosition + Vector3Int.down;
+        Vector3Int left = currentPosition + Vector3Int.left;
+        Vector3Int right = currentPosition + Vector3Int.right;
+
+        AttackFromTiles(list, up, range - 1);
+        AttackFromTiles(list, down, range - 1);
+        AttackFromTiles(list, left, range - 1);
+        AttackFromTiles(list, right, range - 1);
 
     }
 
