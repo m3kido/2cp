@@ -1,8 +1,18 @@
 ﻿public enum EWeaponTypes
 {
-    Axe ,
-    Bow , 
-    Sword , 
+    Arrows,
+    Spells,
+    Poison,
+    Fireballs ,
+    Cannons ,
+    Darts ,
+    HandCannon,
+    HeavySword , 
+    LightSword , 
+    Rocks ,
+    Spear , 
+
+
 }
 
 

@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class AttackManager : MonoBehaviour
 {
-    #region Variables
     GameManager _gm;
     UnitManager _um;
     MapManager _mm;
-    
+    List<EUnits> directAttacker = new List<EUnits> { EUnits.Catapult, EUnits.Cannoneer, EUnits.Ballista };
     public AttackingUnit Attacker;
     private int selectedTargetIndex = -1;
     private bool _actionTaken = false;
@@ -21,22 +22,22 @@ public class AttackManager : MonoBehaviour
         set
         {
             _actionTaken = value;
-            print($"-----------ActionTaken : {value}");
+            
         }
     }
-    #endregion
 
-    #region UnityMethods
     private void Awake()
     {
         _gm = FindAnyObjectByType<GameManager>();
         _um = FindAnyObjectByType<UnitManager>();
         _mm = FindAnyObjectByType<MapManager>();
     }
-    #endregion
 
-    #region Methods
-    
+    public bool UnitCanAttack(AttackingUnit attacker)
+    {
+        if (attacker == null) print("NO ATTACKER FOUND ");
+        return attacker.CheckAttack();
+    }
 
     public void ApplyDamage(Unit target, AttackingUnit attacker)
     {
@@ -51,16 +52,19 @@ public class AttackManager : MonoBehaviour
         target.Health -= (int)damageToTarget;
         Debug.Log("Target has been damaged!");
 
-        if (target.Health > 0 && target is AttackingUnit)
+        if (target.Health > 0 && target is AttackingUnit && !directAttacker.Contains(attacker.Data.UnitType)) //We need to check if target unit can attack the attacker)
         {
-            var damageToAttacker = CalculateDamage(attacker, target as AttackingUnit);
-            attacker.Health -= (int)damageToAttacker;
-            Debug.Log("Damage to attacker: " + damageToAttacker);
-            Debug.Log("Attacker has been damaged!");
+            AttackingUnit newAttacker = target as AttackingUnit;
+            if (newAttacker.CanAttackThis(attacker))
+            {
+                var damageToAttacker = CalculateDamage(attacker, newAttacker);
+                attacker.Health -= (int)damageToAttacker;
+                Debug.Log("Damage to attacker: " + damageToAttacker);
+                Debug.Log("Attacker has been damaged!");
+            }
+
         }
     }
-
-    public bool CheckAttack(AttackingUnit attacker) { return attacker.CheckAttack(); }
 
     public void InitiateAttack()
     {
@@ -81,7 +85,7 @@ public class AttackManager : MonoBehaviour
 
         if (targets.Count > 0)
         {
-            Debug.Log(Attacker + " can attack : "+ targets.Count + " targets");
+            Debug.Log(Attacker + " can attack : " + targets.Count + " targets");
             selectedTargetIndex = 0;
 
             // Start target selection process
@@ -95,8 +99,8 @@ public class AttackManager : MonoBehaviour
 
     private IEnumerator TargetSelectionCoroutine(AttackingUnit attacker, List<Unit> targets)
     {
-        yield return null; // Skip 1 frame so the space clicked to confirm the attack option 
-                           // Selection doesn't confirm the target selection instantly 
+        yield return null;// skip 1 frame so the space clicked to confirm the attack option 
+                          // selection doesn't confirm the target selection instantly 
         while (!ActionTaken)
         {
             HandleTargetSelectionInput(attacker, targets);
@@ -105,7 +109,8 @@ public class AttackManager : MonoBehaviour
             yield return null;
         }
         ActionTaken = false;
-        
+
+
         Debug.Log("Action finished");
     }
 
@@ -156,17 +161,17 @@ public class AttackManager : MonoBehaviour
             Unit selectedTarget = targets[selectedTargetIndex];
             ApplyDamage(selectedTarget, attacker);
             ActionTaken = true;
-            EndAttackPhase(targets); // End attack
-            _um.EndMove(); // Terminate move
+            EndAttackPhase();//end attack
+            _um.EndMove();//terminate move
         }
 
         if (Input.GetKeyDown(KeyCode.X)) // Assuming "X" key is used to cancel attack
         {
-            // attacker.UnHighlightTargets();
-            attacker._rend.color = Color.white;
+            attacker.UnHighlightTargets();
             ActionTaken = true;
-            EndAttackPhase(targets);//end attack
-            _gm.CurrentStateOfPlayer = EPlayerStates.InActionsMenu; // Return to action menu
+            EndAttackPhase();//end attack
+            _gm.CurrentStateOfPlayer = EPlayerStates.InActionsMenu;//return to action menu
+
         }
     }
 
@@ -200,35 +205,39 @@ public class AttackManager : MonoBehaviour
         }
     }
 
+
+
     public float CalculateDamage(Unit target, AttackingUnit attacker)
     {
+
         int baseDamage = attacker.Weapons[attacker.CurrentWeaponIndex].DamageList[(int)target.Data.UnitType];
-        Player attackerPlayer = _gm.Players[attacker.Owner];
-        Captain attackerCaptain = attackerPlayer.Captain;
-        //int celesteAttack = attackerCaptain.IsCelesteActive ? attackerCaptain.Data.CelesteDefense : 0;
-        float attackDamage = baseDamage; //* (1 + attackerCaptain.Data.PassiveAttack) * (1 + celesteAttack);
+        Captain attackerCaptain = attacker.GetUnitCaptain;
+        int celesteAttack = attackerCaptain.IsCelesteActive ? attackerCaptain.Data.CelesteDefense : 0;
+        float attackDamage = baseDamage * (1 + attackerCaptain.PassiveAttack) * (1 + celesteAttack) * attackerCaptain.AttackMultiplier; Debug.Log("AttackMultiplier" + attackerCaptain.AttackMultiplier);
+
 
         int terrainStars = _mm.GetTileData(_mm.Map.WorldToCell(target.transform.position)).DefenceStars;
-        Player targetPlayer = _gm.Players[attacker.Owner];
-        Captain targetCaptain = targetPlayer.Captain;
-        //int celesteDefense = targetCaptain.IsCelesteActive ? targetCaptain.Data.CelesteDefense : 0;
-        float defenseDamage = (1 - terrainStars * target.Health / 1000);//* (1 - targetCaptain.Data.PassiveDefense) * (1 - celesteDefense);
+        Captain targetCaptain = target.GetUnitCaptain;
+        int celesteDefense = targetCaptain.IsCelesteActive ? targetCaptain.Data.CelesteDefense : 0;
+        float defenseDamage = (1 - terrainStars * target.Health / 1000) * (1 - targetCaptain.PassiveDefense) * (1 - celesteDefense) * targetCaptain.DefenseMultiplier; Debug.Log("DefenseMultiplier : " + targetCaptain.DefenseMultiplier);
 
-        // int chance = (attackerCaptain.Data.Name == ECaptains.Andrew) ? UnityEngine.Random.Range(2, 10) : UnityEngine.Random.Range(1, 10);
-        float totalDamage = (float)attacker.Health / 100 * attackDamage * defenseDamage;//* (1 + (float)chance / 100);
+        int chance = (attackerCaptain.Data.Name == ECaptains.Andrew) ? UnityEngine.Random.Range(2, 10) : UnityEngine.Random.Range(1, 10);
+        float totalDamage = (float)attacker.Health / 100 * attackDamage * defenseDamage * (1 + (float)chance / 100);
         return totalDamage;
     }
 
-    public void EndAttackPhase(List<Unit> targets)
+
+
+    public void EndAttackPhase()
     {
         Attacker.IsAttacking = false;
         Attacker.HasAttacked = true;
-        //Attacker.UnHighlightTargets();
-        foreach (var target in targets)
-        {
-            target._rend.color = Color.white;
-        }
+        Attacker.UnHighlightTargets();
         Attacker = null;
+
+
     }
-    #endregion
+
+
+
 }

@@ -1,7 +1,8 @@
+using System;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using System;
+
 using System.Collections;
 
 // Class to manage the cursor
@@ -26,10 +27,10 @@ public class CursorManager : MonoBehaviour
     public Vector3Int HoveredOverTile
     {
         get => _mm.Map.WorldToCell(transform.position);
-        set 
-        { 
-            transform.position = new Vector3Int( math.clamp( value.x,_mm.Map.cellBounds.xMin, _mm.Map.cellBounds.xMax-1), math.clamp(value.y, _mm.Map.cellBounds.yMin, _mm.Map.cellBounds.yMax-1),value.z); 
-            
+        set
+        {
+            transform.position = new Vector3Int(math.clamp(value.x, _mm.Map.cellBounds.xMin, _mm.Map.cellBounds.xMax - 1), math.clamp(value.y, _mm.Map.cellBounds.yMin, _mm.Map.cellBounds.yMax - 1), value.z);
+
         }
     }
 
@@ -53,7 +54,8 @@ public class CursorManager : MonoBehaviour
     void Update()
     { 
         // Handle input every frame
-        if(_gm.CurrentStateOfPlayer == EPlayerStates.Idle || _gm.CurrentStateOfPlayer == EPlayerStates.Selecting) {
+        if (_gm.CurrentStateOfPlayer == EPlayerStates.Idle || _gm.CurrentStateOfPlayer == EPlayerStates.Selecting)
+        {
             HandleInput();
         }
     }
@@ -64,7 +66,7 @@ public class CursorManager : MonoBehaviour
     void HandleInput()
     {
         // Dont handle any input if a unit is moving or attacking
-        if (_um.SelectedUnit!= null && _um.SelectedUnit.IsMoving) { return; }
+        if ((_um.SelectedUnit != null && _um.SelectedUnit.IsMoving) || (_gm.CurrentStateOfPlayer == EPlayerStates.Attacking)) { return; }
 
         // X key
         if (Input.GetKeyDown(KeyCode.X))
@@ -86,15 +88,15 @@ public class CursorManager : MonoBehaviour
 
         if (Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.UpArrow))
         {
-            _offset = Vector3Int.up+Vector3Int.right;
+            _offset = Vector3Int.up + Vector3Int.right;
         }
         else if (Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.DownArrow))
         {
-            _offset = Vector3Int.right+Vector3Int.down;
+            _offset = Vector3Int.right + Vector3Int.down;
         }
         else if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.UpArrow))
         {
-            _offset = Vector3Int.left+ Vector3Int.up;
+            _offset = Vector3Int.left + Vector3Int.up;
         }
         else if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.DownArrow))
         {
@@ -128,10 +130,10 @@ public class CursorManager : MonoBehaviour
 
         if ((_offset != _lastOffset && !diff ) || _duration <= 0 )
         {
-            if(_offset.x !=0 && _offset.y != 0)
+            if (_offset.x != 0 && _offset.y != 0)
             {
                 MoveSelector(new Vector3Int(_offset.x, 0, 0));
-                MoveSelector(new Vector3Int(0,_offset.y, 0));
+                MoveSelector(new Vector3Int(0, _offset.y, 0));
             }
             else
             {
@@ -151,14 +153,14 @@ public class CursorManager : MonoBehaviour
            
         }
 
-       
-        
 
-      
+
+
+
     }
-   
+
     // Move the cursor 
-     void MoveSelector(Vector3Int offset)
+    void MoveSelector(Vector3Int offset)
     {
         // Dont let the cursor move out of the highlited tiles
         if (_um.SelectedUnit != null && !_um.SelectedUnit.ValidTiles.ContainsKey(HoveredOverTile + offset))
@@ -215,18 +217,18 @@ public class CursorManager : MonoBehaviour
         HoveredOverTile += offset;
         MoveCamera(offset);
         OnCursorMove?.Invoke();
-        
+
     }
 
     // Handle X Click
     private void XClicked()
     {
-        if(_gm.CurrentStateOfPlayer == EPlayerStates.Selecting) 
+        if (_gm.CurrentStateOfPlayer == EPlayerStates.Selecting)
         {
             // Cancel selection
             HoveredOverTile = _mm.Map.WorldToCell(_um.SelectedUnit.transform.position);
             Camera.main.transform.position = SaveCamera;
-            _um.DeselectUnit();       
+            _um.DeselectUnit();
         }
         else if (_gm.CurrentStateOfPlayer == EPlayerStates.Idle)
         {
@@ -287,7 +289,7 @@ public class CursorManager : MonoBehaviour
             }
             else
             {
-                if (_bm.BuildingFromPosition.ContainsKey(HoveredOverTile) && _bm.BuildingFromPosition[HoveredOverTile].Owner == _gm.PlayerTurn )
+                if (_bm.BuildingFromPosition.ContainsKey(HoveredOverTile) && _bm.BuildingFromPosition[HoveredOverTile].Owner == _gm.PlayerTurn)
                 {
                      var CurrBuilingType= _bm.BuildingDataFromTile[_mm.Map.GetTile<Tile>(HoveredOverTile)].BuildingType;
                      bool Isspawner = CurrBuilingType == EBuildings.Port || CurrBuilingType == EBuildings.Camp;
@@ -314,11 +316,13 @@ public class CursorManager : MonoBehaviour
         var xdistance = HoveredOverTile.x - _camera.transform.position.x;
         var ydistance = HoveredOverTile.y - _camera.transform.position.y;
         //if we hit a certain tile move the camera with it
-        if ((xdistance>5 && offset.x>0)||( xdistance < -6 && offset.x < 0) ||( ydistance > 2 && offset.y > 0 )|| (ydistance< -3 && offset.y < 0))
+        if ((xdistance > 5 && offset.x > 0) || (xdistance < -6 && offset.x < 0) || (ydistance > 2 && offset.y > 0) || (ydistance < -3 && offset.y < 0))
         {
-        //move the camera and make sure to not go out of bounds
-        _camera.transform.position = new Vector3(math.clamp( _camera.transform.position.x + offset.x,bounds.xMin+9,bounds.xMax-9), math.clamp(_camera.transform.position.y + offset.y, bounds.yMin+5, bounds.yMax-5), _camera.transform.position.z);
+            //move the camera and make sure to not go out of bounds
+            _camera.transform.position = new Vector3(math.clamp(_camera.transform.position.x + offset.x, bounds.xMin + 9, bounds.xMax - 9), math.clamp(_camera.transform.position.y + offset.y, bounds.yMin + 5, bounds.yMax - 5), _camera.transform.position.z);
         }
     }
-    #endregion
+
+
 }
+#endregion

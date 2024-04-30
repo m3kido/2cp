@@ -14,48 +14,71 @@ public class GameManager : MonoBehaviour
 
     private EPlayerStates _currentStateOfPlayer;
     public EPlayerStates CurrentStateOfPlayer // Property for the _currentStateOfPlayer field
-    { 
-        get { return _currentStateOfPlayer; } 
+    {
+        get { return _currentStateOfPlayer; }
         set { _currentStateOfPlayer = value; OnStateChange?.Invoke(); LastStateOfPlayer = _currentStateOfPlayer; }
     }
 
     // Event to let know that the state of the player has changed
     public static event Action OnStateChange;
 
-    // Turn end and day end events
-    public static event Action OnTurnEnd;
-    public static event Action OnDayEnd;
-    #endregion
-
-    #region UnityMethods
     private void Awake()
     {
         CurrentStateOfPlayer = EPlayerStates.Idle;
         LastStateOfPlayer = EPlayerStates.Idle;
+
+
+
+    }
+
+    private void Start()
+    {
         // Initialize players
         Players = new List<Player>
         {
-            new("Mohamed", ETeamColors.Amber, ETeams.A, ECaptains.Andrew,null),
-            new("Oussama", ETeamColors.Azure, ETeams.B, ECaptains.Maximus, null)
+            new("Mohamed", ETeamColors.Amber, ETeams.A, ECaptains.Andrew),
+            new("Oussama1", ETeamColors.Azure, ETeams.B, ECaptains.Melina),
+            new("Oussama2", ETeamColors.Azure, ETeams.C, ECaptains.Godfrey),
+            new("Oussama3", ETeamColors.Azure, ETeams.D, ECaptains.Maximus)
         };
     }
-   
+
     private void Update()
     {
+
         // Handle input for turn end
-        if (Input.GetKeyDown(KeyCode.C)) EndTurn();
+        if (Input.GetKeyDown(KeyCode.C) && CurrentStateOfPlayer == EPlayerStates.Idle) EndTurn();
+
+        //if (Input.GetKeyDown(KeyCode.C)) EndTurn();
+
+
     }
     #endregion
 
-    #region Methods
+    // Declare turn end and day end events
+    public static event Action OnTurnEnd;
+    public static event Action OnTurnStart;
+    public static event Action OnDayEnd;
+
     // Method to end a turn
     public void EndTurn()
     {
         PlayerTurn = (PlayerTurn + 1) % Players.Count;
         OnTurnEnd?.Invoke();
-        if (PlayerTurn != 0) return;
-        Day++;
-        OnDayEnd?.Invoke();
+        if (PlayerTurn == 0)
+        {
+            Day++;
+            OnDayEnd?.Invoke();
+        };
+
+
+        OnTurnStart?.Invoke();
     }
-    #endregion
+
+    public void RemovePlayer(Player player)
+    {
+        player.RemoveCaptain();
+        Players.Remove(player);
+    }
+
 }

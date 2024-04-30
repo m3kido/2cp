@@ -17,15 +17,16 @@ public class CaptainBar : MonoBehaviour
     [SerializeField] private Sprite MelinaSprite;
     [SerializeField] private Sprite GodfretSprite;
 
-    private GameManager _gm;
-    #endregion
 
-    #region UnityMethods
+    private GameManager _gm;
+
     private void Awake()
     {
         _gm = FindAnyObjectByType<GameManager>();
+
     }
- 
+
+
     void Start()
     {
         UpdateCaptain();
@@ -38,7 +39,7 @@ public class CaptainBar : MonoBehaviour
     private void UpdateSuperMeter()
     {
         //idk how the captains will be held
-        _superMeterSprite.GetComponent<Image>().fillAmount = _gm.Players[_gm.PlayerTurn].SuperMeter;
+        _superMeterSprite.GetComponent<Image>().fillAmount = _gm.Players[_gm.PlayerTurn].PlayerCaptain.SuperMeter;
     }
     public void UpdateCaptain()
     {
@@ -60,19 +61,19 @@ public class CaptainBar : MonoBehaviour
             _captainColor.GetComponent<Image>().color = Color.green;
         }
         var cap = _gm.Players[_gm.PlayerTurn].PlayerCaptain;
-        if (cap==ECaptains.Andrew)
+        if (cap.Data.Name==ECaptains.Andrew)
         {
             _captainSprite.GetComponent<Image>().sprite =AndrewSprite;
         }
-        else if (cap == ECaptains.Maximus)
+        else if (cap.Data.Name == ECaptains.Maximus)
         {
             _captainSprite.GetComponent<Image>().sprite = MaximusSprite;
         }
-        else if (cap == ECaptains.Melina)
+        else if (cap.Data.Name == ECaptains.Melina)
         {
             _captainSprite.GetComponent<Image>().sprite = MelinaSprite;
         }
-        else if (cap == ECaptains.Godfrey)
+        else if (cap.Data.Name == ECaptains.Godfrey)
         {
             _captainSprite.GetComponent<Image>().sprite = GodfretSprite;
         }
@@ -81,7 +82,15 @@ public class CaptainBar : MonoBehaviour
     }
     public void UpdateGold()
     {
-        _goldValue.GetComponent<TextMeshProUGUI>().text = _gm.Players[_gm.PlayerTurn].Gold.ToString();
+        //_captainSprite.sprite = _gm.Players[_gm.PlayerTurn].PlayerCaptain.FrameSprite;
+        if (_goldValue.TryGetComponent<TextMeshProUGUI>(out var textMesh))
+        {
+            textMesh.text = _gm.Players[_gm.PlayerTurn].Gold.ToString();
+        }
+
+        
     }
-    #endregion
+
+    
 }
+#endregion

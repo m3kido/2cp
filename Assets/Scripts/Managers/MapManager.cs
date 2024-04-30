@@ -35,6 +35,7 @@ public class MapManager : MonoBehaviour
     // Get tile datas of every tile type from the inspector
     private void Awake()
     {
+        
         foreach (var tileData in _tileDatas)
         {
             foreach(var tile in tileData.TerrainsOfSameType) 

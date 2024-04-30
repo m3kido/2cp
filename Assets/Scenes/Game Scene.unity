@@ -2521,6 +2521,55 @@ Transform:
   - {fileID: 405094967}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &513586798
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 513586800}
+  - component: {fileID: 513586799}
+  m_Layer: 0
+  m_Name: CptainsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &513586799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513586798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fef2f5d447ae87044a4a98b866b11646, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _captainSOList:
+  - {fileID: 11400000, guid: 931cddd13b2ce1d4b9fc3fa290b7b792, type: 2}
+  - {fileID: 11400000, guid: 21b4f33bfb8702949b16079a7eed822c, type: 2}
+  - {fileID: 11400000, guid: 84b23f8640d308a4988095446e0adaab, type: 2}
+  - {fileID: 11400000, guid: db98c32527e171946939ca39c31ff8af, type: 2}
+--- !u!4 &513586800
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513586798}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.7674346, y: 4.407469, z: -0.053822797}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -4194,7 +4243,7 @@ MonoBehaviour:
   _options: {fileID: 1147525813}
   _waitOption: {fileID: 1838016671996289318, guid: 253a5b24fc9b53e46b9eed3f4b4bc3c4, type: 3}
   _captureOption: {fileID: 3091980616455015756, guid: 94a134f8eb2d8d04b9c390e44a10fc77, type: 3}
-  _attackOption: {fileID: 3841886281929794860, guid: e7c10463e52c4da448cdc50610ed3376, type: 3}
+  _attackoption: {fileID: 0}
   _loadOption: {fileID: 1590148915908773573, guid: 79f5a73a06d58d649a56cb23c36ae107, type: 3}
   _dropOption: {fileID: 9119893431897209036, guid: 01bf5357af0d6af4a8486f8bf8cbff33, type: 3}
   _refillOption: {fileID: 5043639148934234899, guid: d794546205ef8684cbb5a73324eeae55, type: 3}
@@ -12466,3 +12515,4 @@ SceneRoots:
   - {fileID: 513257754}
   - {fileID: 806359658}
   - {fileID: 1577000068}
+  - {fileID: 513586800}

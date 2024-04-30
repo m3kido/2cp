@@ -8,39 +8,19 @@ public class Unit : MonoBehaviour
     #region Variables
     // Managers will be needed
     protected MapManager _mm;
-    protected GameManager _gm;
     protected UnitManager _um;
+    protected GameManager _gm;
     public SpriteRenderer _rend;
-    
+
     [SerializeField] private UnitDataSO _data;
     public UnitDataSO Data => _data; // Readonly property for the _data field
 
     // Auto-properties (the compiler automatically creates private fields for them)
-    public int _health;
-
+    private int _health; // { get; set; }
     public int Provisions { get; set; }
     public bool IsSelected { get; set; }
     public bool IsMoving { get; set; }
-    public int Health
-    {
-        get
-        {
-            return _health;
-        }
 
-        set
-        {
-            if (value <= 0)
-            {
-                _health = 0;
-                Die();
-            }
-            else
-            {
-                _health = value;
-            }
-        }
-    }
     [SerializeField] private int _owner; // Serialization is temporary (just for tests)
     public int Owner // Property for the _hasMoved field
     {
@@ -66,35 +46,65 @@ public class Unit : MonoBehaviour
         }
     }
 
-    // Dictionary to hold the grid position of the valid tiles along with the provisions consumed to reach them
+
+    public int Health
+    {
+        get
+        {
+            return _health;
+        }
+
+        set
+        {
+            if (value <= 0)
+            {
+                _health = 0;
+                Die();
+            }
+            else if (value > MaxHealth)
+            {
+
+                _health = MaxHealth;
+            }
+            else
+            {
+                _health = value;
+            }
+        }
+    }
+    public static int MaxHealth = 100;
+    public int MoveRange;
+    // Dictionary to hold the grid position of the valid tiles along with the fuel consumed to reach them
+
     private Dictionary<Vector3Int, int> _validTiles = new();
     public Dictionary<Vector3Int, int> ValidTiles
     {
         get => _validTiles;
         set => _validTiles = value;
     }
-    #endregion
 
-    #region UnityMethods
-    void Awake()
+    private void Awake()
     {
         // Get map and unit manager from the hierarchy
         _mm = FindAnyObjectByType<MapManager>();
         _gm = FindAnyObjectByType<GameManager>();
         _um = FindAnyObjectByType<UnitManager>();
         _rend = GetComponent<SpriteRenderer>();
-        Health = 100;
+        Health = MaxHealth;
         Provisions = _data.MaxProvisions;
         _hasMoved = false;
+        MoveRange = Data.MoveRange;
     }
 
     private void Start()
     {
+        // Get map and unit manager from the hierarchy
+        _mm = FindAnyObjectByType<MapManager>();
+        _um = FindAnyObjectByType<UnitManager>();
+        _gm = FindAnyObjectByType<GameManager>();
         AssignColor();
     }
-    #endregion
-
-    #region Methods
+    
     private void AssignColor()
     {
         ETeamColors OwnerColor = _gm.Players[_owner].Color;
@@ -117,7 +127,8 @@ public class Unit : MonoBehaviour
         IsSelected = true;
 
         // Empty to remove previous cases
-        _validTiles.Clear();
+        ValidTiles.Clear();
+
 
         // WorlToCell takes a float postion and converts it to grid position
         Vector3Int startPos = _mm.Map.WorldToCell(transform.position);
@@ -125,16 +136,16 @@ public class Unit : MonoBehaviour
         // You can find SeekTile() just below
         SeekTile(startPos, -1);
 
-        foreach (var pos in _validTiles.Keys)
+        foreach (var pos in ValidTiles.Keys)
         {
-            if (_validTiles[pos] <= Provisions)
+            if (ValidTiles[pos] <= Provisions)
             {
                 _mm.Map.SetTileFlags(pos, TileFlags.None);
                 _mm.HighlightTile(pos);
             }
             else
             {
-                _validTiles.Remove(pos);
+                ValidTiles.Remove(pos);
             }
         }
         
@@ -147,11 +158,11 @@ public class Unit : MonoBehaviour
     public void ResetTiles()
     {
         IsSelected = false;
-        foreach (var pos in _validTiles.Keys)
+        foreach (var pos in ValidTiles.Keys)
         {
             _mm.UnHighlightTile(pos);
         }
-        _validTiles.Clear();
+        ValidTiles.Clear();
     }
 
     // Check if the given grid position falls into the move range of the unit
@@ -188,15 +199,15 @@ public class Unit : MonoBehaviour
         // If the current tile is not an obstacle and falls into the move range of the unit
         if (!_um.IsObstacle(currentPosition, this) && InBounds(currentPosition))
         {
-            if (!_validTiles.ContainsKey(currentPosition))
+            if (!ValidTiles.ContainsKey(currentPosition))
             {
-                _validTiles.Add(currentPosition, currentProvisions);
+                ValidTiles.Add(currentPosition, currentProvisions);
             }
             else
             {
-                if (currentProvisions < _validTiles[currentPosition])
+                if (currentProvisions < ValidTiles[currentPosition])
                 {
-                    _validTiles[currentPosition] = currentProvisions;
+                    ValidTiles[currentPosition] = currentProvisions;
 
                 }
                 else { return; }
@@ -235,6 +246,18 @@ public class Unit : MonoBehaviour
         return _mm.Map.WorldToCell(transform.position);
     }
 
-}
-    #endregion
+    public Captain GetUnitCaptain
+    {
+        get
+        {
+            var player = _gm.Players[Owner];
+            return player.PlayerCaptain;
+        }
 
+        private set { }
+
+    }
+
+}
+
+#endregion
