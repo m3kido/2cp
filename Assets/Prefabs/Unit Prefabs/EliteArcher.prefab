@@ -101,3 +101,13 @@ MonoBehaviour:
   _data: {fileID: 11400000, guid: e562743c97edf474f98bdd971ea69e74, type: 2}
   _owner: 0
   MoveRange: 0
+  _weapons:
+  - _damageList: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+    _ammo: 0
+    _weaponType: 0
+    _ammoPerAttack: 0
+    _minRange: 1
+    _maxRange: 4
+  CurrentWeaponIndex: 0
+  HasAttacked: 0
+  IndirectUnit: 0

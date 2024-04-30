@@ -23,15 +23,13 @@ public class CaptainManager : MonoBehaviour
         {
             CaptainsDict.Add((ECaptains)i, _captainSOList[i]);
         }
+        print(CaptainsDict);
 
     }
 
     private void Start()
     {
-        for (int i = 0; i < _captainSOList.Count; i++)
-        {
-            CaptainsDict.Add((ECaptains)i, _captainSOList[i]);
-        }
+        
     }
 
     private void Update()

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -98,16 +99,19 @@ public class Unit : MonoBehaviour
 
     private void Start()
     {
-        // Get map and unit manager from the hierarchy
-        _mm = FindAnyObjectByType<MapManager>();
-        _um = FindAnyObjectByType<UnitManager>();
-        _gm = FindAnyObjectByType<GameManager>();
-        AssignColor();
+     
+        
+        StartCoroutine( AssignColor());
     }
     
-    private void AssignColor()
+    private IEnumerator AssignColor()
     {
+     
+        yield return null;
+        
+      
         ETeamColors OwnerColor = _gm.Players[_owner].Color;
+
         
         Color OutlineColor;
         switch (OwnerColor)

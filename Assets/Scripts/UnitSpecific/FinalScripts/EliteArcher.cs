@@ -1,4 +1,4 @@
-public class EliteArcher : Unit
+public class EliteArcher : AttackingUnit
 {
    
 }

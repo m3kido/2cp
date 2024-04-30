@@ -76,34 +76,7 @@ public class AttackingUnit : Unit
         return targets;
     }
 
-    public bool CheckAttack()
-    {
-        var attackerPos = GetGridPosition();
-
-        foreach (var unit in _um.Units)
-        {
-            if (unit == this || !unit.gameObject.activeInHierarchy) continue;
-
-            var potentialTargetPos = unit.GetGridPosition();
-
-            var currentWeapon = Weapons[CurrentWeaponIndex];// getting the current weapon from the attacker
-            Player player = _gm.Players[Owner];
-            Captain captain = player.PlayerCaptain;
-            //Debug.Log("Attack range additionner : " + captain.AttackRangeAdditioner);
-            bool IsInRange = (L1Distance2D(attackerPos, potentialTargetPos) >= currentWeapon.MinRange) && (L1Distance2D(attackerPos, potentialTargetPos) < (currentWeapon.MaxRange + captain.AttackRangeAdditioner));
-            bool IsEnemy = Owner != unit.Owner;
-            bool IsDamageable = Weapons[CurrentWeaponIndex].DamageList[(int)unit.Data.UnitType] != 0;
-
-            //print($"{L1Distance2D(attackerPos, potentialTargetPos)} / {currentWeapon.MinRange} / {currentWeapon.MaxRange} / {unit}");
-            if (IsInRange && IsEnemy && IsDamageable)
-            {
-                
-                targets.Add(unit);
-            }
-        }
-        //print("targets : " + targets.Count);
-        return targets;
-    }
+    
 
 
     public void HighlightTargets()

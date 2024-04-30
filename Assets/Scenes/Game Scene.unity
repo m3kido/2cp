@@ -2532,7 +2532,7 @@ GameObject:
   - component: {fileID: 513586800}
   - component: {fileID: 513586799}
   m_Layer: 0
-  m_Name: CptainsManager
+  m_Name: CaptainsManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3658,7 +3658,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.35
+  m_FillAmount: 0.64
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -51,7 +52,7 @@ public class BuildingManager : MonoBehaviour
         _um = FindAnyObjectByType<UnitManager>();
 
         // Scan the map and put all the buldings in the Buildings dictionary
-        ScanMapForBuildings();
+        StartCoroutine( ScanMapForBuildings());
     }
 
     private void OnEnable()
@@ -69,8 +70,9 @@ public class BuildingManager : MonoBehaviour
 
     #region Methods
     // Scan the map and put all the buldings in the Buildings dictionary
-    private void ScanMapForBuildings()
+    private IEnumerator ScanMapForBuildings()
     {
+        yield return null;
         _buildingFromPosition = new Dictionary<Vector3Int, Building>();
         foreach (var pos in _mm.Map.cellBounds.allPositionsWithin)
         {
@@ -81,7 +83,9 @@ public class BuildingManager : MonoBehaviour
                 foreach(var player in _gm.Players){
                     if(player.Color==currData.Color)
                     {
-                        _buildingFromPosition.Add(pos, new Building(currData.BuildingType, pos, _gm.Players.IndexOf(player)));
+                      
+                            _buildingFromPosition.Add(pos, new Building(currData.BuildingType, pos, _gm.Players.IndexOf(player)));
+                        
                     }
                 }
                

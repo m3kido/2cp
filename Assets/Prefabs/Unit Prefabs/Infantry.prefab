@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2773230227958978046}
   - component: {fileID: 7558385913804266953}
-  - component: {fileID: -2360867654628988444}
+  - component: {fileID: 508301312882059283}
   m_Layer: 0
   m_Name: Infantry
   m_TagString: Untagged
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-2360867654628988444
+--- !u!114 &508301312882059283
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,7 +94,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5520205959947636410}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f97d3c23b37cec442bb1e3b87d4c61c1, type: 3}
+  m_Script: {fileID: 11500000, guid: 9831ef94986d2d44da8f80a91dfc36b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _rend: {fileID: 0}
@@ -102,11 +102,12 @@ MonoBehaviour:
   _owner: 0
   MoveRange: 0
   _weapons:
-  - _damageList: 370000002d00000005000000010000000f0000000f000000190000000000000000000000000000000000000000000000
-    _ammo: 99999999
-    _weaponType: 8
+  - _damageList: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+    _ammo: 0
+    _weaponType: 0
     _ammoPerAttack: 0
     _minRange: 1
     _maxRange: 2
   CurrentWeaponIndex: 0
   HasAttacked: 0
+  IndirectUnit: 0

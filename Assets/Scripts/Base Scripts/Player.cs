@@ -9,7 +9,7 @@ public class Player
     public ETeamColors Color { get; set; }
     public ETeams TeamSide { get; set; }
     public Captain PlayerCaptain { get; set; }
-    public Captain Captain { get; set; }
+    
     public int Gold { get; set; }
     
 

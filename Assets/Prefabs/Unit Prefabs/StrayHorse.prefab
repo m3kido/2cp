@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3479614002581359579}
   - component: {fileID: 920094050534924552}
-  - component: {fileID: 7110219399058228674}
+  - component: {fileID: 6016509615240507742}
   m_Layer: 0
   m_Name: StrayHorse
   m_TagString: Untagged
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7110219399058228674
+--- !u!114 &6016509615240507742
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,12 +94,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2111720270158312193}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83cbc4358ebbfeb44b7c8d813809debe, type: 3}
+  m_Script: {fileID: 11500000, guid: 155543d80d207c54bb9bf5fb65f1354b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _rend: {fileID: 0}
   _data: {fileID: 11400000, guid: d1b067fb265ef184e96751d213d48b93, type: 2}
-  _health: 100
-  _owner: 1
+  _owner: 0
+  MoveRange: 0
   LoadedUnit: {fileID: 0}
   DropTiles: []

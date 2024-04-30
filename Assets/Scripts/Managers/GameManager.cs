@@ -26,7 +26,8 @@ public class GameManager : MonoBehaviour
     {
         CurrentStateOfPlayer = EPlayerStates.Idle;
         LastStateOfPlayer = EPlayerStates.Idle;
-
+        // Initialize players
+       
 
 
     }
@@ -38,8 +39,8 @@ public class GameManager : MonoBehaviour
         {
             new("Mohamed", ETeamColors.Amber, ETeams.A, ECaptains.Andrew),
             new("Oussama1", ETeamColors.Azure, ETeams.B, ECaptains.Melina),
-            new("Oussama2", ETeamColors.Azure, ETeams.C, ECaptains.Godfrey),
-            new("Oussama3", ETeamColors.Azure, ETeams.D, ECaptains.Maximus)
+            new("Oussama2", ETeamColors.Gilded, ETeams.C, ECaptains.Godfrey),
+            new("Oussama3", ETeamColors.Verdant, ETeams.D, ECaptains.Maximus)
         };
     }
 

@@ -32,11 +32,12 @@ public class CaptainBar : MonoBehaviour
         UpdateCaptain();
         GameManager.OnTurnEnd += UpdateCaptain;
         UnitManager.OnMoveEnd += UpdateSuperMeter;
+
     }
     #endregion
 
     #region Methods
-    private void UpdateSuperMeter()
+    public void UpdateSuperMeter()
     {
         //idk how the captains will be held
         _superMeterSprite.GetComponent<Image>().fillAmount = _gm.Players[_gm.PlayerTurn].PlayerCaptain.SuperMeter;
@@ -78,7 +79,7 @@ public class CaptainBar : MonoBehaviour
             _captainSprite.GetComponent<Image>().sprite = GodfretSprite;
         }
         UpdateGold();
-       
+        UpdateSuperMeter();
     }
     public void UpdateGold()
     {
@@ -90,7 +91,7 @@ public class CaptainBar : MonoBehaviour
 
         
     }
-
     
+
 }
 #endregion

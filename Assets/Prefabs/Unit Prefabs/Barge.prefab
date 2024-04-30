@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6111043323170200727}
   - component: {fileID: 4248062272779461944}
-  - component: {fileID: 7089323732122963744}
+  - component: {fileID: 1475553933330563634}
   m_Layer: 0
   m_Name: Barge
   m_TagString: Untagged
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7089323732122963744
+--- !u!114 &1475553933330563634
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,12 +94,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8481236441836822687}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83cbc4358ebbfeb44b7c8d813809debe, type: 3}
+  m_Script: {fileID: 11500000, guid: f48a8caa7170b5944944bc561bb3265e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _rend: {fileID: 0}
   _data: {fileID: 11400000, guid: 0890955ae3c8c1843906f617cbb3264a, type: 2}
-  _health: 100
-  _owner: 1
+  _owner: 0
+  MoveRange: 0
   LoadedUnit: {fileID: 0}
   DropTiles: []
