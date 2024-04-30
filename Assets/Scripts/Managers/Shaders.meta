@@ -1,11 +1,9 @@
 fileFormatVersion: 2
-<<<<<<< Updated upstream
-=======
 <<<<<<<< HEAD:Assets/Scripts/Managers/Shaders.meta
-guid: 03c1f418b71ecba44a576073714caec3
+guid: 3e22fb165d34db4439bcf1289573023a
 ========
->>>>>>> Stashed changes
 guid: 89b1c48fa9f24e849875190f730c0a01
+>>>>>>>> Attack-System:Assets/Prefabs/Captain Prefabs.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

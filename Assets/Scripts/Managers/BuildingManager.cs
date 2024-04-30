@@ -78,16 +78,20 @@ public class BuildingManager : MonoBehaviour
             if (posTile != null && posTile.TerrainType == ETerrains.Building)
             {
                 BuildingDataSO currData = _buildingDataFromTile[_mm.Map.GetTile<Tile>(pos)];
-                foreach(var player in _gm.Players){
-                    if(player.Color==currData.Color)
+                foreach (var player in _gm.Players)
+                {
+                    if (player.Color == currData.Color)
                     {
-                        _buildingFromPosition.Add(pos, new Building(currData.BuildingType, pos, _gm.Players.IndexOf(player)));
+                        if (!_buildingFromPosition.ContainsKey(pos))
+                        {
+                            _buildingFromPosition.Add(pos, new Building(currData.BuildingType, pos, _gm.Players.IndexOf(player)));
+                        }
                     }
                 }
-               
             }
         }
     }
+
     //change the sprite
     private void ChangeBuildingOwner(Building building,int owner)
     {

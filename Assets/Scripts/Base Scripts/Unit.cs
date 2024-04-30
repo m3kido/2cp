@@ -104,22 +104,37 @@ public class Unit : MonoBehaviour
         _gm = FindAnyObjectByType<GameManager>();
         AssignColor();
     }
-    
+
     private void AssignColor()
     {
+        if (_gm == null || _gm.Players == null)
+        {
+            // Handle null references gracefully
+            Debug.LogError("ERROR: GameManager or Players list is null.");
+            return;
+        }
+
+        if (_owner < 0 || _owner >= _gm.Players.Count)
+        {
+            // Handle invalid owner index gracefully
+            Debug.LogError("ERROR: Invalid owner index.");
+            return;
+        }
+
         ETeamColors OwnerColor = _gm.Players[_owner].Color;
-        
+
         Color OutlineColor;
         switch (OwnerColor)
         {
-            case ETeamColors.Amber:OutlineColor = Color.red; break;
+            case ETeamColors.Amber: OutlineColor = Color.red; break;
             case ETeamColors.Azure: OutlineColor = Color.blue; break;
             case ETeamColors.Gilded: OutlineColor = Color.yellow; break;
             case ETeamColors.Verdant: OutlineColor = Color.green; break;
-            default:OutlineColor = Color.clear; break;
+            default: OutlineColor = Color.clear; break;
         }
         GetComponent<SpriteRenderer>().material.color = OutlineColor;
     }
+
 
     // Highlight the accessible tiles to the unit
     public void HighlightTiles()

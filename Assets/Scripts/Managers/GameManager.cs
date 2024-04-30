@@ -26,14 +26,13 @@ public class GameManager : MonoBehaviour
     {
         CurrentStateOfPlayer = EPlayerStates.Idle;
         LastStateOfPlayer = EPlayerStates.Idle;
-
-
+        // Initialize players
+        
 
     }
 
     private void Start()
     {
-        // Initialize players
         Players = new List<Player>
         {
             new("Mohamed", ETeamColors.Amber, ETeams.A, ECaptains.Andrew),

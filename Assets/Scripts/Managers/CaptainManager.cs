@@ -28,10 +28,6 @@ public class CaptainManager : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < _captainSOList.Count; i++)
-        {
-            CaptainsDict.Add((ECaptains)i, _captainSOList[i]);
-        }
     }
 
     private void Update()
