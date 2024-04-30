@@ -123,7 +123,7 @@ public class Unit : MonoBehaviour
         Vector3Int startPos = _mm.Map.WorldToCell(transform.position);
 
         // You can find SeekTile() just below
-        SeekTile(startPos, -1);
+        SeekTile(startPos, -1,0);
 
         foreach (var pos in _validTiles.Keys)
         {
@@ -166,8 +166,8 @@ public class Unit : MonoBehaviour
     }
 
     // A recursive function to fill the ValidTiles dictionary
-    protected void SeekTile(Vector3Int currentPosition, int currentProvisions)
-    {
+    protected void SeekTile(Vector3Int currentPosition, int currentProvisions,int count)
+    {   
         // Access the current tile
         Tile currTile = _mm.Map.GetTile<Tile>(currentPosition);
         if (currTile == null) { return; }
@@ -186,7 +186,7 @@ public class Unit : MonoBehaviour
         if (currentProvisions > Provisions) { return; }
 
         // If the current tile is not an obstacle and falls into the move range of the unit
-        if (!_um.IsObstacle(currentPosition, this) && InBounds(currentPosition))
+        if (!_um.IsObstacle(currentPosition, this) && InBounds(currentPosition) && count<=Data.MoveRange)
         {
             if (!_validTiles.ContainsKey(currentPosition))
             {
@@ -212,10 +212,10 @@ public class Unit : MonoBehaviour
         Vector3Int left = currentPosition + Vector3Int.left;
         Vector3Int right = currentPosition + Vector3Int.right;
 
-        SeekTile(up, currentProvisions);
-        SeekTile(down, currentProvisions);
-        SeekTile(left, currentProvisions);
-        SeekTile(right, currentProvisions);
+        SeekTile(up, currentProvisions, count+1);
+        SeekTile(down, currentProvisions, count + 1);
+        SeekTile(left, currentProvisions, count + 1);
+        SeekTile(right, currentProvisions, count + 1);
     }
     public void Die()
     {

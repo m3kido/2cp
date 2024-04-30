@@ -14,6 +14,7 @@ public class AttackingUnit : Unit
     public int CurrentWeaponIndex = 0;
     private bool _isAttacking = false;
     public bool HasAttacked = false;
+    [SerializeField] public bool IndirectUnit;
 
     public bool IsAttacking
     {
@@ -31,7 +32,7 @@ public class AttackingUnit : Unit
             else
             {
                 _rend.color = Color.white;
-                
+
             }
         }
     }
@@ -83,7 +84,7 @@ public class AttackingUnit : Unit
     public bool CheckAttack()
     {
         var attackerPos = GetGridPosition();
-        
+
         foreach (var unit in _um.Units)
         {
             if (unit == this || !unit.gameObject.activeInHierarchy) continue;
@@ -100,11 +101,11 @@ public class AttackingUnit : Unit
             if (IsInRange && IsEnemy && IsDamageable)
             {
                 return true;
-            }  
+            }
         }
         return false;
     }
-    
+
     public void UnHighlightTargets()
     {
         List<Unit> targets = ScanTargets();
@@ -132,7 +133,7 @@ public class AttackingUnit : Unit
         }
     }
 
-    
+
 
     public void MoveToNextWeapon()
     {
@@ -145,12 +146,39 @@ public class AttackingUnit : Unit
     }
     public void AttackTiles()
     {
-        SeekTile(GetGridPosition(), -1);
+
+        SeekTile(GetGridPosition(), -1, 0);
         List<Vector3Int> extraTiles = new();
         foreach (var pos in ValidTiles.Keys)
         {
-            ExpandFromTiles(extraTiles, pos, Weapons[CurrentWeaponIndex].MaxRange + 1);
+            ExpandFromTiles(extraTiles, pos, Weapons[CurrentWeaponIndex].MaxRange);
         }
+        foreach (var pos in extraTiles)
+        {
+            if (!ValidTiles.ContainsKey(pos))
+            {
+                ValidTiles.Add(pos, 0);
+            }
+        }
+        if (IndirectUnit)
+        {
+            extraTiles.Clear();
+            foreach (var pos in ValidTiles.Keys)
+            {
+                float dis = L1Distance2D(GetGridPosition(), pos);
+                if ((dis >= Weapons[CurrentWeaponIndex].MinRange && dis < Weapons[CurrentWeaponIndex].MaxRange))
+                {
+                    extraTiles.Add(pos);
+                }
+            }
+            ValidTiles.Clear();
+            foreach (var pos in extraTiles)
+            {
+                ValidTiles.Add(pos, 0);
+            }
+
+        }
+
         foreach (var pos in ValidTiles.Keys)
         {
             if (ValidTiles[pos] <= Provisions)
@@ -159,24 +187,14 @@ public class AttackingUnit : Unit
                 _mm.HighlightAttackTile(pos);
             }
         }
-        foreach (var pos in extraTiles)
-        {
 
-            _mm.Map.SetTileFlags(pos, TileFlags.None);
-            _mm.HighlightAttackTile(pos);
-            if (!ValidTiles.ContainsKey(pos))
-            {
-                ValidTiles.Add(pos, 0);
-            }
-
-
-        }
 
     }
+
     private void ExpandFromTiles(List<Vector3Int> list, Vector3Int currentPosition, int range)
     {
         if (range == 0) { return; }
-        if (range != Weapons[CurrentWeaponIndex].MaxRange + 1)
+        if (range != Weapons[CurrentWeaponIndex].MaxRange)
         {
             if (!ValidTiles.ContainsKey(currentPosition) && !list.Contains(currentPosition))
             {

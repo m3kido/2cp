@@ -110,3 +110,4 @@ MonoBehaviour:
     _maxRange: 6
   CurrentWeaponIndex: 0
   HasAttacked: 0
+  IndirectUnit: 1

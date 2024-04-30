@@ -209,9 +209,13 @@ public class ActionMenu : MonoBehaviour
       {
           if (_um.SelectedUnit is AttackingUnit && _am.CheckAttack(_um.SelectedUnit as AttackingUnit))
           {
-            _attackOptionInstance.SetActive(true);
-            _optionsList.Add(_attackOptionInstance);
-            return;
+            if((_um.SelectedUnit as AttackingUnit).IndirectUnit && _um.Path.Count == 0)
+            {
+                _attackOptionInstance.SetActive(true);
+                _optionsList.Add(_attackOptionInstance);
+                return;
+            }
+           
         }
       } 
     private void CheckDrop()
