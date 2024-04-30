@@ -136,15 +136,48 @@ public class UnitManager : MonoBehaviour
         SelectedUnit.IsMoving = true;
         SelectedUnit.ResetTiles();
         UndrawPath();
-        
+        Vector3Int lastoffset= Vector3Int.zero;
         foreach (var pos in Path)
         {
+            var offset = pos - SelectedUnit.GetGridPosition();
+            
+            if(SelectedUnit.animator != null)
+            {
+                print(offset);
+                if (offset != lastoffset)
+                {
+                   
+                    if (offset.x == 1)
+                    {
+                        SelectedUnit.animator.SetTrigger("right");
+                    }
+                    else if (offset.x == -1)
+                    {
+                        SelectedUnit.animator.SetTrigger("left");
+                    }
+                    else if (offset.y == 1)
+                    {
+                        SelectedUnit.animator.SetTrigger("up");
+                    }
+                    else if (offset.y == -1)
+                    {
+                        SelectedUnit.animator.SetTrigger("down");
+                    }
+                    lastoffset= offset;
+                }
+               
+
+            }
             SelectedUnit.transform.position = pos;
             yield return new WaitForSeconds(0.08f);
 
         }
         yield return 1f;
         SelectedUnit.IsMoving = false;
+        if( SelectedUnit.animator != null )
+        {
+            SelectedUnit.animator.SetTrigger("Idle");
+        }
         
         _gm.CurrentStateOfPlayer = EPlayerStates.InActionsMenu;
     }

@@ -12,6 +12,7 @@ public class Unit : MonoBehaviour
     protected UnitManager _um;
     protected GameManager _gm;
     public SpriteRenderer _rend;
+    public Animator animator;
 
     [SerializeField] private UnitDataSO _data;
     public UnitDataSO Data => _data; // Readonly property for the _data field
@@ -91,6 +92,7 @@ public class Unit : MonoBehaviour
         _gm = FindAnyObjectByType<GameManager>();
         _um = FindAnyObjectByType<UnitManager>();
         _rend = GetComponent<SpriteRenderer>();
+        animator= GetComponent<Animator>();
         Health = MaxHealth;
         Provisions = _data.MaxProvisions;
         _hasMoved = false;
