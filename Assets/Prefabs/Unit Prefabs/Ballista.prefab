@@ -94,18 +94,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 4003862143121886579}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2aaba460256748499cbe2ed1d930efa, type: 3}
+  m_Script: {fileID: 11500000, guid: ca3ff5c246d7a4142ad14674fc99936c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _rend: {fileID: 0}
   _data: {fileID: 11400000, guid: 811aa4f5f9ca74a4e96c9306480a4a15, type: 2}
-  _health: 100
-  _owner: 1
+  _owner: 0
+  MoveRange: 0
   _weapons:
   - _damageList: 5f0000005a0000005500000037000000500000005000000055000000370000002d00000055000000370000003c000000
-    _ammo: 999
-    _weaponType: 2
-    _ammoPerAttack: 0
+    _ammo: 99999
+    _weaponType: 0
+    _ammoPerAttack: 1
     _minRange: 3
     _maxRange: 6
   CurrentWeaponIndex: 0

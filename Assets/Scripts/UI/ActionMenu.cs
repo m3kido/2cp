@@ -15,6 +15,8 @@ public class ActionMenu : MonoBehaviour
     private Camera _camera;
     private RectTransform _rect;
 
+    private CaptainManager _cp;
+
     [SerializeField] private Sprite _cursor;
     [SerializeField] private GameObject _options;
     private List<GameObject> _optionsList;
@@ -22,7 +24,7 @@ public class ActionMenu : MonoBehaviour
 
     [SerializeField] private GameObject _waitOption;
     [SerializeField] private GameObject _captureOption;
-    [SerializeField] private GameObject _attackOption;
+    [SerializeField] private GameObject _attackoption;
     [SerializeField] private GameObject _loadOption;
     [SerializeField] private GameObject _dropOption;
     [SerializeField] private GameObject _refillOption;
@@ -44,6 +46,8 @@ public class ActionMenu : MonoBehaviour
         _gm = FindAnyObjectByType<GameManager>();
         _bm = FindAnyObjectByType<BuildingManager>();
         _am = FindAnyObjectByType<AttackManager>();
+        _cp = FindAnyObjectByType<CaptainManager>();
+
         _camera = Camera.main;
         _rect = GetComponent<RectTransform>();
 
@@ -55,8 +59,8 @@ public class ActionMenu : MonoBehaviour
         _captureOptionInstance = Instantiate(_captureOption, _options.transform);
         _captureOptionInstance.SetActive(false);
 
-        _attackOptionInstance = Instantiate(_attackOption, _options.transform);
-        _attackOptionInstance.SetActive(false);
+        //_attackOptionInstance = Instantiate(_attackOption, _options.transform);
+        //_attackOptionInstance.SetActive(false);
 
         _loadOptionInstance = Instantiate(_loadOption, _options.transform);
         _loadOptionInstance.SetActive(false);
@@ -66,6 +70,8 @@ public class ActionMenu : MonoBehaviour
 
         _refillOptionInstance = Instantiate(_refillOption, _options.transform);
         _refillOptionInstance.SetActive(false);
+
+        
     }
 
     private void OnEnable()
@@ -108,7 +114,7 @@ public class ActionMenu : MonoBehaviour
         {
             _gm.CurrentStateOfPlayer = EPlayerStates.Selecting;
             _um.SelectedUnit.transform.position = _cm.SaveTile;
-            
+
             if (_um.Path.Count != 0)
             {
                 _cm.HoveredOverTile = _um.Path.Last();
@@ -121,7 +127,24 @@ public class ActionMenu : MonoBehaviour
             if (_optionsList[_selectedOption] == _waitOptionInstance)
             {
                 _um.EndMove();
-                _gm.CurrentStateOfPlayer = EPlayerStates.Idle;
+            }
+            //Logic to do when the player choose to attack 
+            else if (_optionsList[_selectedOption] == _attackOptionInstance)
+            {
+
+                if (_um.SelectedUnit is AttackingUnit)
+                {
+                    _am.Attacker = _um.SelectedUnit as AttackingUnit;
+
+                    Debug.Log("We're attacking");
+                    _am.InitiateAttack();
+                    Debug.Log("Done attacking");
+
+
+
+
+
+                }
             }
             else if (_optionsList[_selectedOption] == _attackOptionInstance)
             {
@@ -207,7 +230,7 @@ public class ActionMenu : MonoBehaviour
 
      private void CheckFire()
       {
-          if (_um.SelectedUnit is AttackingUnit && _am.CheckAttack(_um.SelectedUnit as AttackingUnit))
+          if (_um.SelectedUnit is AttackingUnit && _am.UnitCanAttack(_um.SelectedUnit as AttackingUnit))
           {
             if((_um.SelectedUnit as AttackingUnit).IndirectUnit && _um.Path.Count == 0)
             {
@@ -232,7 +255,7 @@ public class ActionMenu : MonoBehaviour
         var building = _bm.BuildingFromPosition.ContainsKey(_cm.HoveredOverTile) ? _bm.BuildingFromPosition[_cm.HoveredOverTile] : null;
         if (building != null)
         {
-            if ( building.Owner != _gm.PlayerTurn)
+            if (building.Owner != _gm.PlayerTurn)
             {
                 if (_um.SelectedUnit.Data.UnitType == EUnits.Infantry || _um.SelectedUnit.Data.UnitType == EUnits.Lancers)
                 {
@@ -246,9 +269,11 @@ public class ActionMenu : MonoBehaviour
                 //heal
             }
         }
-       
+
         _waitOptionInstance.SetActive(true);
         _optionsList.Add(_waitOptionInstance);
     }
-    #endregion
+
+    
 }
+#endregion

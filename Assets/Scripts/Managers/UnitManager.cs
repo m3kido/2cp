@@ -82,7 +82,10 @@ public class UnitManager : MonoBehaviour
     // Draw the arrow path
     public void DrawPath()
     {
-            for (int i = 0; i < Path.Count; i++)
+
+        for (int i = 0; i < Path.Count; i++)
+        {
+            if (i == 0)
             {
                 if (i == 0)
                 {
@@ -93,6 +96,9 @@ public class UnitManager : MonoBehaviour
                 //the clamp is for capping the i at its max (path.count -1)
                 _mm.DrawArrow(Path[i - 1], Path[i], Path[Mathf.Clamp(i + 1, 0, Path.Count - 1)]);
             }
+            //the clamp is for capping the i at its max (path.count -1)
+            _mm.DrawArrow(Path[i - 1], Path[i], Path[Mathf.Clamp(i + 1, 0, Path.Count - 1)]);
+        }
     }
 
     // Undraw the arrow path
@@ -134,7 +140,7 @@ public class UnitManager : MonoBehaviour
         foreach (var pos in Path)
         {
             SelectedUnit.transform.position = pos;
-            yield return new WaitForSeconds(0.08f) ;
+            yield return new WaitForSeconds(0.08f);
 
         }
         yield return 1f;
@@ -173,14 +179,17 @@ public class UnitManager : MonoBehaviour
     // Confirm the move had ended
     public void EndMove()
     {
-        SelectedUnit.Provisions -= PathCost;
+        SelectedUnit.Provisions -=PathCost;
         Path.Clear();
         PathCost = 0;
         SelectedUnit.HasMoved = true;
+        
         SelectedUnit = null;
         _gm.CurrentStateOfPlayer = EPlayerStates.Idle;
+
         OnMoveEnd?.Invoke();
     }
 
-    #endregion
+
 }
+#endregion
