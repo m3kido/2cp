@@ -247,8 +247,12 @@ public class ActionMenu : MonoBehaviour
                 print($"{_am.Attacker} Value(CanAttack) = {_am.Attacker.CheckAttack()}");
                 if (_am.Attacker.CheckAttack())
                 {
-                    _attackOptionInstance.SetActive(true);
-                    _optionsList.Add(_attackOptionInstance);
+                    if(((_um.SelectedUnit)as AttackingUnit).IndirectUnit && _um.Path.Count == 0)
+                    {
+                        _attackOptionInstance.SetActive(true);
+                        _optionsList.Add(_attackOptionInstance);
+                    }
+                   
                 }
             }
         }

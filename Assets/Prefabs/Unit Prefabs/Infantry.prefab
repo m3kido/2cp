@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2773230227958978046}
   - component: {fileID: 7558385913804266953}
   - component: {fileID: 508301312882059283}
+  - component: {fileID: 612678763248937070}
   m_Layer: 0
   m_Name: Infantry
   m_TagString: Untagged
@@ -98,8 +99,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rend: {fileID: 0}
+  animator: {fileID: 0}
   _data: {fileID: 11400000, guid: 35af56c91dff4954c922141f844583c4, type: 2}
-  _owner: 0
+  _owner: 1
   MoveRange: 0
   _weapons:
   - _damageList: 370000002d00000005000000010000000f0000000f000000190000000000000000000000000000000000000000000000
@@ -111,3 +113,24 @@ MonoBehaviour:
   CurrentWeaponIndex: 0
   HasAttacked: 0
   IndirectUnit: 0
+--- !u!95 &612678763248937070
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5520205959947636410}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 89af5409a089c6647bdac689f1e35d36, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
