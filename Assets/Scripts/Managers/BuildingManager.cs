@@ -119,6 +119,10 @@ public class BuildingManager : MonoBehaviour
         print(BuildingFromPosition[pos].Health);
         if (BuildingFromPosition[pos].Health <= 0)
         {
+            if(BuildingFromPosition[pos].BuildingType == EBuildings.Castle)
+            {
+                _gm.Players[_gm.PlayerTurn].Lost = true; 
+            }
             ChangeBuildingOwner(BuildingFromPosition[pos], _gm.PlayerTurn);
         }
     }

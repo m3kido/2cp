@@ -186,8 +186,46 @@ public class UnitManager : MonoBehaviour
         
         SelectedUnit = null;
         _gm.CurrentStateOfPlayer = EPlayerStates.Idle;
-
+        checkUnits(_gm.Players[_gm.PlayerTurn]); 
         OnMoveEnd?.Invoke();
+    }
+
+    public bool checkUnits(Player currentPlayer)
+    {
+
+        if(currentPlayer == null) return false;
+        else
+        {
+
+            HashSet<int> uniqueOwners = new HashSet<int>();
+
+            foreach (var unit in Units)
+            {
+                uniqueOwners.Add(unit.Owner);
+            }
+
+            // Calculate the sum of unique owners' indices
+            int totalIndex = 0;
+            foreach (var ownerIndex in uniqueOwners)
+            {
+                totalIndex += ownerIndex;
+            }
+            int totalPlayers = 0;
+            for (int i = 0; i < _gm.Players.Count; i++)
+            {
+                totalPlayers += i + 1;
+            }
+            int deadPlayerIndex = totalPlayers - totalIndex - 1; 
+            if ( deadPlayerIndex >= 0 && deadPlayerIndex == _gm.PlayerTurn )
+            {
+                _gm.Players[_gm.PlayerTurn].Lost = true;
+                return false; 
+            } 
+
+        }
+            
+            
+            return true;
     }
 
 
