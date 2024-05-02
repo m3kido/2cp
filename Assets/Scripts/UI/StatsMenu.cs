@@ -74,7 +74,7 @@ public class StatsMenu : MonoBehaviour
         {
             _unitStats.gameObject.SetActive(true);
             //_unitSprite.GetComponent<Image>().sprite=RefUnit.GetComponent<SpriteRenderer>().sprite;
-            _healthValue.GetComponent<TextMeshPro>().text = "2";//RefUnit.Health.ToString();
+            _healthValue.GetComponent<TextMeshPro>().text = "2";//RefUnit.Capture.ToString();
             //_ammoValue.GetComponent<TextMeshPro>().text = RefUnit.ToString();
             _provisionsValue.GetComponent<TextMeshPro>().text = RefUnit.Provisions.ToString();
         }

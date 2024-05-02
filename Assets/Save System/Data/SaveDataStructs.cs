@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+
 // Struct for game data to save
 [Serializable]
 public struct GameSaveData
@@ -111,17 +112,15 @@ public struct LoadingUnitSaveData
 [Serializable]
 public struct BuildingSaveData
 {
-    public EBuildings BuildingType;
     public Vector3Int Position;
-    public int Health;
+    public int Capture;
     public int Owner;
 
     // Constructor
-    public BuildingSaveData(EBuildings buildingType, Vector3Int position, int health, int owner)
+    public BuildingSaveData(Vector3Int position, int capture, int owner)
     {
-        BuildingType = buildingType;
         Position = position;
-        Health = health;
+        Capture = capture;
         Owner = owner;
     }
 }

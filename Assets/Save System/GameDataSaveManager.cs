@@ -5,6 +5,7 @@ public class GameDataSaveManager : MonoBehaviour
     private GameManager _gm;
     private MapManager _mm;
     private UnitManager _um;
+    private BuildingManager _bm;
 
     private GameData _gameData; // Data that will be saved
     private GameDataFileHandler _gameDataHandler; // Class to handle writing game data in the file
@@ -29,6 +30,7 @@ public class GameDataSaveManager : MonoBehaviour
         _gm = FindAnyObjectByType<GameManager>();
         _mm = FindAnyObjectByType<MapManager>();
         _um = FindAnyObjectByType<UnitManager>();
+        _bm = FindAnyObjectByType<BuildingManager>();
 
         _gameData = new GameData();
         _gameDataHandler = new GameDataFileHandler(Application.persistentDataPath, _dataFileName, _useEncryption);
@@ -58,6 +60,7 @@ public class GameDataSaveManager : MonoBehaviour
             LoadGameData();
             LoadPlayers();
             LoadUnits();
+            LoadBuildings();
         }
 
         Debug.Log("Game Loaded.");
@@ -65,10 +68,11 @@ public class GameDataSaveManager : MonoBehaviour
 
     public void SaveGame() // Method to save a game
     {
-        // Put all data of the game in _saveData
+        // Put all data of the game in _gameData
         ExtractGameData();
         ExtractPlayersData();
         ExtractUnitsData();
+        ExtractBuildingsData();
 
         _gameDataHandler.Save(_gameData); // Write _gameData in the file
 
@@ -81,24 +85,24 @@ public class GameDataSaveManager : MonoBehaviour
         DestroyAllUnits();
     }
 
-    // Put the game data in _saveData
+    // Put the game data in _gameData
     public void ExtractGameData()
     {
-        _gameData.GameLogicSaveData = new GameSaveData(_gm.Day, _gm.PlayerTurn);
+        _gameData.GameLogicSave = new GameSaveData(_gm.Day, _gm.PlayerTurn);
 
         Debug.Log("Extracted game data.");
     }
 
-    // Load data from _saveData to game
+    // Load data from _gameData to game
     public void LoadGameData()
     {
-        _gm.Day = _gameData.GameLogicSaveData.Day;
-        _gm.PlayerTurn = _gameData.GameLogicSaveData.PlayerTurn;
+        _gm.Day = _gameData.GameLogicSave.Day;
+        _gm.PlayerTurn = _gameData.GameLogicSave.PlayerTurn;
 
         Debug.Log("Game data loaded.");
     }
 
-    // Put the players data in _saveData
+    // Put the players data in _gameData
     public void ExtractPlayersData()
     {
         List<PlayerSaveData> playerSaves = new();
@@ -107,17 +111,18 @@ public class GameDataSaveManager : MonoBehaviour
             playerSaves.Add(player.GetDataToSave());
         }
 
-        _gameData.PlayerSaveDatas = playerSaves;
+        _gameData.PlayerSaves = playerSaves;
 
-        Debug.Log("Extracted player datas.");
+        Debug.Log("Extracted playes data.");
     }
 
-    // Load data from _saveData to players
+    // Load data from _gameData to players
     public void LoadPlayers()
     {
         _gm.InGamePlayers.Clear();
+
         // Get saved players
-        foreach(var playerSave in _gameData.PlayerSaveDatas)
+        foreach(var playerSave in _gameData.PlayerSaves)
         {
             // Create a new player object and assign the saved data to it
             PlayerInGame player = new(playerSave.PlayerID, playerSave.PlayerNumber, playerSave.Color,
@@ -133,7 +138,7 @@ public class GameDataSaveManager : MonoBehaviour
         Debug.Log("Players loaded.");
     }
 
-    // Put the units data in _saveData
+    // Put the units data in _gameData
     public void ExtractUnitsData()
     {
         List<AttackingUnitSaveData> attackingUnitSaves = new();
@@ -148,17 +153,17 @@ public class GameDataSaveManager : MonoBehaviour
             loadingUnitSaves.Add(unit.GetDataToSave());
         }
 
-        _gameData.AttackingUnitSaveDatas = attackingUnitSaves;
-        _gameData.LoadingUnitSaveDatas = loadingUnitSaves;
+        _gameData.AttackingUnitSaves = attackingUnitSaves;
+        _gameData.LoadingUnitSaves = loadingUnitSaves;
 
-        Debug.Log("Extracted unit datas.");
+        Debug.Log("Extracted units data.");
     }
 
-    // Load data from _saveData to units
+    // Load data from _gameData to units
     public void LoadUnits()
     {
         // Get attacking unit saves
-        foreach (var attackingUnitSave in _gameData.AttackingUnitSaveDatas)
+        foreach (var attackingUnitSave in _gameData.AttackingUnitSaves)
         {
             // Create prefab based of each saved unit type
             GameObject unitPrefab = GetPrefabFromUnitType(attackingUnitSave.UnitType);
@@ -187,7 +192,7 @@ public class GameDataSaveManager : MonoBehaviour
         }
 
         // Get loading unit saves
-        foreach (var loadingUnitSave in _gameData.LoadingUnitSaveDatas)
+        foreach (var loadingUnitSave in _gameData.LoadingUnitSaves)
         {
             // Create prefab based of each saved unit type
             GameObject unitPrefab = GetPrefabFromUnitType(loadingUnitSave.UnitType);
@@ -260,5 +265,34 @@ public class GameDataSaveManager : MonoBehaviour
         }
 
         Debug.Log("Destroyed all units: " + (attackingUnits.Length + loadingUnits.Length));
+    }
+
+    // Put the buildings data in _gameData
+    public void ExtractBuildingsData()
+    {
+        List<BuildingSaveData> buildingSaves = new();
+        foreach (var pos in _mm.Map.cellBounds.allPositionsWithin)
+        {
+            TerrainDataSO posTile = _mm.GetTileData(pos);
+            if (posTile != null && posTile.TerrainType == ETerrains.Building)
+            {
+                Building building = _bm.BuildingFromPosition[pos];
+                buildingSaves.Add(building.GetDataToSave());
+            }
+        }
+
+        _gameData.BuildingSaves = buildingSaves;
+
+        Debug.Log("Extracted buildings data.");
+    }
+
+    public void LoadBuildings()
+    {
+        foreach (var buildingSave in _gameData.BuildingSaves)
+        {
+            _bm.BuildingFromPosition[buildingSave.Position].SetSaveData(buildingSave);
+        }
+
+        Debug.Log("Buildings loaded.");
     }
 }

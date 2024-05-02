@@ -38,7 +38,6 @@ public class BuildingManager : MonoBehaviour
             // Put the Building tile as a key, and the building data as a value
             _buildingDataFromTile.Add(buildingData.BuildingTile, buildingData);
         }
-        
     }
 
     void Start()
@@ -48,22 +47,20 @@ public class BuildingManager : MonoBehaviour
         _gm = FindAnyObjectByType<GameManager>();
         _um = FindAnyObjectByType<UnitManager>();
         
-
         // Scan the map and put all the buldings in the Buildings dictionary
         ScanMapForBuildings();
-        
     }
 
     private void OnEnable()
     {
         // GetGoldFromBuildings subscribes to day end event
-       // GameManager.OnDayEnd += GetGoldFromBuildings;
+        // GameManager.OnDayEnd += GetGoldFromBuildings;
     }
 
     private void OnDisable()
     {
         // GetGoldFromBuildings unsubscribes from day end event
-      //  GameManager.OnDayEnd -= GetGoldFromBuildings;
+        // GameManager.OnDayEnd -= GetGoldFromBuildings;
     }
 
     // Scan the map and put all the buldings in the Buildings dictionary
@@ -80,8 +77,9 @@ public class BuildingManager : MonoBehaviour
             }
         }
     }
-    //change the sprite
-    private void ChangeBuildingOwner(Building building,int owner)
+
+    // Change building sprite based on owner
+    private void ChangeBuildingOwner(Building building, int owner)
     {
         foreach(var buildingSO in _buildingDatas)
         {
@@ -89,9 +87,11 @@ public class BuildingManager : MonoBehaviour
                 _mm.Map.SetTile(building.Position, buildingSO.BuildingTile);
             }
         }
+
         building.Owner = owner;
-        building.Health = 20;
+        building.Capture = 200;
     }
+
     // Get building data of given grid position
     public BuildingDataSO GetBuildingData(Vector3Int pos)
     {
@@ -100,10 +100,9 @@ public class BuildingManager : MonoBehaviour
 
     // Capture building
     public void CaptureBuilding(Vector3Int pos)
-    {
-        
-        BuildingFromPosition[pos].Health -= _um.SelectedUnit.Health;
-        if (BuildingFromPosition[pos].Health <= 0)
+    { 
+        BuildingFromPosition[pos].Capture -= _um.SelectedUnit.Health;
+        if (BuildingFromPosition[pos].Capture <= 0)
         {
             ChangeBuildingOwner(BuildingFromPosition[pos], _gm.PlayerTurn);
         }

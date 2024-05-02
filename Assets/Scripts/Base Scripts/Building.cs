@@ -6,7 +6,7 @@ public class Building
     // Auto-properties (the compiler automatically creates private fields for them)
     public EBuildings BuildingType { get; set; }
     public Vector3Int Position { get; set; }
-    public int Health { get; set; }
+    public int Capture { get; set; }
     public int Owner { get; set; }
 
     // Building constructor
@@ -15,7 +15,18 @@ public class Building
         BuildingType = buildingType;
         Position = position;
         Owner = owner;
-        Health = 200;
+        Capture = 200;
+    }
+
+    public BuildingSaveData GetDataToSave()
+    {
+        return new BuildingSaveData(Position, Capture, Owner);
+    }
+
+    public void SetSaveData(BuildingSaveData data)
+    {
+        Capture = data.Capture;
+        Owner = data.Owner;
     }
 }
 
