@@ -24,7 +24,7 @@ public class ActionMenu : MonoBehaviour
 
     [SerializeField] private GameObject _waitOption;
     [SerializeField] private GameObject _captureOption;
-    [SerializeField] private GameObject _attackoption;
+    [SerializeField] private GameObject _attackOption;
     [SerializeField] private GameObject _loadOption;
     [SerializeField] private GameObject _dropOption;
     [SerializeField] private GameObject _refillOption;
@@ -59,8 +59,8 @@ public class ActionMenu : MonoBehaviour
         _captureOptionInstance = Instantiate(_captureOption, _options.transform);
         _captureOptionInstance.SetActive(false);
 
-        //_attackOptionInstance = Instantiate(_attackOption, _options.transform);
-        //_attackOptionInstance.SetActive(false);
+        _attackOptionInstance = Instantiate(_attackOption, _options.transform);
+        _attackOptionInstance.SetActive(false);
 
         _loadOptionInstance = Instantiate(_loadOption, _options.transform);
         _loadOptionInstance.SetActive(false);

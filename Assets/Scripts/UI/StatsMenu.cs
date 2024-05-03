@@ -58,15 +58,17 @@ public class StatsMenu : MonoBehaviour
         CursorManager.OnCursorMove += UpdateInfo;
         if (_gameLoaded)
         {
-             UpdateInfo();
-            
+            UpdateInfo();
+
         }
 
     }
+
     private void OnDisable()
     {
         CursorManager.OnCursorMove -= UpdateInfo;
     }
+
     private void Start()
     {
         UpdateInfo();
@@ -84,9 +86,7 @@ public class StatsMenu : MonoBehaviour
             if (_rect.localPosition.x < 0)
             {
                 _rect.localPosition = new Vector3(-1 * _rect.localPosition.x + _rect.rect.width, _rect.localPosition.y, _rect.localPosition.z);
-                var save = _unitRect.localPosition;
-                _unitRect.localPosition = _tileRect.localPosition;
-                _tileRect.localPosition = save;
+                (_tileRect.localPosition, _unitRect.localPosition) = (_unitRect.localPosition, _tileRect.localPosition);
                 _anim.SetTrigger("Replay");
             }
         }
@@ -96,9 +96,7 @@ public class StatsMenu : MonoBehaviour
             if (_rect.localPosition.x > 0)
             {
                 _rect.localPosition = new Vector3(-1 * _rect.localPosition.x + _rect.rect.width, _rect.localPosition.y, _rect.localPosition.z);
-                var save = _unitRect.localPosition;
-                _unitRect.localPosition = _tileRect.localPosition;
-                _tileRect.localPosition = save;
+                (_tileRect.localPosition, _unitRect.localPosition) = (_unitRect.localPosition, _tileRect.localPosition);
                 _anim.SetTrigger("Replay");
             }
         }
@@ -119,16 +117,16 @@ public class StatsMenu : MonoBehaviour
 
         if (RefUnit != null)
         {
-            _unitStats.gameObject.SetActive(true);
+            _unitStats.SetActive(true);
             _unitName.GetComponent<TextMeshProUGUI>().text = RefUnit.Data.UnitType.ToString();
             _unitSprite.GetComponent<Image>().sprite = RefUnit.GetComponent<SpriteRenderer>().sprite;
             _healthValue.GetComponent<TextMeshProUGUI>().text = RefUnit.Health.ToString();
-            // _ammoValue.GetComponent<TextMeshPro>().text = RefUnit.ToString();
+            _ammoValue.GetComponent<TextMeshPro>().text = RefUnit.ToString();
             _provisionsValue.GetComponent<TextMeshProUGUI>().text = RefUnit.Provisions.ToString();
         }
         else
         {
-            _unitStats.gameObject.SetActive(false);
+            _unitStats.SetActive(false);
         }
     }
     #endregion

@@ -96,30 +96,32 @@ public class Unit : MonoBehaviour
         MoveRange = Data.MoveRange;
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        // Get map and unit manager from the hierarchy
-        _mm = FindAnyObjectByType<MapManager>();
-        _um = FindAnyObjectByType<UnitManager>();
-        _gm = FindAnyObjectByType<GameManager>();
-        AssignColor();
+        _gm.OnGameStart += AssignColor;
+    }
+
+    private void OnDisable()
+    {
+        _gm.OnGameStart -= AssignColor;
     }
 
     private void AssignColor()
     {
-        if (_gm == null || _gm.Players == null)
+        if (_gm.Players == null)
         {
             // Handle null references gracefully
-            Debug.LogError("ERROR: GameManager or Players list is null.");
+            Debug.LogError("ERROR: Players list is null.");
             return;
         }
 
-        if (_owner < 0 || _owner >= _gm.Players.Count)
+        if (_gm.Players.Count == 0)
         {
-            // Handle invalid owner index gracefully
-            Debug.LogError("ERROR: Invalid owner index.");
-            return;
+            print("Players list empty");
+            return ;
         }
+
+        
 
         ETeamColors OwnerColor = _gm.Players[_owner].Color;
 

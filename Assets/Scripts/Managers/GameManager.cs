@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
         set { _currentStateOfPlayer = value; OnStateChange?.Invoke(); LastStateOfPlayer = _currentStateOfPlayer; }
     }
 
+    // pretty obvious
+    public event Action OnGameStart;
+
     // Event to let know that the state of the player has changed
     public static event Action OnStateChange;
 
@@ -40,6 +43,8 @@ public class GameManager : MonoBehaviour
             new("Oussama2", ETeamColors.Azure, ETeams.C, ECaptains.Godfrey),
             new("Oussama3", ETeamColors.Azure, ETeams.D, ECaptains.Maximus)
         };
+
+        OnGameStart?.Invoke();
     }
 
     private void Update()
