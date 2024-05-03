@@ -5,7 +5,6 @@
     Poison,
     Fireballs,
     Cannons,
-    Darts,
     HandCannon,
     HeavySword, 
     LightSword, 

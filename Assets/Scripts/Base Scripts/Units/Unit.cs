@@ -7,31 +7,30 @@ using UnityEngine.Tilemaps;
 public class Unit : MonoBehaviour
 {
     #region Variables
-    // Managers will be needed
     protected MapManager _mm;
     protected UnitManager _um;
     protected GameManager _gm;
+    protected BuildingManager _bm;
     public SpriteRenderer _rend;
     public Animator animator;
 
     [SerializeField] private UnitDataSO _data;
-    public UnitDataSO Data => _data; // Readonly property for the _data field
+    public UnitDataSO Data => _data;
 
-    // Auto-properties (the compiler automatically creates private fields for them)
-    private int _health; // { get; set; }
+    private int _health;
     public int Provisions { get; set; }
     public bool IsSelected { get; set; }
     public bool IsMoving { get; set; }
 
     [SerializeField] private int _owner; // Serialization is temporary (just for tests)
-    public int Owner // Property for the _hasMoved field
+    public int Owner
     {
         get => _owner;
         set => _owner = value;
     }
 
     private bool _hasMoved;
-    public bool HasMoved // Property for the _hasMoved field 
+    public bool HasMoved
     {
         get => _hasMoved;
         set
@@ -76,35 +75,41 @@ public class Unit : MonoBehaviour
 
     public static int MaxHealth = 100;
     public int MoveRange;
-    // Dictionary to hold the grid position of the valid tiles along with the fuel consumed to reach them
 
+    // Dictionary to hold the grid position of the valid tiles along with the fuel consumed to reach them
     private Dictionary<Vector3Int, int> _validTiles = new();
     public Dictionary<Vector3Int, int> ValidTiles
     {
         get => _validTiles;
         set => _validTiles = value;
     }
+
+    // This is for the icon manager to know the unit is capturing
+    public bool IsCapturing { get; set; }
     #endregion
 
     #region UnityMethods
     private void Awake()
     {
-        // Get map and unit manager from the hierarchy
         _mm = FindAnyObjectByType<MapManager>();
         _gm = FindAnyObjectByType<GameManager>();
         _um = FindAnyObjectByType<UnitManager>();
+        _bm = FindAnyObjectByType<BuildingManager>();
         _rend = GetComponent<SpriteRenderer>();
         animator= GetComponent<Animator>();
+
         Health = MaxHealth;
         Provisions = _data.MaxProvisions;
         _hasMoved = false;
         MoveRange = Data.MoveRange;
+        IsCapturing = false;
     }
 
     private void Start()
     { 
-        StartCoroutine( AssignColor());
+        StartCoroutine(AssignColor());
     }
+
     #endregion
 
     #region Methods
@@ -231,7 +236,6 @@ public class Unit : MonoBehaviour
         print("I'm Going To Die!");
         _um.Units.Remove(this);
         Destroy(gameObject);
-
     }
 
     public static float L1Distance2D(Vector3 A, Vector3 B)
@@ -252,8 +256,7 @@ public class Unit : MonoBehaviour
             return player.PlayerCaptain;
         }
 
-        private set { }
-
+        private set {}
     }
     #endregion
 }

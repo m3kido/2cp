@@ -2,14 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class AttackManager : MonoBehaviour
 {
-    GameManager _gm;
-    UnitManager _um;
-    MapManager _mm;
-    List<EUnits> directAttacker = new List<EUnits> { EUnits.Catapult, EUnits.Cannoneer, EUnits.Ballista };
+    protected GameManager _gm;
+    protected UnitManager _um;
+    protected MapManager _mm;
+    List<EUnits> directAttacker = new() { EUnits.Catapult, EUnits.Cannoneer, EUnits.Ballista };
     public AttackingUnit Attacker;
     private int selectedTargetIndex = -1;
     private bool _actionTaken = false;
@@ -22,7 +20,6 @@ public class AttackManager : MonoBehaviour
         set
         {
             _actionTaken = value;
-            
         }
     }
 
@@ -52,7 +49,7 @@ public class AttackManager : MonoBehaviour
         target.Health -= (int)damageToTarget;
         Debug.Log("Target has been damaged!");
 
-        if (target.Health > 0 && target is AttackingUnit && !directAttacker.Contains(attacker.Data.UnitType)) //We need to check if target _unit can attack the attacker)
+        if (target.Health > 0 && target is AttackingUnit && !directAttacker.Contains(attacker.Data.UnitType)) // We need to check if target unit can attack the attacker
         {
             AttackingUnit newAttacker = target as AttackingUnit;
             if (newAttacker.CanAttackThis(attacker))
@@ -62,7 +59,6 @@ public class AttackManager : MonoBehaviour
                 Debug.Log("Damage to attacker: " + damageToAttacker);
                 Debug.Log("Attacker has been damaged!");
             }
-
         }
     }
 
@@ -99,8 +95,8 @@ public class AttackManager : MonoBehaviour
 
     private IEnumerator TargetSelectionCoroutine(AttackingUnit attacker, List<Unit> targets)
     {
-        yield return null;// skip 1 frame so the space clicked to confirm the attack option 
-                          // selection doesn't confirm the target selection instantly 
+        yield return null; // Skip one frame so the space clicked to confirm the attack option 
+                           // Selection doesn't confirm the target selection instantly 
         while (!ActionTaken)
         {
             HandleTargetSelectionInput(attacker, targets);
@@ -109,7 +105,6 @@ public class AttackManager : MonoBehaviour
             yield return null;
         }
         ActionTaken = false;
-
 
         Debug.Log("Action finished");
     }
@@ -141,6 +136,7 @@ public class AttackManager : MonoBehaviour
                 // attacker.UnHighlightTarget(targets[selectedTargetIndex]);
                 targets[selectedTargetIndex]._rend.color=Color.white;
                 selectedTargetIndex = (selectedTargetIndex + 1) % targets.Count;
+
                 // HighlightSelectedTarget(targets[selectedTargetIndex]);
                 targets[selectedTargetIndex]._rend.color = Color.blue;
             }
@@ -149,6 +145,7 @@ public class AttackManager : MonoBehaviour
                 // attacker.UnHighlightTarget(targets[selectedTargetIndex]);
                 targets[selectedTargetIndex]._rend.color = Color.white;
                 selectedTargetIndex = (selectedTargetIndex - 1 + targets.Count) % targets.Count;
+
                 // HighlightSelectedTarget(targets[selectedTargetIndex]);
                 targets[selectedTargetIndex]._rend.color = Color.blue;
             }
@@ -161,17 +158,16 @@ public class AttackManager : MonoBehaviour
             Unit selectedTarget = targets[selectedTargetIndex];
             ApplyDamage(selectedTarget, attacker);
             ActionTaken = true;
-            EndAttackPhase();//end attack
-            _um.EndMove();//terminate move
+            EndAttackPhase(); //End attack
+            _um.EndMove(); //Terminate move
         }
 
         if (Input.GetKeyDown(KeyCode.X)) // Assuming "X" key is used to cancel attack
         {
             attacker.UnHighlightTargets();
             ActionTaken = true;
-            EndAttackPhase();//end attack
-            _gm.CurrentStateOfPlayer = EPlayerStates.InActionsMenu;//return to action menu
-
+            EndAttackPhase(); // End attack
+            _gm.CurrentStateOfPlayer = EPlayerStates.InActionsMenu; // Return to action menu
         }
     }
 
@@ -205,16 +201,12 @@ public class AttackManager : MonoBehaviour
         }
     }
 
-
-
     public float CalculateDamage(Unit target, AttackingUnit attacker)
     {
-
         int baseDamage = attacker.Weapons[attacker.CurrentWeaponIndex].DamageList[(int)target.Data.UnitType];
         Captain attackerCaptain = attacker.GetUnitCaptain;
         int celesteAttack = attackerCaptain.IsCelesteActive ? attackerCaptain.Data.CelesteDefense : 0;
         float attackDamage = baseDamage * (1 + attackerCaptain.PassiveAttack) * (1 + celesteAttack) * attackerCaptain.AttackMultiplier; Debug.Log("AttackMultiplier" + attackerCaptain.AttackMultiplier);
-
 
         int terrainStars = _mm.GetTileData(_mm.Map.WorldToCell(target.transform.position)).DefenceStars;
         Captain targetCaptain = target.GetUnitCaptain;
@@ -226,18 +218,11 @@ public class AttackManager : MonoBehaviour
         return totalDamage;
     }
 
-
-
     public void EndAttackPhase()
     {
         Attacker.IsAttacking = false;
         Attacker.HasAttacked = true;
         Attacker.UnHighlightTargets();
         Attacker = null;
-
-
     }
-
-
-
 }

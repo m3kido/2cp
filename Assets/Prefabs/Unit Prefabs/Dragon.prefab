@@ -105,11 +105,10 @@ MonoBehaviour:
   MoveRange: 0
   _weapons:
   - _damageList: 6e0000006e000000690000005f000000690000006900000069000000000000000000000055000000460000005f000000
-    _ammo: 99999
-    _weaponType: 3
-    _ammoPerAttack: 1
+    _energyOrbs: 9
+    _weapon: 3
     _minRange: 1
-    _maxRange: 2
+    _maxRange: 1
   CurrentWeaponIndex: 0
   HasAttacked: 0
   IndirectUnit: 0

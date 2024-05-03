@@ -45,8 +45,8 @@ public class AttackingUnit : Unit
         Weapon.OnEnergyRanOut -= MoveToNextWeapon;
     }
 
-    // scans area for targets in an Intervall [ min range, max range[
-    // Assumed that every _unit can be in one tile which can be in one grid position
+    // scans area for targets in an Intervall [min range, max range]
+    // Assumed that every unit can be in one tile which can be in one grid position
     public List<Unit> ScanTargets()
     {
         var attackerPos = GetGridPosition();
@@ -62,18 +62,16 @@ public class AttackingUnit : Unit
             Player player = _gm.Players[Owner];
             Captain captain = player.PlayerCaptain;
 
-            // Debug.Log("Attack range additionner : " + captain.AttackRangeAdditioner);
             bool IsInRange = (L1Distance2D(attackerPos, potentialTargetPos) >= currentWeapon.MinRange) && (L1Distance2D(attackerPos, potentialTargetPos) < (currentWeapon.MaxRange + captain.AttackRangeAdditioner));
             bool IsEnemy = Owner != unit.Owner;
             bool IsDamageable = Weapons[CurrentWeaponIndex].DamageList[(int)unit.Data.UnitType] != 0;
 
-            // print($"{L1Distance2D(attackerPos, potentialTargetPos)} / {currentWeapon.MinRange} / {currentWeapon.MaxRange} / {_unit}");
             if (IsInRange && IsEnemy && IsDamageable)
             {
                 targets.Add(unit);
             }
         }
-        // print("targets : " + targets.Count);
+
         return targets;
     }
 
@@ -121,12 +119,10 @@ public class AttackingUnit : Unit
         // Now, check if the attacker has any valid targets to attack
         if (targets.Count > 0)
         {
-            Debug.Log("ATTACK AZ7I");
             return true;
         }
         else
         {
-            Debug.Log("Count is 0");
             return false;
         }
     }
@@ -138,6 +134,7 @@ public class AttackingUnit : Unit
         { return false; }
         return true; 
     }
+
     public void MoveToNextWeapon()
     {
         if (CurrentWeaponIndex < Weapons.Count - 1) CurrentWeaponIndex++; // Cannot exceed last weapon index
@@ -150,7 +147,6 @@ public class AttackingUnit : Unit
 
     public void AttackTiles()
     {
-
         SeekTile(GetGridPosition(), -1, 0);
         List<Vector3Int> extraTiles = new();
         foreach (var pos in ValidTiles.Keys)
@@ -177,7 +173,6 @@ public class AttackingUnit : Unit
                     ValidTiles.Add(pos, 0);
                 }
             }
-
         }
 
         foreach (var pos in ValidTiles.Keys)
@@ -214,8 +209,8 @@ public class AttackingUnit : Unit
         ExpandFromTiles(list, down, range - 1);
         ExpandFromTiles(list, left, range - 1);
         ExpandFromTiles(list, right, range - 1);
-
     }
+
     private void AttackFromTiles(List<Vector3Int> list, Vector3Int currentPosition, int range)
     {
         if (range == 0) { return; }

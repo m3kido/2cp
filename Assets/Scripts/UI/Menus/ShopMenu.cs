@@ -15,7 +15,7 @@ public class ShopMenu : MonoBehaviour
     private MapManager _mm;
     private CaptainBar _bar;
 
-    [SerializeField] private Color32 textColor = new Color32(115, 42, 28, 255);
+    [SerializeField] private Color32 textColor = new(115, 42, 28, 255);
 
     [SerializeField] private GameObject _unitsList;
     [SerializeField] private GameObject _unitDetails;
@@ -23,7 +23,7 @@ public class ShopMenu : MonoBehaviour
     [SerializeField] private List<Unit> _unitsPrefabs;
     [SerializeField] private GameObject ListElement;
 
-    private Dictionary<GameObject,Unit> _unitElements;
+    private Dictionary<GameObject, Unit> _unitElements;
     private int _selectedUnit;
     #endregion
 
@@ -40,18 +40,16 @@ public class ShopMenu : MonoBehaviour
         var data = _bm.BuildingDataFromTile[_mm.Map.GetTile<Tile>(pos)] as SpawnerBuildingDataSO;
         foreach (var unit in _unitsPrefabs)
         {
-            if( data.DeployableUnits.Contains(unit.Data.UnitType))
+            if (data.DeployableUnits.Contains(unit.Data.UnitType))
             {
                 var ListUnit = Instantiate(ListElement, _unitsList.transform);
                 _unitElements.Add(ListUnit, unit);
                 ListUnit.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = unit.Data.UnitType.ToString();
                 ListUnit.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = unit.Data.Cost.ToString();
             }
-           
-            
-        }
-        
+        }   
     }
+
     private void Start()
     {
         _bar = FindAnyObjectByType<CaptainBar>();

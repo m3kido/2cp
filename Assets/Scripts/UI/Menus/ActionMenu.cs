@@ -77,13 +77,15 @@ public class ActionMenu : MonoBehaviour
     private void OnEnable()
     {
         if (_gm.CurrentStateOfPlayer != EPlayerStates.InActionsMenu) { return; }
-        //this will be reusable
-        //this changes the location of the menu based on the cursor position
-        //local position returns the position considiring its parent(canvas) as the reference
-        //im adding the width because the pivot of action menu is on its top right
+
+        // This will be reusable
+        // This changes the location of the menu based on the cursor position
+        // Local position returns the position considiring its parent (canvas) as the reference
+        // We're adding the width because the pivot of action menu is on its top right
+
         if (_camera.transform.position.x - _cm.transform.position.x >= 0)
         {
-            //if the menu is on the left of the screen
+            // If the menu is on the left of the screen
             if (_rect.localPosition.x < 0)
             {
                 _rect.localPosition = new Vector3(-1 * _rect.localPosition.x + _rect.rect.width, _rect.localPosition.y, _rect.localPosition.z);
@@ -91,12 +93,13 @@ public class ActionMenu : MonoBehaviour
         }
         else
         {
-            //if the menu is on the right of the screen
+            // If the menu is on the right of the screen
             if (_rect.localPosition.x > 0)
             {
                 _rect.localPosition = new Vector3(-1 * _rect.localPosition.x + _rect.rect.width, _rect.localPosition.y, _rect.localPosition.z);
             }
         }
+
         CalculateOptions();
     }
 
@@ -119,6 +122,7 @@ public class ActionMenu : MonoBehaviour
             {
                 _cm.HoveredOverTile = _um.Path.Last();
             }
+
             _um.SelectUnit(_um.SelectedUnit);
         }
 
@@ -128,10 +132,9 @@ public class ActionMenu : MonoBehaviour
             {
                 _um.EndMove();
             }
-            //Logic to do when the player choose to attack 
+            // Logic to do when the player choose to attack 
             else if (_optionsList[_selectedOption] == _attackOptionInstance)
             {
-
                 if (_um.SelectedUnit is AttackingUnit)
                 {
                     _am.Attacker = _um.SelectedUnit as AttackingUnit;
@@ -139,16 +142,10 @@ public class ActionMenu : MonoBehaviour
                     Debug.Log("We're attacking");
                     _am.InitiateAttack();
                     Debug.Log("Done attacking");
-
-
-
-
-
                 }
             }
             else if (_optionsList[_selectedOption] == _attackOptionInstance)
             {
-
                 if (_um.SelectedUnit is AttackingUnit)
                 {
                     _am.Attacker = _um.SelectedUnit as AttackingUnit;
@@ -160,27 +157,21 @@ public class ActionMenu : MonoBehaviour
             }
             else if (_optionsList[_selectedOption] == _captureOptionInstance)
             {
-                _bm.CaptureBuilding(_cm.HoveredOverTile);
-                _um.EndMove();
-                
-            }
-            else if (_optionsList[_selectedOption] == _captureOptionInstance)
-            {
-                _bm.CaptureBuilding(_cm.HoveredOverTile);
-                _um.EndMove();
+                // This is for the icon manager to know the unit is capturing
+                _um.SelectedUnit.IsCapturing = true;
+                _bm.CapturableBuildings[_cm.HoveredOverTile].CapturingUnit = _um.SelectedUnit;
 
+                _bm.CaptureBuilding(_cm.HoveredOverTile);
+                _um.EndMove();
             }
             else if (_optionsList[_selectedOption] == _loadOptionInstance)
             {
                 (_um.FindUnit(_um.SelectedUnit.GetGridPosition()) as LoadingUnit).LoadUnit(_um.SelectedUnit);
                 _um.EndMove();
-
             }
             else if (_optionsList[_selectedOption] == _dropOptionInstance)
             {
                 (_um.SelectedUnit as LoadingUnit).InisitateDropUnit();
-                
-
             }
         }
         //change selected option
@@ -212,17 +203,14 @@ public class ActionMenu : MonoBehaviour
         {
             _loadOptionInstance.SetActive(true);
             _optionsList.Add(_loadOptionInstance);
-
         }
         else
         {
-            CheckFire();// if is an attacking _unit
+            CheckFire(); // If it's an attacking _unit
             CheckDrop();
             CheckAbility();
-            
         }
-        
-       
+
         _selectedOption = 0;
         _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(true);
     }
@@ -247,12 +235,11 @@ public class ActionMenu : MonoBehaviour
                 print($"{_am.Attacker} Value(CanAttack) = {_am.Attacker.CheckAttack()}");
                 if (_am.Attacker.CheckAttack())
                 {
-                    if(((_um.SelectedUnit)as AttackingUnit).IndirectUnit && _um.Path.Count == 0)
+                    if(((_um.SelectedUnit) as AttackingUnit).IndirectUnit && _um.Path.Count == 0)
                     {
                         _attackOptionInstance.SetActive(true);
                         _optionsList.Add(_attackOptionInstance);
                     }
-                   
                 }
             }
         }
@@ -261,39 +248,33 @@ public class ActionMenu : MonoBehaviour
             Debug.LogWarning("SelectedUnit is not an AttackingUnit. Unable to check attack option.");
         }
     }
+
     private void CheckDrop()
     {
-        if (_um.SelectedUnit is LoadingUnit && (_um.SelectedUnit as LoadingUnit).LoadedUnit != null&& (_um.SelectedUnit as LoadingUnit).GetDropTiles() )
+        if (_um.SelectedUnit is LoadingUnit && (_um.SelectedUnit as LoadingUnit).LoadedUnit != null &&
+            (_um.SelectedUnit as LoadingUnit).GetDropTiles())
         {
             _dropOptionInstance.SetActive(true);
             _optionsList.Add(_dropOptionInstance);
             return;
         }
     }
+
     private void CheckAbility()
     {
-        var building = _bm.BuildingFromPosition.ContainsKey(_cm.HoveredOverTile) ? _bm.BuildingFromPosition[_cm.HoveredOverTile] : null;
-        if (building != null)
+        var village = _bm.CapturableBuildings.ContainsKey(_cm.HoveredOverTile) ? _bm.CapturableBuildings[_cm.HoveredOverTile] : null;
+        if (village != null && village.Owner != _gm.PlayerTurn)
         {
-            if (building.Owner != _gm.PlayerTurn)
+            if (_um.SelectedUnit.Data.UnitType == EUnits.Infantry || _um.SelectedUnit.Data.UnitType == EUnits.Lancers)
             {
-                if (_um.SelectedUnit.Data.UnitType == EUnits.Infantry || _um.SelectedUnit.Data.UnitType == EUnits.Lancers)
-                {
-                    _captureOptionInstance.SetActive(true);
-                    _optionsList.Add(_captureOptionInstance);
-                    return;
-                }
-            }
-            else
-            {
-                //heal
+                _captureOptionInstance.SetActive(true);
+                _optionsList.Add(_captureOptionInstance);
+                return;
             }
         }
 
         _waitOptionInstance.SetActive(true);
         _optionsList.Add(_waitOptionInstance);
     }
-
-    
+    #endregion
 }
-#endregion

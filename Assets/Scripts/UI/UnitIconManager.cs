@@ -34,6 +34,7 @@ public class UnitIconManager : MonoBehaviour
         UpdateHealthIcon();
         UpdateProvisionsNeedIcon();
         UpdateEnergyNeedIcon();
+        UpdateCapturingIcon();
         UpdateLoadingIcon();
 
         MakeBlink(); // Make warning icons (P and E) blink
@@ -65,24 +66,24 @@ public class UnitIconManager : MonoBehaviour
         _H = PutIcon(true, basePosition, _iconData.H);
 
         // P icon
-        _P = PutIcon(false, basePosition + new Vector3(-0.05f, 0.33f, 0), _iconData.P);
+        _P = PutIcon(false, basePosition + new Vector3(-0.04f, 0.6f, 0), _iconData.P);
 
         // E icon
         if (_unit is AttackingUnit) // Check if it's an attacking unit
         {
-           _E = PutIcon(false, basePosition + new Vector3(-0.05f, 0.6f, 0), _iconData.E);
+           _E = PutIcon(false, basePosition + new Vector3(-0.04f, 0.33f, 0), _iconData.E);
         }
 
         // C icon
         if (_unit is Infantry || _unit is Lancer) // Check if it's an infantry or lancer
         {
-            _C = PutIcon(false, basePosition + new Vector3(0.33f, -0.05f, 0), _iconData.C);
+            _C = PutIcon(false, basePosition + new Vector3(0.34f, -0.04f, 0), _iconData.C);
         }
 
         // L icon
         if (_unit is LoadingUnit) // Check if it's a loading unit
         {
-            _L = PutIcon(false, basePosition + new Vector3(0.33f, -0.05f, 0), _iconData.L);
+            _L = PutIcon(false, basePosition + new Vector3(0.34f, -0.04f, 0), _iconData.L);
         }
     }
 
@@ -116,15 +117,10 @@ public class UnitIconManager : MonoBehaviour
     {
         if (_unit.Provisions <= Mathf.FloorToInt(_unit.Data.MaxProvisions * 0.25f))
         {
-            _blinkP = false;
+            // Blink only if provisions are not zero
+            _blinkP = _unit.Provisions != 0;
 
-            // No blink if no provisions 
-            if (_unit.Provisions != 0)
-            {
-                _blinkP = true;
-            }
-
-            if (!_isPActive)
+            if (!_isPActive || _unit.Provisions == 0)
             {
                 _P.SetActive(true);
                 _isPActive = true;
@@ -132,6 +128,7 @@ public class UnitIconManager : MonoBehaviour
         }
         else
         {
+            _blinkP = false;
             _P.SetActive(false);
             _isPActive = false;
         }
@@ -145,15 +142,10 @@ public class UnitIconManager : MonoBehaviour
             int energyOrbs = unit.Weapons[unit.CurrentWeaponIndex].EnergyOrbs;
             if (energyOrbs <= Mathf.FloorToInt(_unit.Data.MaxProvisions * 0.25f))
             {
-                _blinkE = false;
+                // Blink only if energy orbs are not zero
+                _blinkE = energyOrbs != 0;
 
-                // No blink if no energy orbs 
-                if (energyOrbs != 0)
-                {
-                    _blinkE = true;
-                }
-
-                if (!_isEActive)
+                if (!_isEActive || energyOrbs == 0)
                 {
                     _E.SetActive(true);
                     _isEActive = true;
@@ -161,8 +153,25 @@ public class UnitIconManager : MonoBehaviour
             }
             else
             {
+                _blinkE = false;
                 _E.SetActive(false);
                 _isEActive = false;
+            }
+        }
+    }
+
+    // Set the capturing icon active if an infantry or lancer is capturing a building
+    public void UpdateCapturingIcon()
+    {
+        if (_unit is Infantry || _unit is Lancer)
+        {
+            if (_unit.IsCapturing == true)
+            {
+                _C.SetActive(true);
+            }
+            else
+            {
+                _C.SetActive(false);
             }
         }
     }
