@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,7 @@ public class CaptainBar : MonoBehaviour
     [SerializeField] private GameObject _goldValue;
     [SerializeField] private Image _captainSprite;
     [SerializeField] private Image _captainColor;
+    [SerializeField] private GameObject _superMeterReady;
 
 
     [SerializeField] private Sprite AndrewSprite;
@@ -41,6 +43,15 @@ public class CaptainBar : MonoBehaviour
     {
         //idk how the captains will be held
         _superMeterSprite.GetComponent<Image>().fillAmount = _gm.Players[_gm.PlayerTurn].PlayerCaptain.SuperMeter;
+        if(_superMeterSprite.GetComponent<Image>().fillAmount == 1)
+        {
+            _superMeterReady.gameObject.SetActive(true);
+        } 
+        else if(_superMeterSprite.GetComponent<Image>().fillAmount == 0)
+        {
+            _superMeterReady.gameObject.SetActive(false);
+        }
+        
     }
     public void UpdateCaptain()
     {
