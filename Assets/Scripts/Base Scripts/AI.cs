@@ -183,7 +183,7 @@ public class AiPlayer : Player
 
                 case 2:
                     
-                    List<Unit> bestEnemies = FindNearestEnemy(attacker, enemyUnits);
+                    List<Unit> bestEnemies = FindBestEnemies(attacker, enemyUnits);
                     foreach (var enemy in bestEnemies)
                     {
                         var enemyPosition = enemy.GetGridPosition();

@@ -47,7 +47,7 @@ public class CaptainBar : MonoBehaviour
         {
             _superMeterReady.gameObject.SetActive(true);
         } 
-        else if(_superMeterSprite.GetComponent<Image>().fillAmount == 0)
+        else 
         {
             _superMeterReady.gameObject.SetActive(false);
         }

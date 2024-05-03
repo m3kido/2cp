@@ -106,6 +106,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -113,8 +126,8 @@ TextureImporter:
       name: cog_1
       rect:
         serializedVersion: 2
-        x: 112
-        y: 93
+        x: 113
+        y: 94
         width: 30
         height: 30
       alignment: 6
@@ -126,6 +139,69 @@ TextureImporter:
       bones: []
       spriteID: 6e94a868aa98cd94fa4bbddeb1273265
       internalID: -915105724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cog_0
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 98
+        width: 30
+        height: 30
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dfc7f44b7a4605f42a78cbd291b9cbb3
+      internalID: 1932458979
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cog_2
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 96
+        width: 30
+        height: 30
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8aeab16f42a3a264180ed66d545542e3
+      internalID: 1452029404
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cog_3
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 5
+        width: 30
+        height: 30
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2180bf1a2e64f164bb9344facf484842
+      internalID: 1368518603
       vertices: []
       indices: 
       edges: []
@@ -143,6 +219,8 @@ TextureImporter:
     nameFileIdTable:
       cog_0: 1932458979
       cog_1: -915105724
+      cog_2: 1452029404
+      cog_3: 1368518603
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

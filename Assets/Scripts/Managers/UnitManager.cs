@@ -140,10 +140,11 @@ public class UnitManager : MonoBehaviour
         foreach (var pos in Path)
         {
             var offset = pos - SelectedUnit.GetGridPosition();
-            
-            if(SelectedUnit.animator != null)
+           
+            if (SelectedUnit.animator != null)
             {
-                print(offset);
+               
+              
                 if (offset != lastoffset)
                 {
                    
@@ -153,7 +154,7 @@ public class UnitManager : MonoBehaviour
                     }
                     else if (offset.x == -1)
                     {
-                        SelectedUnit.animator.SetTrigger("left");
+                         SelectedUnit.animator.SetTrigger("left");
                     }
                     else if (offset.y == 1)
                     {
@@ -162,6 +163,7 @@ public class UnitManager : MonoBehaviour
                     else if (offset.y == -1)
                     {
                         SelectedUnit.animator.SetTrigger("down");
+                        
                     }
                     lastoffset= offset;
                 }
@@ -169,6 +171,7 @@ public class UnitManager : MonoBehaviour
 
             }
             SelectedUnit.transform.position = pos;
+
             yield return new WaitForSeconds(0.08f);
 
         }
@@ -176,7 +179,7 @@ public class UnitManager : MonoBehaviour
         SelectedUnit.IsMoving = false;
         if( SelectedUnit.animator != null )
         {
-            SelectedUnit.animator.SetTrigger("Idle");
+            SelectedUnit.animator.SetTrigger("idle");
         }
         
         _gm.CurrentStateOfPlayer = EPlayerStates.InActionsMenu;

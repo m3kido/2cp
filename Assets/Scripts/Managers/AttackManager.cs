@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -246,7 +247,13 @@ public class AttackManager : MonoBehaviour
         Attacker.IsAttacking = false;
         Attacker.HasAttacked = true;
         Attacker.UnHighlightTargets();
+        if (Attacker.animator)
+        {
+            Attacker.animator.SetTrigger("attacking");
+        }
+        
         Attacker = null;
+   
 
 
     }
