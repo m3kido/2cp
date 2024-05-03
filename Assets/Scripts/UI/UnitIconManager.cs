@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 // Script that display icons near the units
@@ -14,8 +15,10 @@ public class UnitIconManager : MonoBehaviour
     private GameObject _L; // Loading icon
 
     private float _blinkTimer;
-    private bool _isEActive = false;
     private bool _isPActive = false;
+    private bool _isEActive = false;
+    private bool _blinkP = false;
+    private bool _blinkE = false;
     #endregion
 
     #region UnityMethods
@@ -32,28 +35,21 @@ public class UnitIconManager : MonoBehaviour
         UpdateProvisionsNeedIcon();
         UpdateEnergyNeedIcon();
         UpdateLoadingIcon();
-        
-        if (_isPActive) // Make warning icons blink
-        {
-            MakeBlink(_P);
-        }
 
-        if (_isEActive)
-        {
-            MakeBlink(_E);
-        }
+        MakeBlink(); // Make warning icons (P and E) blink
     }
     #endregion
 
     #region Methods
     // Make icons blink
-    public void MakeBlink(GameObject icon)
+    public void MakeBlink()
     {
         _blinkTimer += Time.deltaTime;
         if (_blinkTimer >= 0.5f)
         {
             // Toggle visibility of the icon
-            icon.SetActive(!icon.activeSelf);
+            if (_isPActive && _blinkP) _P.SetActive(!_P.activeSelf);
+            if (_isEActive && _blinkE) _E.SetActive(!_E.activeSelf);
 
             // Reset the timer
             _blinkTimer = 0f;
@@ -63,23 +59,30 @@ public class UnitIconManager : MonoBehaviour
     // Display initial icons
     public void InitializeIcons()
     {
-        Vector3 basePosition = transform.position + new Vector3(0.18f, 0.18f, 0); 
-        
-        _H = PutIcon(true, basePosition, _iconData.H); // H icon
-        _P = PutIcon(false, basePosition + new Vector3(0.33f, -0.05f, 0), _iconData.P); // P icon
+        Vector3 basePosition = transform.position + new Vector3(0.18f, 0.18f, 0);
 
-        // Check if it's an attacking unit
-        if (_unit is AttackingUnit)
+        // H icon
+        _H = PutIcon(true, basePosition, _iconData.H);
+
+        // P icon
+        _P = PutIcon(false, basePosition + new Vector3(-0.05f, 0.33f, 0), _iconData.P);
+
+        // E icon
+        if (_unit is AttackingUnit) // Check if it's an attacking unit
         {
-            // E icon
-           _E = PutIcon(false, basePosition + new Vector3(-0.05f, 0.33f, -0), _iconData.E);
+           _E = PutIcon(false, basePosition + new Vector3(-0.05f, 0.6f, 0), _iconData.E);
         }
 
-        // Check if it's a loading unit
-        if (_unit is LoadingUnit)
+        // C icon
+        if (_unit is Infantry || _unit is Lancer) // Check if it's an infantry or lancer
         {
-            // L icon
-            _L = PutIcon(false, basePosition + new Vector3(-0.05f, 0.33f, -0), _iconData.L);
+            _C = PutIcon(false, basePosition + new Vector3(0.33f, -0.05f, 0), _iconData.C);
+        }
+
+        // L icon
+        if (_unit is LoadingUnit) // Check if it's a loading unit
+        {
+            _L = PutIcon(false, basePosition + new Vector3(0.33f, -0.05f, 0), _iconData.L);
         }
     }
 
@@ -113,6 +116,14 @@ public class UnitIconManager : MonoBehaviour
     {
         if (_unit.Provisions <= Mathf.FloorToInt(_unit.Data.MaxProvisions * 0.25f))
         {
+            _blinkP = false;
+
+            // No blink if no provisions 
+            if (_unit.Provisions != 0)
+            {
+                _blinkP = true;
+            }
+
             if (!_isPActive)
             {
                 _P.SetActive(true);
@@ -131,8 +142,17 @@ public class UnitIconManager : MonoBehaviour
     {
         if (_unit is AttackingUnit unit)
         {
-            if (unit.Weapons[unit.CurrentWeaponIndex].EnergyOrbs <= Mathf.FloorToInt(_unit.Data.MaxProvisions * 0.25f))
+            int energyOrbs = unit.Weapons[unit.CurrentWeaponIndex].EnergyOrbs;
+            if (energyOrbs <= Mathf.FloorToInt(_unit.Data.MaxProvisions * 0.25f))
             {
+                _blinkE = false;
+
+                // No blink if no energy orbs 
+                if (energyOrbs != 0)
+                {
+                    _blinkE = true;
+                }
+
                 if (!_isEActive)
                 {
                     _E.SetActive(true);
