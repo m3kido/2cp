@@ -56,14 +56,38 @@ public class AttackingUnit : Unit
         foreach (var unit in _um.Units)
         {
             if (unit == this) continue;
+            var potentialTargetPos = _mm.Map.WorldToCell(unit.transform.position);
+            var currentWeapon = Weapons[CurrentWeaponIndex];
+            Player player = _gm.Players[Owner];
+            Captain captain = player.PlayerCaptain;
+            bool IsInRange = (L1Distance2D(attackerPos, potentialTargetPos) >= currentWeapon.MinRange) && (L1Distance2D(attackerPos, potentialTargetPos) < (currentWeapon.MaxRange + captain.AttackRangeAdditioner));
+            bool IsEnemy = Owner != unit.Owner;
+            bool IsDamageable = Weapons[CurrentWeaponIndex].DamageList[(int)unit.Data.UnitType] != 0;
+            if (IsInRange && IsEnemy && IsDamageable)
+            {
+
+                targets.Add(unit);
+            }
+        }
+        return targets;
+    }
+
+    public List<Unit> ScanTargets(int moveRange)
+    {
+        var attackerPos = GetGridPosition();
+        List<Unit> targets = new();
+
+        foreach (var unit in _um.Units)
+        {
+            if (unit == this) continue;
 
             var potentialTargetPos = _mm.Map.WorldToCell(unit.transform.position);
 
             var currentWeapon = Weapons[CurrentWeaponIndex];// getting the current weapon from the attacker
             Player player = _gm.Players[Owner];
             Captain captain = player.PlayerCaptain;
-            //Debug.Log("Attack range additionner : " + captain.AttackRangeAdditioner);
-            bool IsInRange = (L1Distance2D(attackerPos, potentialTargetPos) >= currentWeapon.MinRange) && (L1Distance2D(attackerPos, potentialTargetPos) < (currentWeapon.MaxRange + captain.AttackRangeAdditioner));
+            //Kyn smth stupid bezzaaf hna 
+            bool IsInRange = (L1Distance2D(attackerPos, potentialTargetPos) >= currentWeapon.MinRange) && (L1Distance2D(attackerPos, potentialTargetPos) < (currentWeapon.MaxRange + captain.AttackRangeAdditioner + moveRange));
             bool IsEnemy = Owner != unit.Owner;
             bool IsDamageable = Weapons[CurrentWeaponIndex].DamageList[(int)unit.Data.UnitType] != 0;
 
@@ -78,25 +102,6 @@ public class AttackingUnit : Unit
         return targets;
     }
 
-
-
-
-    //public void HighlightTargets()
-    //{
-    //    List<Unit> targets = ScanTargets();
-    //    Debug.Log("You can attack " + targets.Count + " enemies");
-    //    foreach (var target in targets)
-    //    {
-    //        // Change the material color of the target to blue
-    //        if (target.TryGetComponent<Renderer>(out var renderer))
-    //        {
-    //            MaterialPropertyBlock propBlock = new();
-    //            renderer.GetPropertyBlock(propBlock);
-    //            propBlock.SetColor("_Color", Color.blue); // Set the color to blue
-    //            renderer.SetPropertyBlock(propBlock);
-    //        }
-    //    }
-    //}
     public void UnHighlightTargets()
     {
         List<Unit> targets = ScanTargets();

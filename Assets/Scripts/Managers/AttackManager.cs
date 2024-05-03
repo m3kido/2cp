@@ -226,7 +226,20 @@ public class AttackManager : MonoBehaviour
         return totalDamage;
     }
 
+    public float checkCounterAttack(Unit target , AttackingUnit attacker)
+    {
+        if (target.Health > 0 && target is AttackingUnit && !directAttacker.Contains(attacker.Data.UnitType)) //We need to check if target unit can attack the attacker)
+        {
+            AttackingUnit newAttacker = target as AttackingUnit;
+            if (newAttacker.CanAttackThis(attacker))
+            {
+               return CalculateDamage(attacker, newAttacker);
+            }
+           
 
+        }
+        return 0; 
+    }
 
     public void EndAttackPhase()
     {

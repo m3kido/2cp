@@ -183,7 +183,7 @@ public class Unit : MonoBehaviour
     }
 
     // A recursive function to fill the ValidTiles dictionary
-    protected void SeekTile(Vector3Int currentPosition, int currentProvisions,int count)
+    public void SeekTile(Vector3Int currentPosition, int currentProvisions,int count)
     {   
         // Access the current tile
         Tile currTile = _mm.Map.GetTile<Tile>(currentPosition);
@@ -262,6 +262,12 @@ public class Unit : MonoBehaviour
 
         private set { }
 
+    }
+    public float L2Distance2D(Vector3 A, Vector3 B)
+    {
+        float dx = A.x - B.x;
+        float dy = A.y - B.y;
+        return Mathf.Sqrt(dx * dx + dy * dy);
     }
 
 }

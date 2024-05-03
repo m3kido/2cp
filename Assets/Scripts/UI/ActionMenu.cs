@@ -237,6 +237,7 @@ public class ActionMenu : MonoBehaviour
 
         if (_um.SelectedUnit is AttackingUnit)
         {
+           
             _am.Attacker = _um.SelectedUnit as AttackingUnit;
             if (_am.Attacker == null)
             {
@@ -247,11 +248,12 @@ public class ActionMenu : MonoBehaviour
                 print($"{_am.Attacker} Value(CanAttack) = {_am.Attacker.CheckAttack()}");
                 if (_am.Attacker.CheckAttack())
                 {
-                    if(((_um.SelectedUnit)as AttackingUnit).IndirectUnit && _um.Path.Count == 0)
+                    if(    ((_am.Attacker).IndirectUnit && _um.Path.Count == 0) || !(_am.Attacker).IndirectUnit)
                     {
                         _attackOptionInstance.SetActive(true);
                         _optionsList.Add(_attackOptionInstance);
                     }
+                    
                    
                 }
             }

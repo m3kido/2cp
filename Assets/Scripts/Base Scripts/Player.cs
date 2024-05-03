@@ -1,7 +1,6 @@
-﻿// Class to represent a player
-using System;
+﻿using UnityEngine;
 
-public class Player 
+public class Player : MonoBehaviour
 {
     // Auto-properties (the compiler automatically creates private fields for them)
     public string Name { get; set; }
@@ -9,9 +8,8 @@ public class Player
     public ETeamColors Color { get; set; }
     public ETeams TeamSide { get; set; }
     public Captain PlayerCaptain { get; set; }
-    
+
     public int Gold { get; set; }
-    
 
     // Player constructor
     public Player(string name, ETeamColors color, ETeams teamSide, ECaptains captain)
@@ -40,5 +38,4 @@ public class Player
     {
         CaptainManager.DeleteCaptain(PlayerCaptain);
     }
-    
 }
