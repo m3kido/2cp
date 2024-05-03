@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7847442498700434205}
   - component: {fileID: 4474607147704419987}
   - component: {fileID: 4036661797751926588}
+  - component: {fileID: -3460192986079533254}
   m_Layer: 0
   m_Name: EliteArcher
   m_TagString: Untagged
@@ -98,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rend: {fileID: 0}
+  animator: {fileID: 0}
   _data: {fileID: 11400000, guid: e562743c97edf474f98bdd971ea69e74, type: 2}
   _owner: 0
   MoveRange: 0
@@ -117,3 +119,16 @@ MonoBehaviour:
   CurrentWeaponIndex: 0
   HasAttacked: 0
   IndirectUnit: 0
+--- !u!114 &-3460192986079533254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8739419240694635618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 493f79349ae1e6f46b31d813d4054714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _iconData: {fileID: 11400000, guid: d93811f6824463142955d71777ae50aa, type: 2}

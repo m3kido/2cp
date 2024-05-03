@@ -42,7 +42,7 @@ public class CursorManager : MonoBehaviour
     #region UnityMethods
     private void Awake()
     {
-        // Get the unit, map, game and building managers from the hierarchy
+        // Get the _unit, map, game and building managers from the hierarchy
         _um = FindAnyObjectByType<UnitManager>();
         _mm = FindAnyObjectByType<MapManager>();
         _gm = FindAnyObjectByType<GameManager>();
@@ -65,7 +65,7 @@ public class CursorManager : MonoBehaviour
     // Handles keyboard input
     void HandleInput()
     {
-        // Dont handle any input if a unit is moving or attacking
+        // Dont handle any input if a _unit is moving or attacking
         if ((_um.SelectedUnit != null && _um.SelectedUnit.IsMoving) || (_gm.CurrentStateOfPlayer == EPlayerStates.Attacking)) { return; }
 
         // X key
@@ -168,7 +168,7 @@ public class CursorManager : MonoBehaviour
             return;
         }
 
-        // If a unit is selected, record the path
+        // If a _unit is selected, record the path
         if (_um.SelectedUnit != null)
         {
             // Undraw the path if we get back the start point
@@ -258,10 +258,10 @@ public class CursorManager : MonoBehaviour
     {
         Unit refUnit = _um.FindUnit(HoveredOverTile);
 
-        // If there is a unit on the hovered tile
+        // If there is a _unit on the hovered tile
         if (refUnit != null)
         {
-            // Can't select an another unit when one is selected 
+            // Can't select an another _unit when one is selected 
             if (_um.SelectedUnit != null)
             {
                 bool loadcase = (refUnit is LoadingUnit) && (refUnit as LoadingUnit).CanLoadUnit(_um.SelectedUnit);
@@ -269,7 +269,7 @@ public class CursorManager : MonoBehaviour
                 return;
             }
 
-            // Can't select an enemy unit
+            // Can't select an enemy _unit
             if (refUnit.Owner != _gm.PlayerTurn || refUnit.HasMoved) {
                 _gm.CurrentStateOfPlayer = EPlayerStates.InSettingsMenu;
                 return; 

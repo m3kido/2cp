@@ -1,20 +1,19 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [Serializable]
 public class AttackingUnit : Unit
 {
-    // List of damages that this attacking unit can apply to other units using each weapon 
     [SerializeField] List<Weapon> _weapons;
-
     public List<Weapon> Weapons { get => _weapons; set => _weapons = value; }
-    public int CurrentWeaponIndex = 0;
-    private bool _isAttacking = false;
-    public bool HasAttacked = false;
-    [SerializeField] public bool IndirectUnit;
+
+    public int CurrentWeaponIndex;
+    private bool _isAttacking;
+    public bool HasAttacked;
+
+    public bool IndirectUnit;
 
     public bool IsAttacking
     {
@@ -38,16 +37,16 @@ public class AttackingUnit : Unit
 
     private void OnEnable()
     {
-        Weapon.OnAmmoRanOut += MoveToNextWeapon;
+        Weapon.OnEnergyRanOut += MoveToNextWeapon;
     }
 
     private void OnDisable()
     {
-        Weapon.OnAmmoRanOut -= MoveToNextWeapon;
+        Weapon.OnEnergyRanOut -= MoveToNextWeapon;
     }
 
     // scans area for targets in an Intervall [ min range, max range[
-    // Assumed that every unit can be in one tile which can be in one grid position
+    // Assumed that every _unit can be in one tile which can be in one grid position
     public List<Unit> ScanTargets()
     {
         var attackerPos = GetGridPosition();
@@ -59,27 +58,24 @@ public class AttackingUnit : Unit
 
             var potentialTargetPos = _mm.Map.WorldToCell(unit.transform.position);
 
-            var currentWeapon = Weapons[CurrentWeaponIndex];// getting the current weapon from the attacker
+            var currentWeapon = Weapons[CurrentWeaponIndex]; // Getting the current weapon from the attacker
             Player player = _gm.Players[Owner];
             Captain captain = player.PlayerCaptain;
-            //Debug.Log("Attack range additionner : " + captain.AttackRangeAdditioner);
+
+            // Debug.Log("Attack range additionner : " + captain.AttackRangeAdditioner);
             bool IsInRange = (L1Distance2D(attackerPos, potentialTargetPos) >= currentWeapon.MinRange) && (L1Distance2D(attackerPos, potentialTargetPos) < (currentWeapon.MaxRange + captain.AttackRangeAdditioner));
             bool IsEnemy = Owner != unit.Owner;
             bool IsDamageable = Weapons[CurrentWeaponIndex].DamageList[(int)unit.Data.UnitType] != 0;
 
-            //print($"{L1Distance2D(attackerPos, potentialTargetPos)} / {currentWeapon.MinRange} / {currentWeapon.MaxRange} / {unit}");
+            // print($"{L1Distance2D(attackerPos, potentialTargetPos)} / {currentWeapon.MinRange} / {currentWeapon.MaxRange} / {_unit}");
             if (IsInRange && IsEnemy && IsDamageable)
             {
-
                 targets.Add(unit);
             }
         }
-        //print("targets : " + targets.Count);
+        // print("targets : " + targets.Count);
         return targets;
     }
-
-
-
 
     //public void HighlightTargets()
     //{
@@ -97,6 +93,7 @@ public class AttackingUnit : Unit
     //        }
     //    }
     //}
+
     public void UnHighlightTargets()
     {
         List<Unit> targets = ScanTargets();
@@ -144,7 +141,6 @@ public class AttackingUnit : Unit
     public void MoveToNextWeapon()
     {
         if (CurrentWeaponIndex < Weapons.Count - 1) CurrentWeaponIndex++; // Cannot exceed last weapon index
-
     }
 
     public void ResetWeapons()
@@ -192,8 +188,6 @@ public class AttackingUnit : Unit
                 _mm.HighlightAttackTile(pos);
             }
         }
-
-
     }
 
     private void ExpandFromTiles(List<Vector3Int> list, Vector3Int currentPosition, int range)
@@ -209,9 +203,7 @@ public class AttackingUnit : Unit
                 }
                 else { return; }
             }
-            
         }
-
 
         Vector3Int up = currentPosition + Vector3Int.up;
         Vector3Int down = currentPosition + Vector3Int.down;
@@ -236,10 +228,8 @@ public class AttackingUnit : Unit
                     list.Add(currentPosition);
                 }
                 else { return; }
-            }
-            
+            } 
         }
-
 
         Vector3Int up = currentPosition + Vector3Int.up;
         Vector3Int down = currentPosition + Vector3Int.down;
@@ -250,7 +240,6 @@ public class AttackingUnit : Unit
         AttackFromTiles(list, down, range - 1);
         AttackFromTiles(list, left, range - 1);
         AttackFromTiles(list, right, range - 1);
-
     }
 
     //public void InitiateTargetSelection()
@@ -271,8 +260,6 @@ public class AttackingUnit : Unit
     //{
     //    HandleTargetSelectionInput();
     //}
-
-
 }
 
 

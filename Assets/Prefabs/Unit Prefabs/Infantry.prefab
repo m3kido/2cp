@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2773230227958978046}
   - component: {fileID: 7558385913804266953}
-  - component: {fileID: 508301312882059283}
   - component: {fileID: 612678763248937070}
+  - component: {fileID: -4055146251563996862}
+  - component: {fileID: -8375982238815083286}
   m_Layer: 0
   m_Name: Infantry
   m_TagString: Untagged
@@ -86,33 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &508301312882059283
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5520205959947636410}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9831ef94986d2d44da8f80a91dfc36b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rend: {fileID: 0}
-  animator: {fileID: 0}
-  _data: {fileID: 11400000, guid: 35af56c91dff4954c922141f844583c4, type: 2}
-  _owner: 1
-  MoveRange: 0
-  _weapons:
-  - _damageList: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-    _ammo: 0
-    _weaponType: 0
-    _ammoPerAttack: 0
-    _minRange: 1
-    _maxRange: 2
-  CurrentWeaponIndex: 0
-  HasAttacked: 0
-  IndirectUnit: 0
 --- !u!95 &612678763248937070
 Animator:
   serializedVersion: 5
@@ -134,3 +108,43 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-4055146251563996862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5520205959947636410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f97d3c23b37cec442bb1e3b87d4c61c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rend: {fileID: 0}
+  animator: {fileID: 0}
+  _data: {fileID: 11400000, guid: 35af56c91dff4954c922141f844583c4, type: 2}
+  _owner: 0
+  MoveRange: 0
+  _weapons:
+  - _damageList: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+    _energyOrbs: 0
+    _weaponType: 0
+    _energyPerAttack: 0
+    _minRange: 0
+    _maxRange: 0
+  CurrentWeaponIndex: 0
+  HasAttacked: 0
+  IndirectUnit: 0
+--- !u!114 &-8375982238815083286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5520205959947636410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 493f79349ae1e6f46b31d813d4054714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _iconData: {fileID: 11400000, guid: d93811f6824463142955d71777ae50aa, type: 2}

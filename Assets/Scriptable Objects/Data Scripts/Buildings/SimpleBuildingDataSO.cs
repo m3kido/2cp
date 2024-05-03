@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// Subclass for  simple buildings
+// Simple buildings
 [CreateAssetMenu(fileName = "SimpleBuilding", menuName = "Building/Simple Building")]
 public class SimpleBuildingDataSO : BuildingDataSO
 {

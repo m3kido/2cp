@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 9146124883390851485}
   - component: {fileID: 5448975037762132935}
   - component: {fileID: 6464732311640755939}
+  - component: {fileID: -5138247728806845038}
   m_Layer: 0
   m_Name: Cog
   m_TagString: Untagged
@@ -98,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rend: {fileID: 0}
+  animator: {fileID: 0}
   _data: {fileID: 11400000, guid: 1fc2bde65fa88194e93ddbc42137d398, type: 2}
   _owner: 0
   MoveRange: 0
@@ -116,3 +118,17 @@ MonoBehaviour:
     _maxRange: 4
   CurrentWeaponIndex: 0
   HasAttacked: 0
+  IndirectUnit: 0
+--- !u!114 &-5138247728806845038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8770609183450820968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 493f79349ae1e6f46b31d813d4054714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _iconData: {fileID: 11400000, guid: d93811f6824463142955d71777ae50aa, type: 2}

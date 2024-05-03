@@ -216,7 +216,7 @@ public class ActionMenu : MonoBehaviour
         }
         else
         {
-            CheckFire();// if is an attacking unit
+            CheckFire();// if is an attacking _unit
             CheckDrop();
             CheckAbility();
             

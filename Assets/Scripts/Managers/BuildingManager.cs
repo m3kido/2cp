@@ -123,7 +123,7 @@ public class BuildingManager : MonoBehaviour
         }
     }
     
-    // Spawn a unit from a building
+    // Spawn a _unit from a building
     public void SpawnUnit(EUnits unitType, Vector3Int pos, int owner)
     {
         Unit unitPrefab = null ;

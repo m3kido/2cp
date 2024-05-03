@@ -6,7 +6,7 @@ public class UIManager : MonoBehaviour
     // This class should handle :
     // The menu (appears after moving or selecting a tile)
     // Info (appears when hovering on a tile):
-    // Display tile info and unit info if a unit is on the tile
+    // Display tile info and _unit info if a _unit is on the tile
     // Captain bar
     // Building menu
 

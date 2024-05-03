@@ -52,7 +52,7 @@ public class AttackManager : MonoBehaviour
         target.Health -= (int)damageToTarget;
         Debug.Log("Target has been damaged!");
 
-        if (target.Health > 0 && target is AttackingUnit && !directAttacker.Contains(attacker.Data.UnitType)) //We need to check if target unit can attack the attacker)
+        if (target.Health > 0 && target is AttackingUnit && !directAttacker.Contains(attacker.Data.UnitType)) //We need to check if target _unit can attack the attacker)
         {
             AttackingUnit newAttacker = target as AttackingUnit;
             if (newAttacker.CanAttackThis(attacker))

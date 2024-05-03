@@ -11,19 +11,16 @@ public class CaptainBar : MonoBehaviour
     [SerializeField] private Image _captainSprite;
     [SerializeField] private Image _captainColor;
 
-
     [SerializeField] private Sprite AndrewSprite;
     [SerializeField] private Sprite MaximusSprite;
     [SerializeField] private Sprite MelinaSprite;
     [SerializeField] private Sprite GodfretSprite;
-
 
     private GameManager _gm;
 
     private void Awake()
     {
         _gm = FindAnyObjectByType<GameManager>();
-
     }
 
 
@@ -32,7 +29,6 @@ public class CaptainBar : MonoBehaviour
         UpdateCaptain();
         GameManager.OnTurnEnd += UpdateCaptain;
         UnitManager.OnMoveEnd += UpdateSuperMeter;
-
     }
     #endregion
 
@@ -88,10 +84,6 @@ public class CaptainBar : MonoBehaviour
         {
             textMesh.text = _gm.Players[_gm.PlayerTurn].Gold.ToString();
         }
-
-        
     }
-    
-
+    #endregion
 }
-#endregion

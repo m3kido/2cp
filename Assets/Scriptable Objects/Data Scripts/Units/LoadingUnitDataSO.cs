@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-// Subclass for loading units
+// Loading Units
 [CreateAssetMenu(fileName = "LoadingUnit", menuName = "Unit/Loading Unit")]
 public class LoadingUnitDataSO : UnitDataSO
 {

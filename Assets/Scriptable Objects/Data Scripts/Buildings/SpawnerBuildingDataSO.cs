@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Subclass for unit spawning buildings
+// Spawner buildings
 [CreateAssetMenu(fileName = "SpawnerBuilding", menuName = "Building/Spawner Building")]
 public class SpawnerBuildingDataSO : BuildingDataSO
 {
