@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-// Class to represent a _unit, associated to every _unit prefab on the scene
+// Class to represent a unit, associated to every unit prefab on the scene
 public class Unit : MonoBehaviour
 {
     #region Variables
+    // Managers will be needed
     protected MapManager _mm;
     protected UnitManager _um;
     protected GameManager _gm;
@@ -53,6 +54,7 @@ public class Unit : MonoBehaviour
         {
             return _health;
         }
+
         set
         {
             if (value <= 0)
@@ -74,8 +76,8 @@ public class Unit : MonoBehaviour
 
     public static int MaxHealth = 100;
     public int MoveRange;
-
     // Dictionary to hold the grid position of the valid tiles along with the fuel consumed to reach them
+
     private Dictionary<Vector3Int, int> _validTiles = new();
     public Dictionary<Vector3Int, int> ValidTiles
     {
@@ -87,7 +89,7 @@ public class Unit : MonoBehaviour
     #region UnityMethods
     private void Awake()
     {
-        // Get map and _unit manager from the hierarchy
+        // Get map and unit manager from the hierarchy
         _mm = FindAnyObjectByType<MapManager>();
         _gm = FindAnyObjectByType<GameManager>();
         _um = FindAnyObjectByType<UnitManager>();
@@ -100,7 +102,7 @@ public class Unit : MonoBehaviour
     }
 
     private void Start()
-    {
+    { 
         StartCoroutine( AssignColor());
     }
     #endregion
@@ -110,20 +112,20 @@ public class Unit : MonoBehaviour
     {
         yield return null;
         ETeamColors OwnerColor = _gm.Players[_owner].Color;
-
+        
         Color OutlineColor;
         switch (OwnerColor)
         {
-            case ETeamColors.Amber: OutlineColor = Color.red; break;
+            case ETeamColors.Amber:OutlineColor = Color.red; break;
             case ETeamColors.Azure: OutlineColor = Color.blue; break;
             case ETeamColors.Gilded: OutlineColor = Color.yellow; break;
             case ETeamColors.Verdant: OutlineColor = Color.green; break;
-            default: OutlineColor = Color.clear; break;
+            default:OutlineColor = Color.clear; break;
         }
         GetComponent<SpriteRenderer>().material.color = OutlineColor;
     }
 
-    // Highlight the accessible tiles to the _unit
+    // Highlight the accessible tiles to the unit
     public void HighlightTiles()
     {
         IsSelected = true;
@@ -135,7 +137,7 @@ public class Unit : MonoBehaviour
         Vector3Int startPos = _mm.Map.WorldToCell(transform.position);
 
         // You can find SeekTile() just below
-        SeekTile(startPos, -1, 0);
+        SeekTile(startPos, -1,0);
 
         foreach (var pos in ValidTiles.Keys)
         {
@@ -151,7 +153,7 @@ public class Unit : MonoBehaviour
         }
     }
 
-    // Unhighlight the accessible tiles to the _unit
+    // Unhighlight the accessible tiles to the unit
     public void ResetTiles()
     {
         IsSelected = false;
@@ -162,7 +164,7 @@ public class Unit : MonoBehaviour
         ValidTiles.Clear();
     }
 
-    // Check if the given grid position falls into the move range of the _unit
+    // Check if the given grid position falls into the move range of the unit
     private bool InBounds(Vector3Int pos)
     {
         // Manhattan distance : |x1 - x2| + |y1 - y2|
@@ -193,7 +195,7 @@ public class Unit : MonoBehaviour
 
         if (currentProvisions > Provisions) { return; }
 
-        // If the current tile is not an obstacle and falls into the move range of the _unit
+        // If the current tile is not an obstacle and falls into the move range of the unit
         if (!_um.IsObstacle(currentPosition, this) && InBounds(currentPosition) && count<=Data.MoveRange)
         {
             if (!ValidTiles.ContainsKey(currentPosition))
@@ -212,7 +214,6 @@ public class Unit : MonoBehaviour
         }
         else return;
 
-
         // Explore the nighbouring tiles
         // Restrictions will be added so that we cant go out of the map
         Vector3Int up = currentPosition + Vector3Int.up;
@@ -225,17 +226,17 @@ public class Unit : MonoBehaviour
         SeekTile(left, currentProvisions, count + 1);
         SeekTile(right, currentProvisions, count + 1);
     }
-
     public void Die()
     {
         print("I'm Going To Die!");
         _um.Units.Remove(this);
         Destroy(gameObject);
+
     }
 
     public static float L1Distance2D(Vector3 A, Vector3 B)
     {
-        return Mathf.Abs(A.x - B.x) + Mathf.Abs(A.y - B.y); // + Mathf.Abs(A.z - B.z)
+        return Mathf.Abs(A.x - B.x) + Mathf.Abs(A.y - B.y);//+ Mathf.Abs(A.z - B.z)
     }
 
     public Vector3Int GetGridPosition()
@@ -250,7 +251,9 @@ public class Unit : MonoBehaviour
             var player = _gm.Players[Owner];
             return player.PlayerCaptain;
         }
-        private set {}
+
+        private set { }
+
     }
     #endregion
 }

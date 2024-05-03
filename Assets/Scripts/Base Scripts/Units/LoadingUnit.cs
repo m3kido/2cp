@@ -27,7 +27,7 @@ public class LoadingUnit : Unit
     }
     public void InisitateDropUnit()
     {
-        _gm.CurrentStateOfPlayer = EPlayerStates.Droping;
+        _gm.CurrentStateOfPlayer = EPlayerStates.Dropping;
         StartCoroutine(DropAtSpot());        
     }
     private void DropUnit(Vector3Int spot)

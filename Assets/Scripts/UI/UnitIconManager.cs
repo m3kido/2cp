@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// Script that display icons near the units
 public class UnitIconManager : MonoBehaviour
 {
     #region Variables
@@ -10,6 +11,11 @@ public class UnitIconManager : MonoBehaviour
     private GameObject _P; // Provisions need icon
     private GameObject _E; // Energy need icon
     private GameObject _C; // Capturing icon
+    private GameObject _L; // Loading icon
+
+    private float _blinkTimer;
+    private bool _isEActive = false;
+    private bool _isPActive = false;
     #endregion
 
     #region UnityMethods
@@ -25,22 +31,55 @@ public class UnitIconManager : MonoBehaviour
         UpdateHealthIcon();
         UpdateProvisionsNeedIcon();
         UpdateEnergyNeedIcon();
+        UpdateLoadingIcon();
+        
+        if (_isPActive) // Make warning icons blink
+        {
+            MakeBlink(_P);
+        }
+
+        if (_isEActive)
+        {
+            MakeBlink(_E);
+        }
     }
     #endregion
 
     #region Methods
+    // Make icons blink
+    public void MakeBlink(GameObject icon)
+    {
+        _blinkTimer += Time.deltaTime;
+        if (_blinkTimer >= 0.5f)
+        {
+            // Toggle visibility of the icon
+            icon.SetActive(!icon.activeSelf);
+
+            // Reset the timer
+            _blinkTimer = 0f;
+        }
+    }
+
     // Display initial icons
     public void InitializeIcons()
     {
-        Vector3 basePosition = transform.position + new Vector3(0.14f, 0.15f, 0); 
-
-        _H = PutIcon(true, basePosition, _iconData.H);
-        _P = PutIcon(false, basePosition + new Vector3(_iconData.C.transform.localScale.x, 0, 0), _iconData.P);
+        Vector3 basePosition = transform.position + new Vector3(0.18f, 0.18f, 0); 
+        
+        _H = PutIcon(true, basePosition, _iconData.H); // H icon
+        _P = PutIcon(false, basePosition + new Vector3(0.33f, -0.05f, 0), _iconData.P); // P icon
 
         // Check if it's an attacking unit
         if (_unit is AttackingUnit)
         {
-           _E = PutIcon(false, basePosition + new Vector3(2 * _iconData.C.transform.localScale.x, 0, 0), _iconData.E);
+            // E icon
+           _E = PutIcon(false, basePosition + new Vector3(-0.05f, 0.33f, -0), _iconData.E);
+        }
+
+        // Check if it's a loading unit
+        if (_unit is LoadingUnit)
+        {
+            // L icon
+            _L = PutIcon(false, basePosition + new Vector3(-0.05f, 0.33f, -0), _iconData.L);
         }
     }
 
@@ -74,7 +113,16 @@ public class UnitIconManager : MonoBehaviour
     {
         if (_unit.Provisions <= Mathf.FloorToInt(_unit.Data.MaxProvisions * 0.25f))
         {
-            _P.SetActive(true);
+            if (!_isPActive)
+            {
+                _P.SetActive(true);
+                _isPActive = true;
+            }
+        }
+        else
+        {
+            _P.SetActive(false);
+            _isPActive = false;
         }
     }
 
@@ -85,9 +133,34 @@ public class UnitIconManager : MonoBehaviour
         {
             if (unit.Weapons[unit.CurrentWeaponIndex].EnergyOrbs <= Mathf.FloorToInt(_unit.Data.MaxProvisions * 0.25f))
             {
-                _E.SetActive(true);
+                if (!_isEActive)
+                {
+                    _E.SetActive(true);
+                    _isEActive = true;
+                }
+            }
+            else
+            {
+                _E.SetActive(false);
+                _isEActive = false;
             }
         }
+    }
+    
+    // Set the loading icon active if a unit is being loaded
+    public void UpdateLoadingIcon()
+    {
+        if (_unit is LoadingUnit unit)
+        {
+            if (unit.LoadedUnit != null)
+            {
+                _L.SetActive(true);
+            }
+            else
+            {
+                _L.SetActive(false);
+            }
+        } 
     }
     #endregion
 }
