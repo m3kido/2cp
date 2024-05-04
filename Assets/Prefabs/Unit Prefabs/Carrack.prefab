@@ -108,7 +108,7 @@ MonoBehaviour:
     _energyOrbs: 9
     _weapon: 4
     _minRange: 2
-    _maxRange: 6
+    _maxRange: 7
   CurrentWeaponIndex: 0
   HasAttacked: 0
   IndirectUnit: 1

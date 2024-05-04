@@ -106,10 +106,9 @@ MonoBehaviour:
   _weapons:
   - _damageList: 5f0000005a0000005500000037000000500000005000000055000000370000002d00000055000000370000003c000000
     _energyOrbs: 6
-    _weaponType: 0
-    _energyPerAttack: 1
+    _weapon: 0
     _minRange: 3
-    _maxRange: 5
+    _maxRange: 6
   CurrentWeaponIndex: 0
   HasAttacked: 0
   IndirectUnit: 1

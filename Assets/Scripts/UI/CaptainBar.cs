@@ -1,5 +1,4 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -52,15 +51,15 @@ public class CaptainBar : MonoBehaviour
     public void UpdateCaptain()
     {
         var col = _gm.Players[_gm.PlayerTurn].Color;
-        if(col==ETeamColors.Azure)
+        if(col == ETeamColors.Azure)
         {
             _captainColor.GetComponent<Image>().color=Color.blue;
         }
-        else if(col==ETeamColors.Amber)
+        else if(col == ETeamColors.Amber)
         {
             _captainColor.GetComponent<Image>().color = Color.red;
         }
-        else if ( col==ETeamColors.Gilded)
+        else if (col == ETeamColors.Gilded)
         {
             _captainColor.GetComponent<Image>().color = Color.yellow;
         }
@@ -69,7 +68,7 @@ public class CaptainBar : MonoBehaviour
             _captainColor.GetComponent<Image>().color = Color.green;
         }
         var cap = _gm.Players[_gm.PlayerTurn].PlayerCaptain;
-        if (cap.Data.Name==ECaptains.Andrew)
+        if (cap.Data.Name == ECaptains.Andrew)
         {
             _captainSprite.GetComponent<Image>().sprite =AndrewSprite;
         }

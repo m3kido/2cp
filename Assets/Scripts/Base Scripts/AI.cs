@@ -2,12 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
-using static UnityEngine.EventSystems.EventTrigger;
-using static UnityEngine.GraphicsBuffer;
-
-
 
 // Class to represent an AI player
 public class AiPlayer : Player
@@ -20,6 +14,7 @@ public class AiPlayer : Player
     AttackManager _am; 
     List<Unit> AiUnits;
     int AiLavel; 
+
     // Constructor for AI player
     public AiPlayer(string name, ETeamColors color, ETeams teamSide, ECaptains captain)
         : base(name, color, teamSide, captain)
@@ -36,6 +31,7 @@ public class AiPlayer : Player
         _mm = FindAnyObjectByType<MapManager>();
         _am = FindAnyObjectByType<AttackManager>();
     }
+
     private void Start()
     {
         foreach(var unit in _um.Units)
@@ -155,8 +151,7 @@ public class AiPlayer : Player
             switch (AiLavel)
             {
                 case 1:
-                    
-                    //AI LEVEL-1 literraly 7.m.a.r (7 marines are right !!) 
+
                     List<Unit> nearestEnemies = FindNearestEnemy(attacker, enemyUnits);
                     foreach (var enemy in nearestEnemies)
                     {
@@ -168,6 +163,7 @@ public class AiPlayer : Player
                                 enemyPosition + Vector3Int.left,
                                 enemyPosition + Vector3Int.right ,
                             };
+
                         foreach (var position in adjacentPositions)
                         {
                             if (attacker.ValidTiles.ContainsKey(position))
@@ -178,8 +174,6 @@ public class AiPlayer : Player
                     }
 
                     break;
-                    
-                    
 
                 case 2:
                     
@@ -202,15 +196,15 @@ public class AiPlayer : Player
                                 //GO TO THAT UNIT USING THE PATHFINDER 
                                 //ATTACK 
                             }
-                        }
-                            
-                        }
+                        }  
+                    }
                     break;
             }
             
         }
         return false;
     }
+
     // Method to end AI player's turn
     private void EndTurn()
     {

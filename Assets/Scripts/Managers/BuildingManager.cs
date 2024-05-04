@@ -128,11 +128,11 @@ public class BuildingManager : MonoBehaviour
         print(_capturableBuildings[pos].Health);
         if (_capturableBuildings[pos].Health <= 0)
         {
-            if(_capturableBuildings[pos].BuildingType == EBuildings.Castle)
+            if(BuildingFromPosition[pos].BuildingType == EBuildings.Castle)
             {
                 _gm.Players[_gm.PlayerTurn].Lost = true; 
             }
-            
+        
             ChangeBuildingOwner(_capturableBuildings[pos], _gm.PlayerTurn);
             _um.SelectedUnit.IsCapturing = false;
         }
@@ -151,7 +151,7 @@ public class BuildingManager : MonoBehaviour
             }
         }
     }
-    
+
     // Spawn a unit from a building
     public void SpawnUnit(EUnits unitType, Vector3Int pos, int owner)
     {
