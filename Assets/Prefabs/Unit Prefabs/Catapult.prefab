@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3468355840561928806}
   - component: {fileID: 5111962806760226222}
   - component: {fileID: -7887720293593230975}
+  - component: {fileID: 451380358353779873}
   m_Layer: 0
   m_Name: Catapult
   m_TagString: Untagged
@@ -125,3 +126,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _iconData: {fileID: 11400000, guid: d93811f6824463142955d71777ae50aa, type: 2}
+--- !u!95 &451380358353779873
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3382534638782829282}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bef803a1a9110a6469b32239a10085b1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

@@ -7,6 +7,7 @@ public class CaptainManager : MonoBehaviour
 {
     public static GameManager Gm;
     public static UnitManager Um;
+    public static CaptainBar Cp;
     public static Dictionary<ECaptains, CaptainDataSO> CaptainsDict = new();
     [SerializeField] List<CaptainDataSO> _captainSOList = new();
     public static List<Captain> LivingCaptains = new();
@@ -19,6 +20,7 @@ public class CaptainManager : MonoBehaviour
     {
         Gm = FindObjectOfType<GameManager>();
         Um = FindObjectOfType<UnitManager>();
+        Cp= FindObjectOfType<CaptainBar>();
         for (int i = 0; i < _captainSOList.Count; i++)
         {
             CaptainsDict.Add((ECaptains)i, _captainSOList[i]);
@@ -54,6 +56,7 @@ public class CaptainManager : MonoBehaviour
             StartCoroutine(melina.ReviveSelectionCoroutine(Gm));
         }
 
+        Cp.UpdateSuperMeter();
     }
 
     public void DeactivateCeleste()

@@ -66,12 +66,15 @@ public class BuildingManager : MonoBehaviour
     {
         // GetGoldFromBuildings subscribes to day end event
        GameManager.OnDayEnd += GetGoldFromBuildings;
+       GameManager.OnDayEnd += HealUnits;
+        
     }
 
     private void OnDisable()
     {
         // GetGoldFromBuildings unsubscribes from day end event
        GameManager.OnDayEnd -= GetGoldFromBuildings;
+       GameManager.OnDayEnd -= HealUnits;
     }
     #endregion
 
@@ -175,9 +178,20 @@ public class BuildingManager : MonoBehaviour
     {
         foreach (var village in _capturableBuildings.Values)
         {
-            if (village.Owner < 4)
+            if (village.Owner < 4 && village.BuildingType==EBuildings.Village)
             {
                 _gm.Players[village.Owner].Gold += 2000;
+            }
+        }
+    }
+    private void HealUnits()
+    {
+        foreach(var building in BuildingFromPosition.Values)
+        {
+            var unit = _um.FindUnit(building.Position);
+            if (unit && building.Owner==unit.Owner)
+            {
+                unit.Health += 20;
             }
         }
     }

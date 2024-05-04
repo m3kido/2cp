@@ -31,6 +31,7 @@ public class Captain
             return;
         IsCelesteActive = true;
         SuperMeter -= 100;
+
     }
 
     public virtual void DisableCeleste()

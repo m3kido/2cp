@@ -290,6 +290,69 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: witch_8
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 40
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9649bace416c804280c482b9dece443
+      internalID: -510584581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: witch_9
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 40
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 319d540fff7fc8e458898244be371bfe
+      internalID: -832807966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: witch_10
+      rect:
+        serializedVersion: 2
+        x: 123
+        y: 40
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: be603fee6c71dc14fabe67b4d6622068
+      internalID: -1884270049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -303,12 +366,15 @@ TextureImporter:
     nameFileIdTable:
       witch_0: -1481438083
       witch_1: -616717253
+      witch_10: -1884270049
       witch_2: 1115942551
       witch_3: 879385774
       witch_4: 1043405250
       witch_5: -1020817520
       witch_6: -1341138077
       witch_7: -1214583179
+      witch_8: -510584581
+      witch_9: -832807966
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

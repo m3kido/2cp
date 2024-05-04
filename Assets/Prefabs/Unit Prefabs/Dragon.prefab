@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2397527549001717168}
   - component: {fileID: 2616778742918242097}
   - component: {fileID: 8131532268907873005}
+  - component: {fileID: 1281790036020526125}
   m_Layer: 0
   m_Name: Dragon
   m_TagString: Untagged
@@ -125,3 +126,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _iconData: {fileID: 11400000, guid: d93811f6824463142955d71777ae50aa, type: 2}
+--- !u!95 &1281790036020526125
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434720313266703233}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: adb61202d391c9c4db0cd9e47b7a7d66, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

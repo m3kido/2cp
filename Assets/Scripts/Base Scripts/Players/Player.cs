@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player 
 {
     // Auto-properties (the compiler automatically creates private fields for them)
     public string Name { get; set; }
