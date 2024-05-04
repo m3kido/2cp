@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3854802982936854837}
   - component: {fileID: 2397527549001717168}
   - component: {fileID: 2616778742918242097}
+  - component: {fileID: 8131532268907873005}
   m_Layer: 0
   m_Name: Dragon
   m_TagString: Untagged
@@ -98,15 +99,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rend: {fileID: 0}
+  animator: {fileID: 0}
   _data: {fileID: 11400000, guid: 9f263445f5fe2b44bba2e10914f6fc2c, type: 2}
   _owner: 0
   MoveRange: 0
   _weapons:
   - _damageList: 6e0000006e000000690000005f000000690000006900000069000000000000000000000055000000460000005f000000
-    _ammo: 99999
-    _weaponType: 3
-    _ammoPerAttack: 1
+    _energyOrbs: 9
+    _weapon: 3
     _minRange: 1
-    _maxRange: 2
+    _maxRange: 1
   CurrentWeaponIndex: 0
   HasAttacked: 0
+  IndirectUnit: 0
+--- !u!114 &8131532268907873005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434720313266703233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 493f79349ae1e6f46b31d813d4054714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _iconData: {fileID: 11400000, guid: d93811f6824463142955d71777ae50aa, type: 2}

@@ -42,11 +42,12 @@ public class CursorManager : MonoBehaviour
     #region UnityMethods
     private void Awake()
     {
-        // Get the unit, map, game and building managers from the hierarchy
+        // Get the _unit, map, game and building managers from the hierarchy
         _um = FindAnyObjectByType<UnitManager>();
         _mm = FindAnyObjectByType<MapManager>();
         _gm = FindAnyObjectByType<GameManager>();
         _bm = FindAnyObjectByType<BuildingManager>();
+
         _camera = Camera.main;
         HoveredOverTile = _mm.Map.WorldToCell(transform.position);
     } 
@@ -65,7 +66,7 @@ public class CursorManager : MonoBehaviour
     // Handles keyboard input
     void HandleInput()
     {
-        // Dont handle any input if a unit is moving or attacking
+        // Dont handle any input if a _unit is moving or attacking
         if ((_um.SelectedUnit != null && _um.SelectedUnit.IsMoving) || (_gm.CurrentStateOfPlayer == EPlayerStates.Attacking)) { return; }
 
         // X key
@@ -124,10 +125,9 @@ public class CursorManager : MonoBehaviour
             _duration = 0.2f * _cooldown;
             return;
         }
-        //this is just making sure that a diagnol movement works nicely
+        // Making sure that a diagonal movement works nicely
         bool diff = ((_offset.x == 0 || _offset.y==0)&& (_lastOffset.x != 0 && _lastOffset.y!=0) )|| ((_lastOffset.x == 0 || _lastOffset.y == 0) && (_offset.x != 0 && _offset.y != 0));
-       
-
+ 
         if ((_offset != _lastOffset && !diff ) || _duration <= 0 )
         {
             if (_offset.x != 0 && _offset.y != 0)
@@ -139,24 +139,18 @@ public class CursorManager : MonoBehaviour
             {
                 MoveSelector(_offset);
             }
+
             if (_offset == _lastOffset)
             {
                 _duration = 0.3f * _cooldown;
-
             }
             else
             {
                 _duration = _cooldown;
-
             }
+
             _lastOffset = _offset;
-           
         }
-
-
-
-
-
     }
 
     // Move the cursor 
@@ -168,7 +162,7 @@ public class CursorManager : MonoBehaviour
             return;
         }
 
-        // If a unit is selected, record the path
+        // If a _unit is selected, record the path
         if (_um.SelectedUnit != null)
         {
             // Undraw the path if we get back the start point
@@ -195,8 +189,7 @@ public class CursorManager : MonoBehaviour
                         _um.UndrawPath();
                         _um.Path.Add(HoveredOverTile + offset);
                         _um.PathCost += cost;
-                    }
-                  
+                    }    
                 }
                 else
                 {
@@ -217,7 +210,6 @@ public class CursorManager : MonoBehaviour
         HoveredOverTile += offset;
         MoveCamera(offset);
         OnCursorMove?.Invoke();
-
     }
 
     // Handle X Click
@@ -238,44 +230,40 @@ public class CursorManager : MonoBehaviour
                 (unit as AttackingUnit).AttackTiles();
                 StartCoroutine(UnhighlightAttackTiles(unit));
             }
-
         }
     }
+
     private IEnumerator UnhighlightAttackTiles(Unit unit)
     {
-
         while (!Input.GetKeyUp(KeyCode.X))
         {
             yield return null;
         }
         unit.ResetTiles();
-
     }
-
 
     // Handle Space click
     private void SpaceClicked()
     {
         Unit refUnit = _um.FindUnit(HoveredOverTile);
 
-        // If there is a unit on the hovered tile
+        // If there is a _unit on the hovered tile
         if (refUnit != null)
         {
-            // Can't select an another unit when one is selected 
+            // Can't select an another _unit when one is selected 
             if (_um.SelectedUnit != null)
             {
                 bool loadcase = (refUnit is LoadingUnit) && (refUnit as LoadingUnit).CanLoadUnit(_um.SelectedUnit);
-                if (_um.SelectedUnit == refUnit || loadcase ) {  StartCoroutine(_um.MoveUnit());  }
+                if (_um.SelectedUnit == refUnit || loadcase ) { StartCoroutine(_um.MoveUnit()); }
                 return;
             }
 
-            // Can't select an enemy unit
+            // Can't select an enemy _unit
             if (refUnit.Owner != _gm.PlayerTurn || refUnit.HasMoved) {
                 _gm.CurrentStateOfPlayer = EPlayerStates.InSettingsMenu;
                 return; 
             }
 
-           
             SaveTile = HoveredOverTile;
             SaveCamera = _camera.transform.position;
             _um.SelectUnit(refUnit);
@@ -291,10 +279,10 @@ public class CursorManager : MonoBehaviour
             {
                 if (_bm.BuildingFromPosition.ContainsKey(HoveredOverTile) && _bm.BuildingFromPosition[HoveredOverTile].Owner == _gm.PlayerTurn)
                 {
-                     var CurrBuilingType= _bm.BuildingDataFromTile[_mm.Map.GetTile<Tile>(HoveredOverTile)].BuildingType;
-                     bool Isspawner = CurrBuilingType == EBuildings.Port || CurrBuilingType == EBuildings.Camp;
-               
-                    if( Isspawner )
+                    var currBuilingType = _bm.BuildingDataFromTile[_mm.Map.GetTile<Tile>(HoveredOverTile)].BuildingType;
+                    bool isSpawner = currBuilingType == EBuildings.Port || currBuilingType == EBuildings.Camp;
+           
+                    if (isSpawner)
                     {
                         _gm.CurrentStateOfPlayer = EPlayerStates.InBuildingMenu;
                     }
@@ -310,19 +298,20 @@ public class CursorManager : MonoBehaviour
             }
         }
     }
+
     private void MoveCamera(Vector3Int offset)
     {
         var bounds = _mm.Map.cellBounds;
         var xdistance = HoveredOverTile.x - _camera.transform.position.x;
         var ydistance = HoveredOverTile.y - _camera.transform.position.y;
-        //if we hit a certain tile move the camera with it
+
+        // If we hit a certain tile move the camera with it
         if ((xdistance > 5 && offset.x > 0) || (xdistance < -6 && offset.x < 0) || (ydistance > 2 && offset.y > 0) || (ydistance < -3 && offset.y < 0))
         {
-            //move the camera and make sure to not go out of bounds
-            _camera.transform.position = new Vector3(math.clamp(_camera.transform.position.x + offset.x, bounds.xMin + 9, bounds.xMax - 9), math.clamp(_camera.transform.position.y + offset.y, bounds.yMin + 5, bounds.yMax - 5), _camera.transform.position.z);
+            // Move the camera and make sure to not go out of bounds
+            _camera.transform.position = new Vector3(math.clamp(_camera.transform.position.x + offset.x, bounds.xMin + 9, bounds.xMax - 9),
+                math.clamp(_camera.transform.position.y + offset.y, bounds.yMin + 5, bounds.yMax - 5), _camera.transform.position.z);
         }
     }
-
-
+    #endregion
 }
-#endregion

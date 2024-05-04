@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2227531749394670465}
   - component: {fileID: 7173521739195678753}
   - component: {fileID: 2105127721835662414}
+  - component: {fileID: -5811767988182203184}
   m_Layer: 0
   m_Name: Cannoneer
   m_TagString: Untagged
@@ -98,21 +99,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rend: {fileID: 0}
+  animator: {fileID: 0}
   _data: {fileID: 11400000, guid: ccda6e2d5a200e345a90f13a3bc01b70, type: 2}
   _owner: 0
   MoveRange: 0
   _weapons:
   - _damageList: 690000005f00000055000000370000006900000069000000690000000f00000019000000370000000a00000023000000
-    _ammo: 100
-    _weaponType: 6
-    _ammoPerAttack: 1
+    _energyOrbs: 8
+    _weapon: 6
     _minRange: 1
-    _maxRange: 2
+    _maxRange: 1
   - _damageList: 690000005f00000055000000370000006900000069000000690000000f00000019000000370000000a00000023000000
-    _ammo: 999999
-    _weaponType: 7
-    _ammoPerAttack: 0
+    _energyOrbs: 1
+    _weapon: 7
     _minRange: 1
-    _maxRange: 2
+    _maxRange: 1
   CurrentWeaponIndex: 0
   HasAttacked: 0
+  IndirectUnit: 0
+--- !u!114 &-5811767988182203184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2269955569449980489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 493f79349ae1e6f46b31d813d4054714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _iconData: {fileID: 11400000, guid: d93811f6824463142955d71777ae50aa, type: 2}

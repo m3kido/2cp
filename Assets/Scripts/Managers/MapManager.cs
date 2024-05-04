@@ -97,7 +97,7 @@ public class MapManager : MonoBehaviour
         Vector2 distanceNext = new(next.x - curr.x, next.y - curr.y);
         Vector2 distance = distancePrev != distanceNext ? distanceNext + distancePrev : distanceNext;
 
-        if(distance == new Vector2(0, 0))
+        if (distance == new Vector2(0, 0))
         {
             arrow = EArrowDirections.None ;
         }

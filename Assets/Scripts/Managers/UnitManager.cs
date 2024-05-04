@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using System;
 
-// This script handles unit interactions
+// This script handles _unit interactions
 // Keeps track of units and the path drawn by the cursor
 public class UnitManager : MonoBehaviour
 {
@@ -48,7 +48,7 @@ public class UnitManager : MonoBehaviour
     #endregion
 
     #region Methods
-    // Get unit from given grid position
+    // Get _unit from given grid position
     public Unit FindUnit(Vector3Int pos)
     {
         foreach (Unit unit in Units)
@@ -110,7 +110,7 @@ public class UnitManager : MonoBehaviour
         }
     }
 
-    // select a given unit
+    // select a given _unit
     public void SelectUnit(Unit unit)
     {
         SelectedUnit = unit;
@@ -119,7 +119,7 @@ public class UnitManager : MonoBehaviour
         _gm.CurrentStateOfPlayer = EPlayerStates.Selecting;
     }
 
-    // Deselect the selected unit
+    // Deselect the selected _unit
     public void DeselectUnit()
     {
         SelectedUnit.ResetTiles();
@@ -130,7 +130,7 @@ public class UnitManager : MonoBehaviour
         _gm.CurrentStateOfPlayer = EPlayerStates.Idle;
     }
 
-    // Move the selected unit
+    // Move the selected _unit
     public IEnumerator MoveUnit()
     {  
         SelectedUnit.IsMoving = true;
@@ -215,11 +215,11 @@ public class UnitManager : MonoBehaviour
     // Confirm the move had ended
     public void EndMove()
     {
-        SelectedUnit.Provisions -=PathCost;
+        SelectedUnit.Provisions -= PathCost;
         Path.Clear();
         PathCost = 0;
+
         SelectedUnit.HasMoved = true;
-        
         SelectedUnit = null;
         _gm.CurrentStateOfPlayer = EPlayerStates.Idle;
         checkUnits(_gm.Players[_gm.PlayerTurn]); 

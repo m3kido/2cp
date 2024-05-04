@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3479614002581359579}
   - component: {fileID: 920094050534924552}
   - component: {fileID: 6016509615240507742}
+  - component: {fileID: -6024976418404227860}
   m_Layer: 0
   m_Name: StrayHorse
   m_TagString: Untagged
@@ -98,8 +99,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rend: {fileID: 0}
+  animator: {fileID: 0}
   _data: {fileID: 11400000, guid: d1b067fb265ef184e96751d213d48b93, type: 2}
   _owner: 0
   MoveRange: 0
   LoadedUnit: {fileID: 0}
   DropTiles: []
+--- !u!114 &-6024976418404227860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2111720270158312193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 493f79349ae1e6f46b31d813d4054714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _iconData: {fileID: 11400000, guid: d93811f6824463142955d71777ae50aa, type: 2}

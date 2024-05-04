@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2973798135960047457}
   - component: {fileID: 3468355840561928806}
   - component: {fileID: 5111962806760226222}
+  - component: {fileID: -7887720293593230975}
   m_Layer: 0
   m_Name: Catapult
   m_TagString: Untagged
@@ -98,16 +99,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rend: {fileID: 0}
+  animator: {fileID: 0}
   _data: {fileID: 11400000, guid: 6acbaf51b937ee948aca66aa7c1ea950, type: 2}
   _owner: 0
   MoveRange: 0
   _weapons:
   - _damageList: 5a00000055000000460000002d000000460000004b000000500000000000000023000000410000002800000037000000
-    _ammo: 0
-    _weaponType: 9
-    _ammoPerAttack: 0
+    _energyOrbs: 9
+    _weapon: 9
     _minRange: 2
     _maxRange: 4
   CurrentWeaponIndex: 0
   HasAttacked: 0
   IndirectUnit: 1
+--- !u!114 &-7887720293593230975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3382534638782829282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 493f79349ae1e6f46b31d813d4054714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _iconData: {fileID: 11400000, guid: d93811f6824463142955d71777ae50aa, type: 2}
