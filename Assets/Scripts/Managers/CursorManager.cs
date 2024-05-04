@@ -209,6 +209,10 @@ public class CursorManager : MonoBehaviour
         }
         HoveredOverTile += offset;
         MoveCamera(offset);
+        InvokeMove();
+    }
+    public void InvokeMove()
+    {
         OnCursorMove?.Invoke();
     }
 

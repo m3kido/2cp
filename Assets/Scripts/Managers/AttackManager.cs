@@ -119,17 +119,21 @@ public class AttackManager : MonoBehaviour
             Debug.LogWarning("No targets available for selection.");
             return;
         }
-
+        CursorManager _cm = FindAnyObjectByType<CursorManager>();
+        Vector3Int saveCursor = _cm.HoveredOverTile;
         if (targets.Count == 1)
         {
             // HighlightSelectedTarget(targets[0]);
             targets[selectedTargetIndex]._rend.color = Color.blue;
+            _cm.HoveredOverTile = targets[selectedTargetIndex].GetGridPosition();
+            _cm.InvokeMove();
         }
         else
         {
             // HighlightSelectedTarget(targets[selectedTargetIndex]);
             targets[selectedTargetIndex]._rend.color = Color.blue;
-
+            _cm.HoveredOverTile = targets[selectedTargetIndex].GetGridPosition();
+            _cm.InvokeMove();
             // Handle navigation keys
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
@@ -137,7 +141,8 @@ public class AttackManager : MonoBehaviour
                 // attacker.UnHighlightTarget(targets[selectedTargetIndex]);
                 targets[selectedTargetIndex]._rend.color=Color.white;
                 selectedTargetIndex = (selectedTargetIndex + 1) % targets.Count;
-
+                _cm.HoveredOverTile = targets[selectedTargetIndex].GetGridPosition();
+                _cm.InvokeMove();
                 // HighlightSelectedTarget(targets[selectedTargetIndex]);
                 targets[selectedTargetIndex]._rend.color = Color.blue;
             }
@@ -146,7 +151,8 @@ public class AttackManager : MonoBehaviour
                 // attacker.UnHighlightTarget(targets[selectedTargetIndex]);
                 targets[selectedTargetIndex]._rend.color = Color.white;
                 selectedTargetIndex = (selectedTargetIndex - 1 + targets.Count) % targets.Count;
-
+                _cm.HoveredOverTile = targets[selectedTargetIndex].GetGridPosition();
+                _cm.InvokeMove();
                 // HighlightSelectedTarget(targets[selectedTargetIndex]);
                 targets[selectedTargetIndex]._rend.color = Color.blue;
             }
@@ -160,6 +166,7 @@ public class AttackManager : MonoBehaviour
             ApplyDamage(selectedTarget, attacker);
             ActionTaken = true;
             EndAttackPhase(); //End attack
+         
             _um.EndMove(); //Terminate move
         }
 
@@ -168,6 +175,8 @@ public class AttackManager : MonoBehaviour
             attacker.UnHighlightTargets();
             ActionTaken = true;
             EndAttackPhase(); // End attack
+            _cm.HoveredOverTile = saveCursor;
+            _cm.InvokeMove();
             _gm.CurrentStateOfPlayer = EPlayerStates.InActionsMenu; // Return to action menu
         }
     }

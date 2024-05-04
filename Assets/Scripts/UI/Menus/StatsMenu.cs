@@ -33,6 +33,8 @@ public class StatsMenu : MonoBehaviour
     [SerializeField] private GameObject _tileName;
     [SerializeField] private GameObject _tileSprite;
 
+    [SerializeField] private GameObject _damage;
+
     bool _gameLoaded = false;
     #endregion
 
@@ -99,7 +101,7 @@ public class StatsMenu : MonoBehaviour
                 var save = _unitRect.localPosition;
                 _unitRect.localPosition = _tileRect.localPosition;
                 _tileRect.localPosition = save;
-                _anim.SetTrigger("Replay");
+           
             }
         }
 
@@ -129,6 +131,16 @@ public class StatsMenu : MonoBehaviour
         else
         {
             _unitStats.gameObject.SetActive(false);
+        }
+        if(_gm.CurrentStateOfPlayer==EPlayerStates.Attacking)
+        {
+            _damage.SetActive(true) ;
+            var damage = (_um.SelectedUnit as AttackingUnit).Weapons[(_um.SelectedUnit as AttackingUnit).CurrentWeaponIndex].DamageList[(int)RefUnit.Data.UnitType];
+            _damage.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text= damage.ToString();
+        }
+        else
+        {
+            _damage.SetActive(false);
         }
     }
     #endregion
