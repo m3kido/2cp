@@ -16,6 +16,7 @@ public class StatsMenu : MonoBehaviour
     RectTransform _rect;
     RectTransform _unitRect;
     RectTransform _tileRect;
+    Vector3 _startingPosition;
 
     private Animator _anim;
 
@@ -61,19 +62,21 @@ public class StatsMenu : MonoBehaviour
         if (_gameLoaded)
         {
              UpdateInfo();
-            
         }
-
     }
+
     private void OnDisable()
     {
         CursorManager.OnCursorMove -= UpdateInfo;
     }
+
     private void Start()
     {
         UpdateInfo();
         _anim.SetTrigger("Replay");
         _gameLoaded = true;
+
+        _startingPosition = _rect.localPosition;
     }
     #endregion
 
@@ -85,11 +88,8 @@ public class StatsMenu : MonoBehaviour
             // If the menu is on the left of the screen
             if (_rect.localPosition.x < 0)
             {
-                _rect.localPosition = new Vector3(-1 * _rect.localPosition.x + _rect.rect.width, _rect.localPosition.y, _rect.localPosition.z);
-                var save = _unitRect.localPosition;
-                _unitRect.localPosition = _tileRect.localPosition;
-                _tileRect.localPosition = save;
-               
+                _rect.localPosition = _startingPosition;
+                (_tileRect.localPosition, _unitRect.localPosition) = (_unitRect.localPosition, _tileRect.localPosition);
             }
         }
         else
@@ -97,11 +97,8 @@ public class StatsMenu : MonoBehaviour
             // If the menu is on the right of the screen
             if (_rect.localPosition.x > 0)
             {
-                _rect.localPosition = new Vector3(-1 * _rect.localPosition.x + _rect.rect.width, _rect.localPosition.y, _rect.localPosition.z);
-                var save = _unitRect.localPosition;
-                _unitRect.localPosition = _tileRect.localPosition;
-                _tileRect.localPosition = save;
-           
+                _rect.localPosition = new Vector3(-1 * _rect.localPosition.x + _rect.rect.width + 17.0f, _rect.localPosition.y, _rect.localPosition.z);
+                (_tileRect.localPosition, _unitRect.localPosition) = (_unitRect.localPosition, _tileRect.localPosition);
             }
         }
 
@@ -132,7 +129,7 @@ public class StatsMenu : MonoBehaviour
         {
             _unitStats.gameObject.SetActive(false);
         }
-        if(_gm.CurrentStateOfPlayer==EPlayerStates.Attacking)
+        if(_gm.CurrentStateOfPlayer == EPlayerStates.Attacking)
         {
             _damage.SetActive(true) ;
             var damage = (_um.SelectedUnit as AttackingUnit).Weapons[(_um.SelectedUnit as AttackingUnit).CurrentWeaponIndex].DamageList[(int)RefUnit.Data.UnitType];
