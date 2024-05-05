@@ -2213,7 +2213,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 00000000d3c59118
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -2368,6 +2368,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7a52c90dcfeb36e4daada550fe560455, type: 2}
   - {fileID: 11400000, guid: d208197d8e528a646a50d92cada0a998, type: 2}
   - {fileID: 11400000, guid: 5559720a1ea6b45429b2fe097b907415, type: 2}
+  HealSprite: {fileID: 6171599413253265824, guid: 99d8b1f8bd0e3e348a3aa4f52145e892, type: 3}
 --- !u!4 &429304257
 Transform:
   m_ObjectHideFlags: 0
@@ -2644,6 +2645,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fef2f5d447ae87044a4a98b866b11646, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HealSprite: {fileID: 6171599413253265824, guid: 99d8b1f8bd0e3e348a3aa4f52145e892, type: 3}
   _captainSOList:
   - {fileID: 11400000, guid: 931cddd13b2ce1d4b9fc3fa290b7b792, type: 2}
   - {fileID: 11400000, guid: 21b4f33bfb8702949b16079a7eed822c, type: 2}
@@ -11008,6 +11010,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab5d9ee5cb0f844a9f36582a4f5b49c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackParticle: {fileID: 6731186973408705377, guid: 9a41c75dbad3b5d4d8512e3f42c25c0b, type: 3}
   Attacker: {fileID: 0}
 --- !u!4 &1784960151
 Transform:

@@ -18,6 +18,7 @@ public class BuildingManager : MonoBehaviour
 
     // Array containing building datas of all buildings (provided in the inspector)
     [SerializeField] private BuildingDataSO[] _buildingDatas;
+    public GameObject HealSprite;
 
     // Dictionary mapping a tile (on which there's a building) to its building data
     private Dictionary<Tile, BuildingDataSO> _buildingDataFromTile = new();
@@ -191,7 +192,14 @@ public class BuildingManager : MonoBehaviour
             var unit = _um.FindUnit(building.Position);
             if (unit && building.Owner==unit.Owner)
             {
+                if (unit.Health < 100)
+                {
+                    print(unit.Health);
+                    print(unit.transform.position);
+                    Instantiate(HealSprite, unit.transform);
+                }
                 unit.Health += 20;
+                
             }
         }
     }

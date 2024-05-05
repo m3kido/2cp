@@ -9,7 +9,9 @@ public class CaptainManager : MonoBehaviour
     public static UnitManager Um;
     public static CaptainBar Cp;
     public static Dictionary<ECaptains, CaptainDataSO> CaptainsDict = new();
+    [SerializeField] public  GameObject HealSprite;
     [SerializeField] List<CaptainDataSO> _captainSOList = new();
+
     public static List<Captain> LivingCaptains = new();
     int _currentCaptain = 0;
 
@@ -55,7 +57,10 @@ public class CaptainManager : MonoBehaviour
             Melina melina = captain as Melina;
             StartCoroutine(melina.ReviveSelectionCoroutine(Gm));
         }
-
+        if(captain is Andrew)
+        {
+            HealSpr();
+        }
         Cp.UpdateSuperMeter();
     }
 
@@ -77,6 +82,18 @@ public class CaptainManager : MonoBehaviour
             StartCoroutine(method);
         }
 
+    }
+    public void HealSpr()
+    {
+        foreach (var unit in Um.Units)
+        {
+            if (Gm.Players[unit.Owner] == Gm.Players[Gm.PlayerTurn] && unit.Health <100)
+            {
+                Instantiate(HealSprite, unit.transform);
+
+            }
+        }
+        
     }
 
 }
