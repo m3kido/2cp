@@ -18,13 +18,7 @@ public class Weapon
     public int MinRange { get => _minRange; set => _minRange = value; }
     public int MaxRange { get => _maxRange; set => _maxRange = value; }
 
-    public static event Action OnEnergyRanOut; // Event when a weapon has ran out of bullets
-
-    public void ConsumeEnergy()
-    {
-        EnergyOrbs --;
-        if (_energyOrbs < 0) { OnEnergyRanOut?.Invoke(); }
-    }
+    
 }
 
 

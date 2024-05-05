@@ -35,14 +35,26 @@ public class AttackingUnit : Unit
         }
     }
 
-    private void OnEnable()
+    private int CurrentWeaponAmmo
     {
-        Weapon.OnEnergyRanOut += MoveToNextWeapon;
+        get { return _weapons[CurrentWeaponIndex].EnergyOrbs; }
+        set
+        {
+            if (value <= 0)
+            {
+                CurrentWeaponIndex++;
+                
+            }
+            else
+            {
+                _weapons[CurrentWeaponIndex].EnergyOrbs=value;
+            }
+        }
     }
 
-    private void OnDisable()
+    public void ConsumeAmmo()
     {
-        Weapon.OnEnergyRanOut -= MoveToNextWeapon;
+        CurrentWeaponAmmo--;
     }
 
     // scans area for targets in an Intervall [min range, max range]
@@ -116,7 +128,7 @@ public class AttackingUnit : Unit
     public bool CheckAttack()
     {
         List<Unit> targets = ScanTargets();
-        
+
         if (targets == null)
         {
             Debug.LogWarning("Targets list is null. Unable to check if attacker can attack.");
@@ -139,7 +151,7 @@ public class AttackingUnit : Unit
         List<Unit> targets = ScanTargets();
         if (!targets.Contains(target))
         { return false; }
-        return true; 
+        return true;
     }
 
     public void MoveToNextWeapon()
@@ -171,9 +183,9 @@ public class AttackingUnit : Unit
         {
             extraTiles.Clear();
             ValidTiles.Clear();
-            
+
             AttackFromTiles(extraTiles, GetGridPosition(), Weapons[CurrentWeaponIndex].MaxRange);
-            foreach(var pos in extraTiles)
+            foreach (var pos in extraTiles)
             {
                 if (L1Distance2D(GetGridPosition(), pos) >= Weapons[CurrentWeaponIndex].MinRange)
                 {
@@ -223,14 +235,14 @@ public class AttackingUnit : Unit
         if (range == 0) { return; }
         if (range != Weapons[CurrentWeaponIndex].MaxRange)
         {
-            if ( !list.Contains(currentPosition))
+            if (!list.Contains(currentPosition))
             {
                 if (_mm.Map.GetTile<Tile>(currentPosition))
                 {
                     list.Add(currentPosition);
                 }
                 else { return; }
-            } 
+            }
         }
 
         Vector3Int up = currentPosition + Vector3Int.up;

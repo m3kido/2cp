@@ -8,6 +8,7 @@ public class AttackManager : MonoBehaviour
     protected GameManager _gm;
     protected UnitManager _um;
     protected MapManager _mm;
+    [SerializeField] private ParticleSystem attackParticle;
     List<EUnits> directAttacker = new() { EUnits.Catapult, EUnits.Cannoneer, EUnits.Ballista };
     public AttackingUnit Attacker;
     private int selectedTargetIndex = -1;
@@ -48,6 +49,8 @@ public class AttackManager : MonoBehaviour
         float damageToTarget = CalculateDamage(target, attacker);
         Debug.Log("Damage to target: " + damageToTarget);
         target.Health -= (int)damageToTarget;
+        attacker.ConsumeAmmo();
+
         Debug.Log("Target has been damaged!");
 
         if (target.Health > 0 && target is AttackingUnit && !directAttacker.Contains(attacker.Data.UnitType)) // We need to check if target unit can attack the attacker
@@ -57,6 +60,7 @@ public class AttackManager : MonoBehaviour
             {
                 var damageToAttacker = CalculateDamage(attacker, newAttacker);
                 attacker.Health -= (int)damageToAttacker;
+                newAttacker.ConsumeAmmo();
                 Debug.Log("Damage to attacker: " + damageToAttacker);
                 Debug.Log("Attacker has been damaged!");
             }
@@ -166,8 +170,9 @@ public class AttackManager : MonoBehaviour
             ApplyDamage(selectedTarget, attacker);
             ActionTaken = true;
             EndAttackPhase(); //End attack
-         
+            Instantiate(attackParticle, selectedTarget.transform);
             _um.EndMove(); //Terminate move
+            
         }
 
         if (Input.GetKeyDown(KeyCode.X)) // Assuming "X" key is used to cancel attack
@@ -228,7 +233,7 @@ public class AttackManager : MonoBehaviour
         return totalDamage;
     }
 
-    public float checkCounterAttack(Unit target , AttackingUnit attacker)
+    public float CheckCounterAttack(Unit target , AttackingUnit attacker)
     {
         if (target.Health > 0 && target is AttackingUnit && !directAttacker.Contains(attacker.Data.UnitType)) //We need to check if target unit can attack the attacker)
         {
@@ -245,6 +250,7 @@ public class AttackManager : MonoBehaviour
 
     public void EndAttackPhase()
     {
+        
         Attacker.IsAttacking = false;
         Attacker.HasAttacked = true;
         Attacker.UnHighlightTargets();
@@ -252,6 +258,7 @@ public class AttackManager : MonoBehaviour
         {
             Attacker.animator.SetTrigger("attacking");
         }
+     
         
         Attacker = null;
     }
