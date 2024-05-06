@@ -50,7 +50,6 @@ public class GameManager : MonoBehaviour
     {
         if (Turn.activeSelf)
         {
-
             timer += Time.deltaTime;
             if (timer >= displayDuration)
             {
@@ -60,7 +59,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Handle input for turn end
-        if (Input.GetKeyDown(KeyCode.C) && CurrentStateOfPlayer == EPlayerStates.Idle)
+        if (Input.GetKeyDown(KeyCode.C) && CurrentStateOfPlayer == EPlayerStates.Idle && !Turn.activeSelf)
         {
             EndTurn();
             Turn.SetActive(!Turn.activeSelf);
@@ -108,7 +107,7 @@ public class GameManager : MonoBehaviour
     /*public void EndTurn()
     {
         PlayerTurn = (PlayerTurn + 1) % Players.Count;
-        playerTurnText.text = "Player's " + (PlayerTurn + 1) + " turn";
+        playerTurnText.text = "Player " + (PlayerTurn + 1) + "'s turn";
         OnTurnEnd?.Invoke();
         if (PlayerTurn == 0)
         {
