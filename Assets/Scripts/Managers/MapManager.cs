@@ -72,6 +72,7 @@ public class MapManager : MonoBehaviour
         _borderMap.SetTile(pos, _borderedTile);
         _borderMap.SetColor(pos, Color.yellow);
     }
+
     public void HighlightAttackTile(Vector3Int pos)
     {
         _highlightMap.SetTile(pos, _highlightedTile);
@@ -79,6 +80,7 @@ public class MapManager : MonoBehaviour
         _borderMap.SetTile(pos, _borderedTile);
         _borderMap.SetColor(pos, Color.white);
     }
+
     // Unhighlight the given grid position
     public void UnHighlightTile(Vector3Int pos)
     {

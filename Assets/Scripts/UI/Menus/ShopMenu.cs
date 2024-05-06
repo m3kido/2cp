@@ -34,7 +34,18 @@ public class ShopMenu : MonoBehaviour
         _gm = FindAnyObjectByType<GameManager>();
         _bm = FindAnyObjectByType<BuildingManager>();  
         _mm = FindAnyObjectByType<MapManager>();
-        
+    }
+
+    private void Start()
+    {
+        _bar = FindAnyObjectByType<CaptainBar>();
+    }
+
+    private void OnEnable()
+    {
+        _unitDetails.SetActive(false);
+        _unitsList.SetActive(false);
+
         _unitElements = new();
         var pos = _cm.HoveredOverTile;
         var data = _bm.BuildingDataFromTile[_mm.Map.GetTile<Tile>(pos)] as SpawnerBuildingDataSO;
@@ -47,18 +58,16 @@ public class ShopMenu : MonoBehaviour
                 ListUnit.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = unit.Data.UnitType.ToString();
                 ListUnit.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = unit.Data.Cost.ToString();
             }
-        }   
+        }
     }
 
-    private void Start()
+    private void OnDisable()
     {
-        _bar = FindAnyObjectByType<CaptainBar>();
-    }
-
-    private void OnEnable()
-    {
-        _unitDetails.SetActive(false);
-        _unitsList.SetActive(false);
+        foreach (var listUnit in _unitElements.Keys)
+        {
+            Destroy(listUnit);
+        }
+        _unitElements.Clear();
     }
 
     private void Update()

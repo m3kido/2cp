@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // Save system
@@ -10,6 +11,8 @@ public class GameDataSaveManager : MonoBehaviour
     private UnitManager _um;
     private BuildingManager _bm;
     private CaptainBar _capBar;
+
+    [SerializeField] private UnitDispositionSO _unitDisposition;
 
     private GameData _gameData; // Data that will be saved
     private GameDataFileHandler _gameDataHandler; // Class to handle writing game data in the file
@@ -62,10 +65,11 @@ public class GameDataSaveManager : MonoBehaviour
         LoadGame();
     }
 
-
     public void NewGame() // Method to initialize a new game
     {
         _gameData = new GameData();
+        _um.PlaceUnits(_unitDisposition);
+        _um.Units = FindObjectsOfType<Unit>().ToList();
 
         Debug.Log("Initialized new game.");
     }
@@ -76,7 +80,7 @@ public class GameDataSaveManager : MonoBehaviour
 
         if (_gameData == null)
         {
-            Debug.Log("No data was found, initializing data to defaults.");
+            Debug.Log("No saved data was found, initializing data to defaults.");
             NewGame();
         }
         else

@@ -73,7 +73,6 @@ public class BuildingManager : MonoBehaviour
         // GetGoldFromBuildings subscribes to day end event
        GameManager.OnDayEnd += GetGoldFromBuildings;
        GameManager.OnDayEnd += HealUnits;
-        
     }
 
     private void OnDisable()

@@ -9,7 +9,7 @@ public class CloudMovement : MonoBehaviour
     private void Start()
     {
         _map = FindAnyObjectByType<MapManager>().Map;
-        _speed = Random.Range(0.37f, 0.54f);
+        _speed = Random.Range(0.35f, 0.50f);
     }
 
     private void Update()

@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
 // This script handles _unit interactions
 // Keeps track of units and the path drawn by the cursor
 public class UnitManager : MonoBehaviour
 {
     #region Variables
-    // Managers will be needed
     private GameManager _gm;
     private MapManager _mm;
     private Pathfinding Pathfinder;
 
     public GameObject[] UnitPrefabs; // We will need access to unit prefabs.
                                      // Check GameDataSaveManager : LoadUnits()
-    public List<Unit> Units { get; set; }
+    public List<Unit> Units { get; set; } = new();
     public Unit SelectedUnit { get; set; }
     public Vector3Int SaveTile { get; set; }
     public List<Vector3Int> Path  = new();
@@ -28,12 +28,8 @@ public class UnitManager : MonoBehaviour
     #region UnityMethods
     private void Awake()
     {
-        // Get map and game managers from the hierarchy
         _mm = FindAnyObjectByType<MapManager>();
         _gm = FindAnyObjectByType<GameManager>();
-      
-        // Seek for units in the hierarchy
-        Units = FindObjectsOfType<Unit>().ToList();
         Pathfinder = FindObjectOfType<Pathfinding>();
     }
 
@@ -42,6 +38,7 @@ public class UnitManager : MonoBehaviour
         // Subscribe to the day end event
         GameManager.OnTurnEnd += ResetUnits;
     }
+
     private void OnDisable()
     {
         // Unsubscribe from the day end event
@@ -50,6 +47,23 @@ public class UnitManager : MonoBehaviour
     #endregion
 
     #region Methods
+    // Spawn all units in their adequate placement
+    public void PlaceUnits(UnitDispositionSO unitDisposition)
+    {
+        if (unitDisposition != null)
+        {
+            foreach (var unitPlacement in unitDisposition.UnitPlacements)
+            {
+                Vector3Int position = unitPlacement.Position;
+                GameObject unitPrefab = UnitPrefabs[(int)unitPlacement.Unit];
+
+                // Instantiate the unit prefab at the position
+                Unit unit = Instantiate(unitPrefab, position, Quaternion.identity, transform).GetComponent<Unit>();
+                unit.Owner = unitPlacement.Owner;
+            }
+        }
+    }
+
     // Get _unit from given grid position
     public Unit FindUnit(Vector3Int pos)
     {
