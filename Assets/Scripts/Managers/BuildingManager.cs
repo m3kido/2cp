@@ -13,6 +13,7 @@ public class BuildingManager : MonoBehaviour
     private MapManager _mm;
     private UnitManager _um;
     private GameManager _gm;
+    private CaptainBar _cp;
 
     // List to store units that can be bought in the building (provided in the inspector)
     [FormerlySerializedAs("UnitPrefabs")] [SerializeField] private List<Unit> _unitPrefabs;
@@ -56,6 +57,7 @@ public class BuildingManager : MonoBehaviour
         _mm = FindAnyObjectByType<MapManager>();
         _gm = FindAnyObjectByType<GameManager>();
         _um = FindAnyObjectByType<UnitManager>();
+        _cp = FindAnyObjectByType<CaptainBar>();
 
         // Scan the map and put all the buldings in the Buildings dictionary
         yield return StartCoroutine(ScanMapForBuildings());
@@ -189,6 +191,8 @@ public class BuildingManager : MonoBehaviour
             if (village.Owner < 4 && village.BuildingType==EBuildings.Village)
             {
                 _gm.Players[village.Owner].Gold += 2000;
+                _cp.UpdateGold();
+                
             }
         }
     }
