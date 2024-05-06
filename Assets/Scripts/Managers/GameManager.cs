@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     // Auto-properties (the compiler automatically creates private fields for them)
     public int PlayerTurn { get; set; }
     public int Day { get; set; } = 1;
-    public List<Player> Players { get; set; }
+    public List<Player> Players { get; set; } = new();
     public EPlayerStates LastStateOfPlayer { get; set; }
 
     private EPlayerStates _currentStateOfPlayer;
@@ -27,9 +27,6 @@ public class GameManager : MonoBehaviour
         CurrentStateOfPlayer = EPlayerStates.Idle;
         LastStateOfPlayer = EPlayerStates.Idle;
         // Initialize players
-       
-
-
     }
 
     private void Start()
@@ -37,21 +34,15 @@ public class GameManager : MonoBehaviour
         // Initialize players
         Players = new List<Player>
         {
-            new("Mohamed", ETeamColors.Amber, ETeams.A, ECaptains.Andrew),
-            new("Oussama1", ETeamColors.Azure, ETeams.B, ECaptains.Melina),
-
+            new("9999", 0, "Mohamed", ETeamColors.Amber, ETeams.A, ECaptains.Andrew, 0, false),
+            new("9998", 1, "Oussama", ETeamColors.Azure, ETeams.B, ECaptains.Melina, 0, false),
         };
     }
 
     private void Update()
     {
-
         // Handle input for turn end
         if (Input.GetKeyDown(KeyCode.C) && CurrentStateOfPlayer == EPlayerStates.Idle) EndTurn();
-
-        //if (Input.GetKeyDown(KeyCode.C)) EndTurn();
-
-
     }
     #endregion
 
@@ -80,5 +71,4 @@ public class GameManager : MonoBehaviour
         player.RemoveCaptain();
         Players.Remove(player);
     }
-
 }

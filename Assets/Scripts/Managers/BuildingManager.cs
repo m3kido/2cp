@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -47,7 +48,9 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    public event Action MapScanComplete;
+
+    private IEnumerator Start()
     {
         // Get the Map, Game and Unit Managers from the hierarchy
         _mm = FindAnyObjectByType<MapManager>();
@@ -55,7 +58,9 @@ public class BuildingManager : MonoBehaviour
         _um = FindAnyObjectByType<UnitManager>();
 
         // Scan the map and put all the buldings in the Buildings dictionary
-        StartCoroutine(ScanMapForBuildings());
+        yield return StartCoroutine(ScanMapForBuildings());
+
+        MapScanComplete?.Invoke();
     }
 
     private void Update()
@@ -107,11 +112,11 @@ public class BuildingManager : MonoBehaviour
     }
 
     // Change the building sprite based on owner
-    private void ChangeBuildingOwner(Building building, int owner)
+    public void ChangeBuildingOwner(Building building, int owner)
     {
         foreach (var SO in _buildingDatas)
         {
-            if(SO.Color == _gm.Players[_gm.PlayerTurn].Color && SO.BuildingType == building.BuildingType) {
+            if (SO.Color == _gm.Players[owner].Color && SO.BuildingType == building.BuildingType) {
                 _mm.Map.SetTile(building.Position, SO.BuildingTile);
             }
         }
@@ -139,6 +144,7 @@ public class BuildingManager : MonoBehaviour
         
             ChangeBuildingOwner(_capturableBuildings[pos], _gm.PlayerTurn);
             _um.SelectedUnit.IsCapturing = false;
+            _capturableBuildings[pos].CapturingUnit = null;
         }
     }
 
@@ -147,7 +153,8 @@ public class BuildingManager : MonoBehaviour
     {
         foreach (var village in _capturableBuildings.Values)
         {
-            if (village.CapturingUnit != null && village.CapturingUnit.GetGridPosition() != village.Position)
+            if (village.CapturingUnit != null && village.CapturingUnit.GetGridPosition() != village.Position
+                && village.CapturingUnit.HasMoved)
             {
                 village.Health = 200;
                 village.CapturingUnit.IsCapturing = false;
@@ -185,6 +192,7 @@ public class BuildingManager : MonoBehaviour
             }
         }
     }
+
     private void HealUnits()
     {
         foreach(var building in BuildingFromPosition.Values)

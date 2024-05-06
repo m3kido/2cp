@@ -13,7 +13,9 @@ public class UnitManager : MonoBehaviour
     private GameManager _gm;
     private MapManager _mm;
     private Pathfinding Pathfinder;
-    // Auto-properties (the compiler automatically creates private fields for them)
+
+    public GameObject[] UnitPrefabs; // We will need access to unit prefabs.
+                                     // Check GameDataSaveManager : LoadUnits()
     public List<Unit> Units { get; set; }
     public Unit SelectedUnit { get; set; }
     public Vector3Int SaveTile { get; set; }

@@ -24,7 +24,6 @@ public class CaptainBar : MonoBehaviour
         _gm = FindAnyObjectByType<GameManager>();
     }
 
-
     void Start()
     {
         UpdateCaptain();
@@ -40,22 +39,22 @@ public class CaptainBar : MonoBehaviour
         _superMeterSprite.GetComponent<Image>().fillAmount = _gm.Players[_gm.PlayerTurn].PlayerCaptain.SuperMeter;
         if(_superMeterSprite.GetComponent<Image>().fillAmount == 1)
         {
-            _superMeterReady.gameObject.SetActive(true);
+            _superMeterReady.SetActive(true);
         } 
         else 
         {
-            _superMeterReady.gameObject.SetActive(false);
+            _superMeterReady.SetActive(false);
         }
         
     }
     public void UpdateCaptain()
     {
         var col = _gm.Players[_gm.PlayerTurn].Color;
-        if(col == ETeamColors.Azure)
+        if (col == ETeamColors.Azure)
         {
-            _captainColor.GetComponent<Image>().color=Color.blue;
+            _captainColor.GetComponent<Image>().color = Color.blue;
         }
-        else if(col == ETeamColors.Amber)
+        else if (col == ETeamColors.Amber)
         {
             _captainColor.GetComponent<Image>().color = Color.red;
         }
@@ -70,7 +69,7 @@ public class CaptainBar : MonoBehaviour
         var cap = _gm.Players[_gm.PlayerTurn].PlayerCaptain;
         if (cap.Data.Name == ECaptains.Andrew)
         {
-            _captainSprite.GetComponent<Image>().sprite =AndrewSprite;
+            _captainSprite.GetComponent<Image>().sprite = AndrewSprite;
         }
         else if (cap.Data.Name == ECaptains.Maximus)
         {

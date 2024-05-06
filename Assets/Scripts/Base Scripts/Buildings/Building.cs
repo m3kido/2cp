@@ -1,6 +1,5 @@
 using UnityEngine;
 
-// We have to discuss this 
 public class Building
 {
     public EBuildings BuildingType { get; set; }
@@ -17,5 +16,15 @@ public class Building
         Owner = owner;
         Health = 200;
     }
-}
 
+    public BuildingSaveData GetDataToSave()
+    {
+        return new BuildingSaveData(Position, Health, Owner);
+    }
+
+    public void SetSaveData(BuildingSaveData data)
+    {
+        Health = data.Health;
+        Owner = data.Owner;
+    }
+}

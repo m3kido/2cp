@@ -1,23 +1,21 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
+
 
 public class LoadingUnit : Unit
 {
-    
     public Unit LoadedUnit;
-    
+    public Vector3Int LoadedUnitPosition = new(0, 0, -1);
     public List<Vector3Int> DropTiles;
 
     public void LoadUnit(Unit unit)
     {
         LoadedUnit = unit;
         LoadedUnit.gameObject.SetActive(false);
+        LoadedUnitPosition = GetGridPosition();
     }
+
     public bool CanLoadUnit(Unit unit)
     {
         bool sameOwner = (unit.Owner == Owner);
@@ -25,35 +23,38 @@ public class LoadingUnit : Unit
         if(LoadedUnit==null && sameOwner && compatible) { return true; }
         return false;
     }
+
     public void InisitateDropUnit()
     {
         _gm.CurrentStateOfPlayer = EPlayerStates.Dropping;
         StartCoroutine(DropAtSpot());        
     }
+
     private void DropUnit(Vector3Int spot)
     {
         LoadedUnit.gameObject.SetActive(true);
         LoadedUnit.transform.position = spot;
+        LoadedUnit.HasMoved = true;
         LoadedUnit = null;
+        LoadedUnitPosition = new Vector3Int(0, 0, -1);
     }
+
     private IEnumerator DropAtSpot()
     {
         yield return null;
-        bool Unitdroped=false;
+        bool Unitdroped = false;
         int SpotIndex = 0;
         CursorManager _cm = FindAnyObjectByType<CursorManager>();
         Vector3Int saveCursor = _cm.HoveredOverTile;
 
         while (!Unitdroped)
         {
-
             if (DropTiles.Count == 1)
             {
                 _cm.HoveredOverTile = DropTiles[SpotIndex];            
             }
             else
             {
-
                 _cm.HoveredOverTile = DropTiles[SpotIndex];
 
                 // Handle navigation keys
@@ -69,11 +70,10 @@ public class LoadingUnit : Unit
                 }
             }
 
-           
             if (Input.GetKeyDown(KeyCode.Space)) 
             {
                 DropUnit(DropTiles[SpotIndex]);
-                Unitdroped= true;
+                Unitdroped = true;
                 _um.EndMove();
             }
 
@@ -87,8 +87,6 @@ public class LoadingUnit : Unit
 
             yield return null;
         }
-       
-        
     }
     
     public bool GetDropTiles()
@@ -98,12 +96,13 @@ public class LoadingUnit : Unit
         TileValid(GetGridPosition() + Vector3Int.down);
         TileValid(GetGridPosition() + Vector3Int.left);
         TileValid(GetGridPosition() + Vector3Int.up);
-        if(DropTiles.Count> 0)
+        if (DropTiles.Count> 0)
         {
             return true;
         }
         return false;
     }
+
     private void TileValid(Vector3Int pos)
     {
         var tile = _mm.GetTileData(pos);
@@ -115,4 +114,26 @@ public class LoadingUnit : Unit
         if(walkable && clear) { DropTiles.Add(pos); }
     }
 
+    public LoadingUnitSaveData GetDataToSave()
+    {
+        return new LoadingUnitSaveData(UnitType, Health, Provisions, Owner, HasMoved, LoadedUnitPosition, GetGridPosition()); ;
+    }
+
+    public void SetSavedData(LoadingUnitSaveData saveData)
+    {
+        Health = saveData.Health;
+        Provisions = saveData.Provisions;
+        Owner = saveData.Owner;
+        UnitType = saveData.UnitType;
+        HasMoved = saveData.HasMoved;
+        if (saveData.LoadedUnitPosition.z != 0)
+        {
+            LoadedUnit = null;
+        }
+        else
+        {
+            LoadedUnit = _um.FindUnit(saveData.LoadedUnitPosition);
+            LoadedUnit.gameObject.SetActive(false);
+        }
+    }
 }

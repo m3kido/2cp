@@ -6,6 +6,7 @@ public class Godfrey : Captain
 {
     public Godfrey(Player player): base(player)
     {
+        CaptainName = ECaptains.Godfrey;
         Player = player;
         Data = CaptainManager.CaptainsDict[ECaptains.Godfrey];
         PassiveDefense = Data.PassiveDefense;

@@ -7,6 +7,7 @@ public class SettingMenu : MonoBehaviour
 {
     #region Variables
     private GameManager _gm;
+    private GameDataSaveManager _sm;
 
     private List<GameObject> _settingsList;
 
@@ -24,6 +25,7 @@ public class SettingMenu : MonoBehaviour
     private void Awake()
     {
         _gm = FindAnyObjectByType<GameManager>();
+        _sm = FindAnyObjectByType<GameDataSaveManager>();
 
         _settingsList = new List<GameObject>
         {
@@ -57,7 +59,7 @@ public class SettingMenu : MonoBehaviour
         {
             if (_settingsList[_selectedSetting] == SaveSetting)
             {
-                
+                _sm.SaveGame();
             }
             else if (_settingsList[_selectedSetting] == OptionsSetting)
             {

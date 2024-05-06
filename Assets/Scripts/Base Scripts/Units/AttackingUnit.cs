@@ -274,6 +274,24 @@ public class AttackingUnit : Unit
     //{
     //    HandleTargetSelectionInput();
     //}
+
+    public AttackingUnitSaveData GetDataToSave()
+    {
+        return new AttackingUnitSaveData(UnitType, Health, Provisions, Owner, HasMoved, CurrentWeaponAmmo,
+            CurrentWeaponIndex, GetGridPosition(), IsCapturing);
+    }
+
+    public void SetSavedData(AttackingUnitSaveData saveData)
+    {
+        UnitType = saveData.UnitType;
+        Health = saveData.Health;
+        Provisions = saveData.Provisions;
+        Owner = saveData.Owner;
+        HasMoved = saveData.HasMoved;
+        CurrentWeaponAmmo = saveData.EnergyOrbs;
+        CurrentWeaponIndex = saveData.CurrentWeaponIndex;
+        IsCapturing = saveData.IsCapturing;
+    }
 }
 
 

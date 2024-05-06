@@ -2,7 +2,7 @@ public class Andrew : Captain
 {
     public Andrew(Player player) : base(player)
     {
-
+        CaptainName = ECaptains.Andrew;
         Player = player;
         Data = CaptainManager.CaptainsDict[ECaptains.Andrew];
         PassiveDefense = Data.PassiveDefense;
