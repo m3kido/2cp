@@ -16,7 +16,7 @@ public class UnitManager : MonoBehaviour
     private MapManager _mm;
     private Pathfinding Pathfinder;
     private BuildingManager _bm;
-    private List<GameObject> _unitPrefabs;
+    [SerializeField] private List<GameObject> _unitPrefabs;
     public ParticleSystem SpawnEffect;                                 // Check GameDataSaveManager : LoadUnits()
     public List<Unit> Units { get; set; } = new();
     public Unit SelectedUnit { get; set; }

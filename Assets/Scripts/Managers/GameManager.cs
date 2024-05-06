@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
             return _playerTurn;
         }
 
-        set
+        /*set
         {
             int i = value;
 
@@ -95,6 +95,16 @@ public class GameManager : MonoBehaviour
             }
 
             _playerTurn = i;
+        }*/
+
+        set
+        {
+            int i = value;
+            while (Players[i].Lost)
+            {
+                i = ++i % Players.Count;
+            }
+            _playerTurn = i;
         }
     }
 
@@ -104,7 +114,7 @@ public class GameManager : MonoBehaviour
     public static event Action OnDayEnd;
 
     // Method to end a turn
-    /*public void EndTurn()
+    public void EndTurn()
     {
         PlayerTurn = (PlayerTurn + 1) % Players.Count;
         playerTurnText.text = "Player " + (PlayerTurn + 1) + "'s turn";
@@ -117,12 +127,12 @@ public class GameManager : MonoBehaviour
 
 
         OnTurnStart?.Invoke();
-    }*/
+    }
 
-    public void EndTurn()
+    /*public void EndTurn()
     {
         PlayerTurn = (PlayerTurn + 1) % Players.Count;
-    }
+    }*/
 
     public void CheckGameStatus()
     {
