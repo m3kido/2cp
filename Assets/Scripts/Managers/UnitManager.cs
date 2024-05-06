@@ -15,7 +15,7 @@ public class UnitManager : MonoBehaviour
     private Pathfinding Pathfinder;
 
     public GameObject[] UnitPrefabs; // We will need access to unit prefabs.
-                                     // Check GameDataSaveManager : LoadUnits()
+    public ParticleSystem SpawnEffect;                                 // Check GameDataSaveManager : LoadUnits()
     public List<Unit> Units { get; set; } = new();
     public Unit SelectedUnit { get; set; }
     public Vector3Int SaveTile { get; set; }
