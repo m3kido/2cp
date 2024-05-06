@@ -106,7 +106,7 @@ MonoBehaviour:
   MoveRange: 0
   _weapons:
   - _damageList: 370000002d00000005000000010000000f0000000f000000190000000000000000000000000000000000000000000000
-    _energyOrbs: 1
+    _energyOrbs: 9999
     _weapon: 7
     _minRange: 1
     _maxRange: 2

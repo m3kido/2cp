@@ -110,6 +110,7 @@ MonoBehaviour:
     _weapon: 9
     _minRange: 2
     _maxRange: 5
+    _energyConsumption: 1
   CurrentWeaponIndex: 0
   HasAttacked: 0
   IndirectUnit: 1

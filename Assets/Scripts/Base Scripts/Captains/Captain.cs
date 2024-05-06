@@ -10,8 +10,33 @@ public class Captain
     private int _attackRangeAdditioner = 0;
     public float CaptureMultiplier = 1.0f;
     public float PriceMultiplier = 1.0f;
-    public int SuperMeter { get; set; } = 100;
+    public int maxSuperMeter;
 
+    private float _superMeter; 
+    public float SuperMeter
+    {
+        get
+        {
+            return _superMeter;
+        }
+
+        set
+        {
+            if (value <= 0)
+            {
+                _superMeter = 0;
+            }
+            else if (value > maxSuperMeter)
+            {
+
+                _superMeter = maxSuperMeter;
+            }
+            else
+            {
+                _superMeter = value;
+            }
+        }
+    }
 
     public int AttackRangeAdditioner
     {
@@ -27,10 +52,8 @@ public class Captain
 
     public virtual void EnableCeleste()
     {
-        if (!IsCelesteReady())
-            return;
+        
         IsCelesteActive = true;
-        SuperMeter -= 100;
 
     }
 
@@ -42,7 +65,7 @@ public class Captain
 
     public bool IsCelesteReady()
     {
-        return (SuperMeter == 100);
+        return (SuperMeter >= this.maxSuperMeter);
     }
 
     public Captain(Player player)
@@ -55,5 +78,6 @@ public class Captain
     {
 
     }
+
 
 }

@@ -70,10 +70,11 @@ public class ShopMenu : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Space))
         {
             var NewUnit = _unitElements[_unitElements.Keys.ToList()[_selectedUnit]];
-            if (_gm.Players[_gm.PlayerTurn].Gold >= NewUnit.Data.Cost)
+            int realPrice = (int)(NewUnit.Data.Cost * _gm.Players[_gm.PlayerTurn].PlayerCaptain.PriceMultiplier); 
+            if (_gm.Players[_gm.PlayerTurn].Gold >= realPrice)
             {
                 _bm.SpawnUnit(NewUnit.Data.UnitType, _cm.HoveredOverTile, _gm.PlayerTurn);
-                _gm.Players[_gm.PlayerTurn].Gold -= NewUnit.Data.Cost;
+                _gm.Players[_gm.PlayerTurn].Gold -= realPrice;
                 _bar.UpdateGold();
                 _gm.CurrentStateOfPlayer = EPlayerStates.Idle;
             }

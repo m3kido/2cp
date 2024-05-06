@@ -26,20 +26,36 @@ public class Melina : Captain
         PassiveDefense = Data.PassiveDefense;
         PassiveAttack = Data.PassiveAttack;
         PriceMultiplier -= 0.1f;
+        SuperMeter = 40000;
+        maxSuperMeter = 40000;
     }
 
     public override void EnableCeleste()
     {
+        if (!IsCelesteReady())
+            return;
 
         base.EnableCeleste();
+        SuperMeter -= maxSuperMeter;
         foreach (var unit in CaptainManager.Um.Units)
         {
             if (CaptainManager.Gm.Players[unit.Owner] == Player)
             {
+                UnityEngine.Debug.Log("zebi");
+                if (unit is AttackingUnit)
+                {
+                    var attacker = unit as AttackingUnit;
+                    foreach(var weapon in attacker.Weapons)
+                    {
+                        weapon.EnergyOrbs += 2;
+                        CaptainManager.Instance.EnergySpr(unit); 
 
-                unit.Provisions += (int)(0.2 * unit.Data.MaxProvisions);
+                    }
+                    attacker.CurrentWeaponIndex = 0;
+                }
                 if (unit.HasMoved)
                 {
+                    UnityEngine.Debug.Log(unit.HasMoved.ToString());
                     _tiredUnits.Add(unit);
                 }
             }
@@ -49,7 +65,7 @@ public class Melina : Captain
         {
             selectedUnitIndex = 0;
         }
-        //Starting a coroutine via the attack manager ; 
+        //Starting a coroutine via the captin manager ; 
 
         Debug.Log("Melina");
     }
@@ -88,6 +104,7 @@ public class Melina : Captain
         if (selectedUnitIndex == -1)
         {
             Debug.LogWarning("No units available for selection.");
+            ActionTaken = true;
             return;
         }
 

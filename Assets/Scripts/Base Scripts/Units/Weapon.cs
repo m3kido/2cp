@@ -11,14 +11,14 @@ public class Weapon
     [SerializeField] private EWeapons _weapon;
     [SerializeField] private int _minRange;
     [SerializeField] private int _maxRange;
+    [SerializeField] private int _energyConsumption ;
 
     public List<int> DamageList { get => _damageList; set => _damageList = value; }
     public int EnergyOrbs { get => _energyOrbs; set => _energyOrbs = value; }
     public EWeapons WeaponType { get => _weapon; set => _weapon = value; }
     public int MinRange { get => _minRange; set => _minRange = value; }
     public int MaxRange { get => _maxRange; set => _maxRange = value; }
-
-    
+    public int EnergyConsumption { get => _energyConsumption; set => _energyConsumption = value; }
 }
 
 

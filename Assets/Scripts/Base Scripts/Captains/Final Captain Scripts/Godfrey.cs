@@ -11,17 +11,22 @@ public class Godfrey : Captain
         PassiveDefense = Data.PassiveDefense;
         PassiveAttack = Data.PassiveAttack;
         DefenseMultiplier += 0.05f;
-        GameManager.OnTurnStart += DisableCeleste;
+        GameManager.OnDayEnd += DisableCeleste;
+        SuperMeter = 30000;
+        maxSuperMeter = 30000;
     }
     public override void EnableCeleste()
     {
+        if (!IsCelesteReady())
+            return;
         base.EnableCeleste();
+        SuperMeter -= maxSuperMeter;
         foreach (var unit in CaptainManager.Um.Units)
         {
             if (CaptainManager.Gm.Players[unit.Owner] != Player)
             {
                 unit.MoveRange --;
-                //REDUCE PROVISION
+                //Augmemnter PROVISION
             }
         }
 

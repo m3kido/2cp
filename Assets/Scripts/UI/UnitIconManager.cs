@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -109,7 +110,7 @@ public class UnitIconManager : MonoBehaviour
     // Change health icon sprite based on unit's health
     public void UpdateHealthIcon()
     {
-        _H.GetComponent<SpriteRenderer>().sprite = _iconData.HealthIcons[Mathf.FloorToInt(_unit.Health / 10)];
+        _H.GetComponent<SpriteRenderer>().sprite = _iconData.HealthIcons[Mathf.CeilToInt((float)(_unit.Health) / 10f)];
     }
 
     // Set the provisions need icon active if too few provisions
@@ -139,7 +140,9 @@ public class UnitIconManager : MonoBehaviour
     {
         if (_unit is AttackingUnit unit)
         {
+            Debug.Log(unit.CurrentWeaponIndex);
             int energyOrbs = unit.Weapons[unit.CurrentWeaponIndex].EnergyOrbs;
+            
             if (energyOrbs <= Mathf.FloorToInt(_unit.Data.MaxProvisions * 0.25f))
             {
                 // Blink only if energy orbs are not zero

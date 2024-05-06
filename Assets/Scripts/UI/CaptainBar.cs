@@ -37,7 +37,8 @@ public class CaptainBar : MonoBehaviour
     public void UpdateSuperMeter()
     {
         //idk how the captains will be held
-        _superMeterSprite.GetComponent<Image>().fillAmount = _gm.Players[_gm.PlayerTurn].PlayerCaptain.SuperMeter;
+        var max = _gm.Players[_gm.PlayerTurn].PlayerCaptain.maxSuperMeter; 
+        _superMeterSprite.GetComponent<Image>().fillAmount = _gm.Players[_gm.PlayerTurn].PlayerCaptain.SuperMeter / max;
         if(_superMeterSprite.GetComponent<Image>().fillAmount == 1)
         {
             _superMeterReady.gameObject.SetActive(true);

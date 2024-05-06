@@ -8,6 +8,7 @@ public class AttackManager : MonoBehaviour
     protected GameManager _gm;
     protected UnitManager _um;
     protected MapManager _mm;
+    protected CaptainBar _cb; 
     [SerializeField] private ParticleSystem attackParticle;
     List<EUnits> directAttacker = new() { EUnits.Catapult, EUnits.Cannoneer, EUnits.Ballista };
     public AttackingUnit Attacker;
@@ -30,6 +31,7 @@ public class AttackManager : MonoBehaviour
         _gm = FindAnyObjectByType<GameManager>();
         _um = FindAnyObjectByType<UnitManager>();
         _mm = FindAnyObjectByType<MapManager>();
+        _cb = FindAnyObjectByType<CaptainBar>();
     }
 
     public bool UnitCanAttack(AttackingUnit attacker)
@@ -40,31 +42,52 @@ public class AttackManager : MonoBehaviour
 
     public void ApplyDamage(Unit target, AttackingUnit attacker)
     {
+        Player Attacker = _gm.Players[_gm.PlayerTurn]; 
+        int damageApplied;
+        int superMeterAdd ; 
         if (target == null || attacker == null)
         {
             Debug.LogError("Target or attacker is null.");
             return;
         }
-
         float damageToTarget = CalculateDamage(target, attacker);
+        damageApplied = (int)damageToTarget; 
         Debug.Log("Damage to target: " + damageToTarget);
-        target.Health -= (int)damageToTarget;
-        attacker.ConsumeAmmo();
+        target.Health -= (int)damageApplied;
 
+        superMeterAdd = (int)((damageApplied * attacker.Data.Cost / 10) * 0.5 );
+        print("hawhaw");
+        print(superMeterAdd);
+        Attacker.PlayerCaptain.SuperMeter += superMeterAdd;
+        
+
+
+        attacker.ConsumeAmmo();   
         Debug.Log("Target has been damaged!");
-
         if (target.Health > 0 && target is AttackingUnit && !directAttacker.Contains(attacker.Data.UnitType)) // We need to check if target unit can attack the attacker
         {
+            Player Defender = _gm.Players[target.Owner];
             AttackingUnit newAttacker = target as AttackingUnit;
             if (newAttacker.CanAttackThis(attacker))
             {
                 var damageToAttacker = CalculateDamage(attacker, newAttacker);
-                attacker.Health -= (int)damageToAttacker;
-                newAttacker.ConsumeAmmo();
-                Debug.Log("Damage to attacker: " + damageToAttacker);
+                damageApplied = (int)damageToAttacker;
+                attacker.Health -= damageApplied;
+                superMeterAdd = (int)((damageApplied * newAttacker.Data.Cost / 10));
+                Defender.PlayerCaptain.SuperMeter += superMeterAdd;
+                print("meow");
+                print(superMeterAdd);
+
+                if (attacker.CurrentWeaponIndex < attacker.Weapons.Count)
+                {
+                    attacker.ConsumeAmmo();
+                }
+                Debug.Log("Damage to attacker: " + damageToAttacker);                       
                 Debug.Log("Attacker has been damaged!");
             }
         }
+        
+        _cb.UpdateSuperMeter(); 
     }
 
     public void InitiateAttack()

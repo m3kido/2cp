@@ -9,7 +9,7 @@ public class AttackingUnit : Unit
     [SerializeField] List<Weapon> _weapons;
     public List<Weapon> Weapons { get => _weapons; set => _weapons = value; }
 
-    public int CurrentWeaponIndex;
+    public int CurrentWeaponIndex = 0;
     private bool _isAttacking;
     public bool HasAttacked;
 
@@ -40,21 +40,21 @@ public class AttackingUnit : Unit
         get { return _weapons[CurrentWeaponIndex].EnergyOrbs; }
         set
         {
-            if (value <= 0)
+            if (value <= 0 && CurrentWeaponIndex < _weapons.Count-1)
+            if (value <= 0 && CurrentWeaponIndex < _weapons.Count-1)
             {
                 CurrentWeaponIndex++;
-                
             }
             else
             {
-                _weapons[CurrentWeaponIndex].EnergyOrbs=value;
+                _weapons[CurrentWeaponIndex].EnergyOrbs = value;
             }
         }
     }
 
     public void ConsumeAmmo()
     {
-        CurrentWeaponAmmo--;
+        CurrentWeaponAmmo-=Weapons[CurrentWeaponIndex].EnergyConsumption;
     }
 
     // scans area for targets in an Intervall [min range, max range]
@@ -256,24 +256,7 @@ public class AttackingUnit : Unit
         AttackFromTiles(list, right, range - 1);
     }
 
-    //public void InitiateTargetSelection()
-    //{
-    //    Debug.Log("Initiating target selection from the AU");
-    //    AttackManager.Instance.InitiateTargetSelection(this);
-    //    Debug.Log("Finished");
-    //}
-
-    //// Method to handle keyboard input for navigating through targets
-    //private void HandleTargetSelectionInput()
-    //{
-    //    AttackManager.Instance.HandleTargetSelectionInput();
-    //}
-
-    // Update method to handle target selection input
-    //private void Update()
-    //{
-    //    HandleTargetSelectionInput();
-    //}
 }
+
 
 

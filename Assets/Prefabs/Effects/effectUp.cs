@@ -14,6 +14,6 @@ public class effectUp : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.up * speed * Time.deltaTime);
+        transform.Translate(speed * Time.deltaTime * Vector3.up);
     }
 }

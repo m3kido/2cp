@@ -14,7 +14,7 @@ public class BuildingManager : MonoBehaviour
     private GameManager _gm;
 
     // List to store units that can be bought in the building (provided in the inspector)
-    [FormerlySerializedAs("UnitPrefabs")] [SerializeField] private List<Unit> _unitPrefabs;
+    [FormerlySerializedAs("UnitPrefabs")][SerializeField] private List<Unit> _unitPrefabs;
 
     // Array containing building datas of all buildings (provided in the inspector)
     [SerializeField] private BuildingDataSO[] _buildingDatas;
@@ -66,16 +66,16 @@ public class BuildingManager : MonoBehaviour
     private void OnEnable()
     {
         // GetGoldFromBuildings subscribes to day end event
-       GameManager.OnDayEnd += GetGoldFromBuildings;
-       GameManager.OnDayEnd += HealUnits;
-        
+        GameManager.OnDayEnd += GetGoldFromBuildings;
+        GameManager.OnDayEnd += HealUnits;
+
     }
 
     private void OnDisable()
     {
         // GetGoldFromBuildings unsubscribes from day end event
-       GameManager.OnDayEnd -= GetGoldFromBuildings;
-       GameManager.OnDayEnd -= HealUnits;
+        GameManager.OnDayEnd -= GetGoldFromBuildings;
+        GameManager.OnDayEnd -= HealUnits;
     }
     #endregion
 
@@ -111,7 +111,8 @@ public class BuildingManager : MonoBehaviour
     {
         foreach (var SO in _buildingDatas)
         {
-            if(SO.Color == _gm.Players[_gm.PlayerTurn].Color && SO.BuildingType == building.BuildingType) {
+            if (SO.Color == _gm.Players[_gm.PlayerTurn].Color && SO.BuildingType == building.BuildingType)
+            {
                 _mm.Map.SetTile(building.Position, SO.BuildingTile);
             }
         }
@@ -128,15 +129,15 @@ public class BuildingManager : MonoBehaviour
     // Capture building
     public void CaptureBuilding(Vector3Int pos)
     {
-        _capturableBuildings[pos].Health -= _um.SelectedUnit.Health;
+        _capturableBuildings[pos].Health -= (int)(_um.SelectedUnit.Health * _gm.Players[_gm.PlayerTurn].PlayerCaptain.CaptureMultiplier);
         print(_capturableBuildings[pos].Health);
         if (_capturableBuildings[pos].Health <= 0)
         {
-            if(BuildingFromPosition[pos].BuildingType == EBuildings.Castle)
+            if (BuildingFromPosition[pos].BuildingType == EBuildings.Castle)
             {
-                _gm.Players[_gm.PlayerTurn].Lost = true; 
+                _gm.Players[_gm.PlayerTurn].Lost = true;
             }
-        
+
             ChangeBuildingOwner(_capturableBuildings[pos], _gm.PlayerTurn);
             _um.SelectedUnit.IsCapturing = false;
         }
@@ -159,15 +160,15 @@ public class BuildingManager : MonoBehaviour
     // Spawn a unit from a building
     public void SpawnUnit(EUnits unitType, Vector3Int pos, int owner)
     {
-        Unit unitPrefab = null ;
-        foreach(var prefab in _unitPrefabs)
+        Unit unitPrefab = null;
+        foreach (var prefab in _unitPrefabs)
         {
             if (prefab.Data.UnitType == unitType)
             {
                 unitPrefab = prefab;
             }
         }
-        Unit newUnit = Instantiate(unitPrefab, pos, Quaternion.identity,_um.transform);
+        Unit newUnit = Instantiate(unitPrefab, pos, Quaternion.identity, _um.transform);
         newUnit.Owner = owner;
         newUnit.HasMoved = true;
         if (newUnit == null) { return; }
@@ -179,7 +180,7 @@ public class BuildingManager : MonoBehaviour
     {
         foreach (var village in _capturableBuildings.Values)
         {
-            if (village.Owner < 4 && village.BuildingType==EBuildings.Village)
+            if (village.Owner < 4 && village.BuildingType == EBuildings.Village)
             {
                 _gm.Players[village.Owner].Gold += 2000;
             }
@@ -187,10 +188,10 @@ public class BuildingManager : MonoBehaviour
     }
     private void HealUnits()
     {
-        foreach(var building in BuildingFromPosition.Values)
+        foreach (var building in BuildingFromPosition.Values)
         {
             var unit = _um.FindUnit(building.Position);
-            if (unit && building.Owner==unit.Owner)
+            if (unit && building.Owner == unit.Owner)
             {
                 if (unit.Health < 100)
                 {
@@ -199,7 +200,7 @@ public class BuildingManager : MonoBehaviour
                     Instantiate(HealSprite, unit.transform);
                 }
                 unit.Health += 20;
-                
+
             }
         }
     }

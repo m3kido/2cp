@@ -1,23 +1,23 @@
-/*using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 // Class to represent an AI player
-public class AiPlayer : Player
+public class AiPlayer : MonoBehaviour
 {
-
+    Player player; 
     GameManager _gm;
     UnitManager _um;
     BuildingManager _bm;
     MapManager _mm;
-    AttackManager _am; 
+    AttackManager _am;
     List<Unit> AiUnits;
-    int AiLavel; 
+    int AiLavel;
 
     // Constructor for AI player
     public AiPlayer(string name, ETeamColors color, ETeams teamSide, ECaptains captain)
-        : base(name, color, teamSide, captain)
+        
     {
         // Initialize any additional properties or settings specific to AI players if needed
     }
@@ -25,7 +25,7 @@ public class AiPlayer : Player
     //Unity Methods 
     private void Awake()
     {
-        _gm = FindAnyObjectByType<GameManager>();   
+        _gm = FindAnyObjectByType<GameManager>();
         _um = FindAnyObjectByType<UnitManager>();
         _bm = FindAnyObjectByType<BuildingManager>();
         _mm = FindAnyObjectByType<MapManager>();
@@ -34,9 +34,9 @@ public class AiPlayer : Player
 
     private void Start()
     {
-        foreach(var unit in _um.Units)
+        foreach (var unit in _um.Units)
         {
-            if(_gm.Players[unit.Owner] == this)
+            if (_gm.Players[unit.Owner] == this.player)
             {
                 AiUnits.Add(unit);
             }
@@ -51,28 +51,28 @@ public class AiPlayer : Player
     public void AiPlay(List<Unit> allUnits, List<Unit> enemyUnits)
     {
         //Level 0 STUID ASU
-        
+
         // Decide which units to move and where to move them
-        
+
         // Example: AI decides to end its turn after performing actions
         EndTurn();
     }
 
     //Worth attack 
-    private bool worthAttack(AttackingUnit attacker , Unit enemy , float threshold  )
+    private bool WorthAttack(AttackingUnit attacker, Unit enemy, float threshold)
     {
         float evaluation = float.MinValue;
         float wdc = 0.45f, wdr = 0.25f, wp = 0.3f;
         float DC = _am.CalculateDamage(enemy, attacker);
-        float DR = _am.checkCounterAttack(enemy, attacker); return false ;
+        float DR = _am.CalculateDamage(enemy, attacker);
         float P = attacker.Data.Cost;
-        evaluation = wdc * (DC / 100) - wdr * (DR / 100) - wp * ((P - 5) / (28 - 5)); 
-        if(evaluation < threshold || DC-DR <= 0  ) return false ;
-        return true; 
+        evaluation = wdc * (DC / 100) - wdr * (DR / 100) - wp * ((P - 5) / (28 - 5));
+        if (evaluation < threshold || DC - DR <= 0) return false;
+        return true;
     }
 
     // Function to find the nearest enemy appraoch 
-    
+
     private List<Unit> FindNearestEnemy(Unit unit, List<Unit> enemyUnits)
     {
         List<(Unit, float)> enemies = new List<(Unit, float)>();
@@ -81,20 +81,20 @@ public class AiPlayer : Player
         var attackerPos = unit.GetGridPosition();
         foreach (Unit enemy in enemyUnits)
         {
-            if(unit is AttackingUnit)
+            if (unit is AttackingUnit)
             {
                 AttackingUnit attacker = unit as AttackingUnit;
                 var potentialTargetPos = _mm.Map.WorldToCell(unit.transform.position);
                 float distance = 0;
-                bool IsInRange = (attacker.L2Distance2D(attackerPos, potentialTargetPos) >= attacker.Weapons[attacker.CurrentWeaponIndex].MinRange) && (attacker.L2Distance2D(attackerPos, potentialTargetPos) < (attacker.Weapons[attacker.CurrentWeaponIndex].MaxRange + this.PlayerCaptain.AttackRangeAdditioner));
-                if (IsInRange && worthAttack(attacker, enemy, 0.4f))
+                bool IsInRange = (attacker.L2Distance2D(attackerPos, potentialTargetPos) >= attacker.Weapons[attacker.CurrentWeaponIndex].MinRange) && (attacker.L2Distance2D(attackerPos, potentialTargetPos) < (attacker.Weapons[attacker.CurrentWeaponIndex].MaxRange + this.player.PlayerCaptain.AttackRangeAdditioner)); ;
+                if (IsInRange && WorthAttack(attacker, enemy, 0.4f))
                 {
                     distance = unit.L2Distance2D(attackerPos, potentialTargetPos);
                     enemies.Add((enemy, distance));
 
                 }
             }
-            
+
         }
 
         // Sort evaluated enemies by evaluation value in descending order
@@ -115,11 +115,11 @@ public class AiPlayer : Player
             if (unit is AttackingUnit)
             {
                 AttackingUnit attacker = unit as AttackingUnit;
-                if (worthAttack(attacker, enemy, 0.4f))
+                if (WorthAttack(attacker, enemy, 0.4f))
                 {
                     var potentialTargetPos = _mm.Map.WorldToCell(unit.transform.position);
                     float DC = _am.CalculateDamage(enemy, attacker);
-                    float DR = _am.checkCounterAttack(enemy, attacker);
+                    float DR = _am.CheckCounterAttack(enemy, attacker);
                     float distance = attacker.L2Distance2D(attackerPos, potentialTargetPos);
                     float evaluation = 0.6f * DC - 0.3f * DR - 0.1f * distance;
                     evaluatedEnemies.Add((enemy, evaluation));
@@ -176,7 +176,7 @@ public class AiPlayer : Player
                     break;
 
                 case 2:
-                    
+
                     List<Unit> bestEnemies = FindBestEnemies(attacker, enemyUnits);
                     foreach (var enemy in bestEnemies)
                     {
@@ -196,11 +196,11 @@ public class AiPlayer : Player
                                 //GO TO THAT UNIT USING THE PATHFINDER 
                                 //ATTACK 
                             }
-                        }  
+                        }
                     }
                     break;
             }
-            
+
         }
         return false;
     }
@@ -209,7 +209,6 @@ public class AiPlayer : Player
     private void EndTurn()
     {
         // Perform any cleanup or end-of-turn actions here
-        Console.WriteLine("AI player " + Name + " has ended its turn.");
+        Console.WriteLine("AI player " + player.Name + " has ended its turn.");
     }
 }
-*/

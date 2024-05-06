@@ -2295,6 +2295,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Infantry
       objectReference: {fileID: 0}
+    - target: {fileID: 5494935136497305317, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
+      propertyPath: _owner
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2646,6 +2650,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HealSprite: {fileID: 6171599413253265824, guid: 99d8b1f8bd0e3e348a3aa4f52145e892, type: 3}
+  EnergySprite: {fileID: 3152682836615333836, guid: b39a9c629c53fc54abd15f3c06e4da50, type: 3}
   _captainSOList:
   - {fileID: 11400000, guid: 931cddd13b2ce1d4b9fc3fa290b7b792, type: 2}
   - {fileID: 11400000, guid: 21b4f33bfb8702949b16079a7eed822c, type: 2}
@@ -3401,6 +3406,10 @@ PrefabInstance:
     - target: {fileID: 3828970162729280243, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
       propertyPath: m_Name
       value: Infantry (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5494935136497305317, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
+      propertyPath: _weapons.Array.data[0]._energyOrbs
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
