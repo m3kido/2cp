@@ -1180,7 +1180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0fcaaeecc0afcc4287754ff76d0cc24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTurnText: {fileID: 246899099}
+  playerTurnText: {fileID: 0}
   Turn: {fileID: 1463863413}
   displayDuration: 0.5
 --- !u!1 &134863284
@@ -2797,6 +2797,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HealSprite: {fileID: 6171599413253265824, guid: 99d8b1f8bd0e3e348a3aa4f52145e892, type: 3}
+  EnergySprite: {fileID: 0}
   _captainSOList:
   - {fileID: 11400000, guid: 931cddd13b2ce1d4b9fc3fa290b7b792, type: 2}
   - {fileID: 11400000, guid: 21b4f33bfb8702949b16079a7eed822c, type: 2}
@@ -13461,19 +13462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ffa086c721c8fc45bf3ef823e6a729e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitPrefabs:
-  - {fileID: 3828970162729280243, guid: 16d041e1da1b7074f8b4b55e85328605, type: 3}
-  - {fileID: 7376103806577548375, guid: dde74bf9cdddcbc4ca3d7592eb1bcbbc, type: 3}
-  - {fileID: 8739419240694635618, guid: ae6d7e3e4e1802142a8881355407a77e, type: 3}
-  - {fileID: 2269955569449980489, guid: 23ac8b0e0ffea1d4396ecbcc33f8a1cf, type: 3}
-  - {fileID: 2111720270158312193, guid: 4c3c396dfc80b66439847d428314fa1b, type: 3}
-  - {fileID: 3382534638782829282, guid: 0fefc81f2e6a69749acdc26f84d38972, type: 3}
-  - {fileID: 4003862143121886579, guid: 429e3337fab361246b632899321f4f6d, type: 3}
-  - {fileID: 7624489026461957248, guid: 2dfb7d0fb5f098c48b188063a023772c, type: 3}
-  - {fileID: 7434720313266703233, guid: 2ea18e78512beef4691b0df7669b4330, type: 3}
-  - {fileID: 8770609183450820968, guid: f88e98b5bb2e0ad42988eb4988861898, type: 3}
-  - {fileID: 2606192104923136195, guid: 398cf07255c40cd40acd6061a9a06698, type: 3}
-  - {fileID: 8481236441836822687, guid: e5d3973058fc69e49adcdbe6f341d4bf, type: 3}
+  UnitPrefabs: []
   SpawnEffect: {fileID: 6731186973408705377, guid: 290dd4a06a90af04db9b06c4eadf08db, type: 3}
   Path: []
 --- !u!1 &2110874118

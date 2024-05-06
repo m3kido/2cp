@@ -58,10 +58,10 @@ public struct CaptainSaveData
     // What we need to save from a captain
     public ECaptains CaptainName;
     public bool IsCelesteActive;
-    public int SuperMeter;
+    public float SuperMeter;
 
     // Constuctor
-    public CaptainSaveData(ECaptains captainName, bool isCelesteActive, int superMeter)
+    public CaptainSaveData(ECaptains captainName, bool isCelesteActive, float superMeter)
     {
         CaptainName = captainName;
         IsCelesteActive = isCelesteActive;

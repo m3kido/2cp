@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using System;
 using Unity.VisualScripting;
+using UnityEngine.Serialization;
 
 // This script handles _unit interactions
 // Keeps track of units and the path drawn by the cursor
@@ -13,8 +14,8 @@ public class UnitManager : MonoBehaviour
     private GameManager _gm;
     private MapManager _mm;
     private Pathfinding Pathfinder;
-
-    public GameObject[] UnitPrefabs; // We will need access to unit prefabs.
+    private BuildingManager _bm;
+    private List<GameObject> _unitPrefabs;
     public ParticleSystem SpawnEffect;                                 // Check GameDataSaveManager : LoadUnits()
     public List<Unit> Units { get; set; } = new();
     public Unit SelectedUnit { get; set; }
@@ -30,9 +31,10 @@ public class UnitManager : MonoBehaviour
     {
         _mm = FindAnyObjectByType<MapManager>();
         _gm = FindAnyObjectByType<GameManager>();
+        _bm = FindAnyObjectByType<BuildingManager>();
         Pathfinder = FindObjectOfType<Pathfinding>();
     }
-
+   
     private void OnEnable()
     {
         // Subscribe to the day end event
@@ -55,7 +57,7 @@ public class UnitManager : MonoBehaviour
             foreach (var unitPlacement in unitDisposition.UnitPlacements)
             {
                 Vector3Int position = unitPlacement.Position;
-                GameObject unitPrefab = UnitPrefabs[(int)unitPlacement.Unit];
+                GameObject unitPrefab = _unitPrefabs[(int)unitPlacement.Unit];
 
                 // Instantiate the unit prefab at the position
                 Unit unit = Instantiate(unitPrefab, position, Quaternion.identity, transform).GetComponent<Unit>();
