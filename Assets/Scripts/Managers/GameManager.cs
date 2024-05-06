@@ -1,12 +1,17 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 // Class to handle the game logic
 public class GameManager : MonoBehaviour
 {
     #region Variables
     // Auto-properties (the compiler automatically creates private fields for them)
+    public TextMeshProUGUI playerTurnText;
+    public GameObject Turn;
+    public float displayDuration = 0.5f;
+    private float timer;
     public int PlayerTurn { get; set; }
     public int Day { get; set; } = 1;
     public List<Player> Players { get; set; } = new();
@@ -21,6 +26,7 @@ public class GameManager : MonoBehaviour
 
     // Event to let know that the state of the player has changed
     public static event Action OnStateChange;
+
 
     private void Awake()
     {
@@ -41,8 +47,24 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (Turn.activeSelf)
+        {
+
+            timer += Time.deltaTime;
+            if (timer >= displayDuration)
+            {
+                Turn.SetActive(false);
+                timer = 0f;
+            }
+        }
+
         // Handle input for turn end
-        if (Input.GetKeyDown(KeyCode.C) && CurrentStateOfPlayer == EPlayerStates.Idle) EndTurn();
+        if (Input.GetKeyDown(KeyCode.C) && CurrentStateOfPlayer == EPlayerStates.Idle)
+        {
+            EndTurn();
+            Turn.SetActive(!Turn.activeSelf);
+            timer = 0f;
+        }
     }
     #endregion
 
@@ -55,6 +77,7 @@ public class GameManager : MonoBehaviour
     public void EndTurn()
     {
         PlayerTurn = (PlayerTurn + 1) % Players.Count;
+        playerTurnText.text = "Player's " + (PlayerTurn + 1) + " turn";
         OnTurnEnd?.Invoke();
         if (PlayerTurn == 0)
         {
