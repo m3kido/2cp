@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +21,9 @@ public class UnitManager : MonoBehaviour
     public List<Unit> Units { get; set; } = new();
     public Unit SelectedUnit { get; set; }
     public Vector3Int SaveTile { get; set; }
-    public List<Vector3Int> Path  = new();
+    public List<Vector3Int> Path = new();
     public int PathCost { get; set; }
+    public List<GameObject> UnitPrefabs { get => _unitPrefabs; set => _unitPrefabs = value; }
 
     public static event Action OnMoveEnd;
     #endregion
@@ -32,6 +34,9 @@ public class UnitManager : MonoBehaviour
         _mm = FindAnyObjectByType<MapManager>();
         _gm = FindAnyObjectByType<GameManager>();
         _bm = FindAnyObjectByType<BuildingManager>();
+
+        // Seek for units in the hierarchy
+        Units = FindObjectsOfType<Unit>().ToList();
         Pathfinder = FindObjectOfType<Pathfinding>();
     }
    
@@ -57,7 +62,7 @@ public class UnitManager : MonoBehaviour
             foreach (var unitPlacement in unitDisposition.UnitPlacements)
             {
                 Vector3Int position = unitPlacement.Position;
-                GameObject unitPrefab = _unitPrefabs[(int)unitPlacement.Unit];
+                GameObject unitPrefab = UnitPrefabs[(int)unitPlacement.Unit];
 
                 // Instantiate the unit prefab at the position
                 Unit unit = Instantiate(unitPrefab, position, Quaternion.identity, transform).GetComponent<Unit>();
@@ -76,18 +81,18 @@ public class UnitManager : MonoBehaviour
             {
                 if (_gm.CurrentStateOfPlayer == EPlayerStates.InActionsMenu)
                 {
-                    if(unit != SelectedUnit) { return unit; }
+                    if (unit != SelectedUnit) { return unit; }
                 }
                 else
                 {
                     return unit;
                 }
-                
+
             }
         }
         return null;
     }
-   
+
     // Check if the given position is an obstacle
     public bool IsObstacle(Vector3Int pos, Unit unit)
     {
@@ -150,29 +155,29 @@ public class UnitManager : MonoBehaviour
 
     // Move the selected _unit
     public IEnumerator MoveUnit()
-    {  
+    {
         SelectedUnit.IsMoving = true;
         SelectedUnit.ResetTiles();
         UndrawPath();
-        Vector3Int lastoffset= Vector3Int.zero;
+        Vector3Int lastoffset = Vector3Int.zero;
         foreach (var pos in Path)
         {
             var offset = pos - SelectedUnit.GetGridPosition();
-           
+
             if (SelectedUnit.animator != null)
             {
-               
-              
+
+
                 if (offset != lastoffset)
                 {
-                   
+
                     if (offset.x == 1)
                     {
                         SelectedUnit.animator.SetTrigger("right");
                     }
                     else if (offset.x == -1)
                     {
-                         SelectedUnit.animator.SetTrigger("left");
+                        SelectedUnit.animator.SetTrigger("left");
                     }
                     else if (offset.y == 1)
                     {
@@ -181,11 +186,11 @@ public class UnitManager : MonoBehaviour
                     else if (offset.y == -1)
                     {
                         SelectedUnit.animator.SetTrigger("down");
-                        
+
                     }
-                    lastoffset= offset;
+                    lastoffset = offset;
                 }
-               
+
 
             }
             SelectedUnit.transform.position = pos;
@@ -195,18 +200,18 @@ public class UnitManager : MonoBehaviour
         }
         yield return 1f;
         SelectedUnit.IsMoving = false;
-        if( SelectedUnit.animator != null )
+        if (SelectedUnit.animator != null)
         {
             SelectedUnit.animator.SetTrigger("idle");
         }
-        
+
         _gm.CurrentStateOfPlayer = EPlayerStates.InActionsMenu;
     }
     public void CallPathfinding(Vector3Int end)
     {
-        
-        List<Vector3Int> paths = new List<Vector3Int>();
-        paths = Pathfinder.FindPath(SelectedUnit,SelectedUnit.GetGridPosition(),end);
+
+        List<Vector3Int> paths = new();
+        paths = Pathfinder.FindPath(SelectedUnit, SelectedUnit.GetGridPosition(), end);
         if (paths.Count > 0)
         {
             UndrawPath();
@@ -221,11 +226,12 @@ public class UnitManager : MonoBehaviour
         }
 
     }
-    
+
     // Runs at the end of the day 
     private void ResetUnits()
     {
-        foreach(var unit in Units) {
+        foreach (var unit in Units)
+        {
             unit.HasMoved = false;
         }
     }
@@ -240,46 +246,40 @@ public class UnitManager : MonoBehaviour
         SelectedUnit.HasMoved = true;
         SelectedUnit = null;
         _gm.CurrentStateOfPlayer = EPlayerStates.Idle;
-        checkUnits(_gm.Players[_gm.PlayerTurn]); 
+        CheckUnits();
         OnMoveEnd?.Invoke();
     }
 
-    public bool checkUnits(Player currentPlayer)
+    public void CheckUnits()
     {
+        HashSet<int> uniqueOwners = new();
 
-        if(currentPlayer == null) return false;
-        else
+        foreach (var unit in Units)
         {
-
-            HashSet<int> uniqueOwners = new HashSet<int>();
-
-            foreach (var unit in Units)
-            {
-                uniqueOwners.Add(unit.Owner);
-            }
-
-            // Calculate the sum of unique owners' indices
-            int totalIndex = 0;
-            foreach (var ownerIndex in uniqueOwners)
-            {
-                totalIndex += ownerIndex;
-            }
-            int totalPlayers = 0;
-            for (int i = 0; i < _gm.Players.Count; i++)
-            {
-                totalPlayers += i + 1;
-            }
-            int deadPlayerIndex = totalPlayers - totalIndex - 1; 
-            if ( deadPlayerIndex >= 0 && deadPlayerIndex == _gm.PlayerTurn )
-            {
-                _gm.Players[_gm.PlayerTurn].Lost = true;
-                return false; 
-            } 
-
+            uniqueOwners.Add(unit.Owner + 1);
         }
-            
-            
-            return true;
+
+        // Calculate the sum of unique owners' indices
+        int totalIndex = 0;
+
+        foreach (var ownerIndex in uniqueOwners)
+        {
+            totalIndex += ownerIndex;
+        }
+
+        int totalPlayers = 0;
+
+        for (int i = 0; i < _gm.Players.Count; i++)
+        {
+            totalPlayers += i + 1;
+        }
+
+        int deadPlayerIndex = totalPlayers - totalIndex - 1;
+
+        if (deadPlayerIndex >= 0)
+        {
+            _gm.Players[deadPlayerIndex].Lost = true;
+        }
     }
 
 

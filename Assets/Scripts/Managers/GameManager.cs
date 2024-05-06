@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 // Class to handle the game logic
 public class GameManager : MonoBehaviour
@@ -12,7 +12,8 @@ public class GameManager : MonoBehaviour
     public GameObject Turn;
     public float displayDuration = 0.5f;
     private float timer;
-    public int PlayerTurn { get; set; }
+
+    private int _playerTurn = 0;
     public int Day { get; set; } = 1;
     public List<Player> Players { get; set; } = new();
     public EPlayerStates LastStateOfPlayer { get; set; }
@@ -68,13 +69,43 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    //public static GameManager Instance { get { return FindObjectOfType<GameManager>(); } private set { } }
+
+    public int PlayerTurn
+    {
+        get
+        {
+
+            return _playerTurn;
+        }
+
+        set
+        {
+            int i = value;
+
+            while (Players[i].Lost) // advance in Players list till finding a valid player
+            {
+                i = (i + 1) % Players.Count;
+                OnTurnEnd?.Invoke();
+                if (i == 0)
+                {
+                    Day++;
+                    OnDayEnd?.Invoke();
+                };
+                OnTurnStart?.Invoke();
+            }
+
+            _playerTurn = i;
+        }
+    }
+
     // Declare turn end and day end events
     public static event Action OnTurnEnd;
     public static event Action OnTurnStart;
     public static event Action OnDayEnd;
 
     // Method to end a turn
-    public void EndTurn()
+    /*public void EndTurn()
     {
         PlayerTurn = (PlayerTurn + 1) % Players.Count;
         playerTurnText.text = "Player's " + (PlayerTurn + 1) + " turn";
@@ -87,11 +118,22 @@ public class GameManager : MonoBehaviour
 
 
         OnTurnStart?.Invoke();
+    }*/
+
+    public void EndTurn()
+    {
+        PlayerTurn = (PlayerTurn + 1) % Players.Count;
     }
 
-    public void RemovePlayer(Player player)
+    public void CheckGameStatus()
+    {
+        //Players[]
+    }
+
+    /*public void RemovePlayer(Player player)
     {
         player.RemoveCaptain();
         Players.Remove(player);
-    }
+    }*/
+
 }

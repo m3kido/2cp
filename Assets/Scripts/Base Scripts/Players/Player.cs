@@ -1,18 +1,26 @@
-﻿using UnityEngine;
-
-// Class to represent a player
+﻿// Class to represent a player
 public class Player
 {
     // Auto-properties (the compiler automatically creates private fields for them)
     public string ID { get; private set; }
     public int PlayerNumber { get; set; }
     public string Name { get; set; }
+    private bool _lost = false;
     public ETeamColors Color { get; set; }
     public ETeams TeamSide { get; set; }
     public Captain PlayerCaptain { get; set; }
 
     public int Gold { get; set; }
-    public bool Lost { get; set; }
+
+    public bool Lost
+    {
+        get => _lost;
+        set
+        {
+            //if (value == true) GameManager.Instance.RemovePlayer(this);
+            _lost = value;
+        }
+    }
 
     // Player constructor
     public Player(string id, int number, string name, ETeamColors color, ETeams teamSide, ECaptains captain, int gold, bool lost)

@@ -45,7 +45,8 @@ public class Captain
         {
             return _attackRangeAdditioner;
         }
-        set {
+        set
+        {
             _attackRangeAdditioner = value;
             UnityEngine.Debug.Log("AttackRangeAdditioner : " + value);
         }
@@ -60,7 +61,7 @@ public class Captain
 
     public virtual void DisableCeleste()
     {
-        
+
         IsCelesteActive = false;
     }
 
