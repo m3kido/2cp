@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class BuildingManager : MonoBehaviour
     private MapManager _mm;
     private UnitManager _um;
     private GameManager _gm;
+    private CaptainBar _cp;
 
     // List to store units that can be bought in the building (provided in the inspector)
     [FormerlySerializedAs("UnitPrefabs")][SerializeField] private List<Unit> _unitPrefabs;
@@ -47,15 +49,20 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    public event Action MapScanComplete;
+
+    private IEnumerator Start()
     {
         // Get the Map, Game and Unit Managers from the hierarchy
         _mm = FindAnyObjectByType<MapManager>();
         _gm = FindAnyObjectByType<GameManager>();
         _um = FindAnyObjectByType<UnitManager>();
+        _cp = FindAnyObjectByType<CaptainBar>();
 
         // Scan the map and put all the buldings in the Buildings dictionary
-        StartCoroutine(ScanMapForBuildings());
+        yield return StartCoroutine(ScanMapForBuildings());
+
+        MapScanComplete?.Invoke();
     }
 
     private void Update()
@@ -66,9 +73,8 @@ public class BuildingManager : MonoBehaviour
     private void OnEnable()
     {
         // GetGoldFromBuildings subscribes to day end event
-        GameManager.OnDayEnd += GetGoldFromBuildings;
-        GameManager.OnDayEnd += HealUnits;
-
+       GameManager.OnDayEnd += GetGoldFromBuildings;
+       GameManager.OnDayEnd += HealUnits;
     }
 
     private void OnDisable()
@@ -107,12 +113,11 @@ public class BuildingManager : MonoBehaviour
     }
 
     // Change the building sprite based on owner
-    private void ChangeBuildingOwner(Building building, int owner)
+    public void ChangeBuildingOwner(Building building, int owner)
     {
         foreach (var SO in _buildingDatas)
         {
-            if (SO.Color == _gm.Players[_gm.PlayerTurn].Color && SO.BuildingType == building.BuildingType)
-            {
+            if (SO.Color == _gm.Players[owner].Color && SO.BuildingType == building.BuildingType) {
                 _mm.Map.SetTile(building.Position, SO.BuildingTile);
             }
         }
@@ -140,6 +145,7 @@ public class BuildingManager : MonoBehaviour
 
             ChangeBuildingOwner(_capturableBuildings[pos], _gm.PlayerTurn);
             _um.SelectedUnit.IsCapturing = false;
+            _capturableBuildings[pos].CapturingUnit = null;
         }
     }
 
@@ -148,7 +154,8 @@ public class BuildingManager : MonoBehaviour
     {
         foreach (var village in _capturableBuildings.Values)
         {
-            if (village.CapturingUnit != null && village.CapturingUnit.GetGridPosition() != village.Position)
+            if (village.CapturingUnit != null && village.CapturingUnit.GetGridPosition() != village.Position
+                && village.CapturingUnit.HasMoved)
             {
                 village.Health = 200;
                 village.CapturingUnit.IsCapturing = false;
@@ -173,6 +180,7 @@ public class BuildingManager : MonoBehaviour
         newUnit.HasMoved = true;
         if (newUnit == null) { return; }
         _um.Units.Add(newUnit);
+        Instantiate(_um.SpawnEffect, newUnit.transform);
     }
 
     // Gain gold every day
@@ -183,9 +191,12 @@ public class BuildingManager : MonoBehaviour
             if (village.Owner < 4 && village.BuildingType == EBuildings.Village)
             {
                 _gm.Players[village.Owner].Gold += 2000;
+                _cp.UpdateGold();
+                
             }
         }
     }
+
     private void HealUnits()
     {
         foreach (var building in BuildingFromPosition.Values)

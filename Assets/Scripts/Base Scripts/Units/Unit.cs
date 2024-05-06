@@ -16,6 +16,7 @@ public class Unit : MonoBehaviour
 
     [SerializeField] private UnitDataSO _data;
     public UnitDataSO Data => _data;
+    public EUnits UnitType { get; set; }
 
     private int _health;
     public int Provisions { get; set; }
@@ -98,6 +99,7 @@ public class Unit : MonoBehaviour
         _rend = GetComponent<SpriteRenderer>();
         animator= GetComponent<Animator>();
 
+        UnitType = Data.UnitType;
         Health = MaxHealth;
         Provisions = _data.MaxProvisions;
         _hasMoved = false;

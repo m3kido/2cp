@@ -256,6 +256,42 @@ public class AttackingUnit : Unit
         AttackFromTiles(list, right, range - 1);
     }
 
+    //public void InitiateTargetSelection()
+    //{
+    //    Debug.Log("Initiating target selection from the AU");
+    //    AttackManager.Instance.InitiateTargetSelection(this);
+    //    Debug.Log("Finished");
+    //}
+
+    //// Method to handle keyboard input for navigating through targets
+    //private void HandleTargetSelectionInput()
+    //{
+    //    AttackManager.Instance.HandleTargetSelectionInput();
+    //}
+
+    // Update method to handle target selection input
+    //private void Update()
+    //{
+    //    HandleTargetSelectionInput();
+    //}
+
+    public AttackingUnitSaveData GetDataToSave()
+    {
+        return new AttackingUnitSaveData(UnitType, Health, Provisions, Owner, HasMoved, CurrentWeaponAmmo,
+            CurrentWeaponIndex, GetGridPosition(), IsCapturing);
+    }
+
+    public void SetSavedData(AttackingUnitSaveData saveData)
+    {
+        UnitType = saveData.UnitType;
+        Health = saveData.Health;
+        Provisions = saveData.Provisions;
+        Owner = saveData.Owner;
+        HasMoved = saveData.HasMoved;
+        CurrentWeaponAmmo = saveData.EnergyOrbs;
+        CurrentWeaponIndex = saveData.CurrentWeaponIndex;
+        IsCapturing = saveData.IsCapturing;
+    }
 }
 
 

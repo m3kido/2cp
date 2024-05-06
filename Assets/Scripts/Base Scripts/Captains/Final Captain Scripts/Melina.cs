@@ -18,9 +18,12 @@ public class Melina : Captain
             _actionTaken = value;
         }
     }
+
     List<Unit> _tiredUnits = new();
     public Melina(Player player) : base(player)
     {
+        CaptainName = ECaptains.Melina;
+
         Player = player;
         Data = CaptainManager.CaptainsDict[ECaptains.Melina];
         PassiveDefense = Data.PassiveDefense;

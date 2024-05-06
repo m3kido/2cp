@@ -1,5 +1,6 @@
 public class Captain
 {
+    public ECaptains CaptainName;
     public CaptainDataSO Data;
     public Player Player;
     public bool IsCelesteActive = false;
@@ -79,5 +80,15 @@ public class Captain
 
     }
 
+    public CaptainSaveData GetDataToSave()
+    {
+        return new CaptainSaveData(CaptainName, IsCelesteActive, SuperMeter);
+    }
 
+    public void SetSaveData(CaptainSaveData captainData)
+    {
+        CaptainName = captainData.CaptainName;
+        IsCelesteActive = captainData.IsCelesteActive;
+        SuperMeter = captainData.SuperMeter;
+    }
 }

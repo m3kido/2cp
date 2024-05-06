@@ -144,20 +144,8 @@ public class ActionMenu : MonoBehaviour
                     Debug.Log("Done attacking");
                 }
             }
-            else if (_optionsList[_selectedOption] == _attackOptionInstance)
-            {
-                if (_um.SelectedUnit is AttackingUnit)
-                {
-                    _am.Attacker = _um.SelectedUnit as AttackingUnit;
-
-                    Debug.Log("We're attacking");
-                    _am.InitiateAttack();
-                    Debug.Log("Done attacking");
-                }
-            }
             else if (_optionsList[_selectedOption] == _captureOptionInstance)
             {
-                // This is for the icon manager to know the unit is capturing
                 _um.SelectedUnit.IsCapturing = true;
                 _bm.CapturableBuildings[_cm.HoveredOverTile].CapturingUnit = _um.SelectedUnit;
 
@@ -266,13 +254,14 @@ public class ActionMenu : MonoBehaviour
         var village = _bm.CapturableBuildings.ContainsKey(_cm.HoveredOverTile) ? _bm.CapturableBuildings[_cm.HoveredOverTile] : null;
         if (village != null && village.Owner != _gm.PlayerTurn)
         {
+            Debug.Log("HI");
             if (_um.SelectedUnit.Data.UnitType == EUnits.Infantry || _um.SelectedUnit.Data.UnitType == EUnits.Lancers)
             {
                 _captureOptionInstance.SetActive(true);
                 _optionsList.Add(_captureOptionInstance);
                 return;
             }
-        }
+        } 
 
         _waitOptionInstance.SetActive(true);
         _optionsList.Add(_waitOptionInstance);

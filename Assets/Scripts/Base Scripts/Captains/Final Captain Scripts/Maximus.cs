@@ -2,6 +2,7 @@ public class Maximus : Captain
 {
     public Maximus(Player player) : base(player)
     {
+        CaptainName = ECaptains.Maximus;
         Player = player;
         Data = CaptainManager.CaptainsDict[ECaptains.Maximus];
         PassiveDefense = Data.PassiveDefense;

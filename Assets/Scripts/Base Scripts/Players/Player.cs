@@ -1,22 +1,28 @@
 ﻿using UnityEngine;
 
-public class Player 
+// Class to represent a player
+public class Player
 {
     // Auto-properties (the compiler automatically creates private fields for them)
+    public string ID { get; private set; }
+    public int PlayerNumber { get; set; }
     public string Name { get; set; }
-    public bool Lost { get; set; }
     public ETeamColors Color { get; set; }
     public ETeams TeamSide { get; set; }
     public Captain PlayerCaptain { get; set; }
 
     public int Gold { get; set; }
+    public bool Lost { get; set; }
 
     // Player constructor
-    public Player(string name, ETeamColors color, ETeams teamSide, ECaptains captain)
+    public Player(string id, int number, string name, ETeamColors color, ETeams teamSide, ECaptains captain, int gold, bool lost)
     {
+        ID = id;
+        PlayerNumber = number;
         Name = name;
         Color = color;
         TeamSide = teamSide;
+
         switch (captain)
         {
             case ECaptains.Andrew:
@@ -32,10 +38,20 @@ public class Player
                 PlayerCaptain = new Melina(this);
                 break;
         }
+
+        Gold = gold;
+        Lost = lost;
     }
 
     public void RemoveCaptain()
     {
         CaptainManager.DeleteCaptain(PlayerCaptain);
+    }
+
+    public PlayerSaveData GetDataToSave()
+    {
+        return new PlayerSaveData(ID, PlayerNumber, Name, Color, TeamSide,
+            new CaptainSaveData(PlayerCaptain.CaptainName, PlayerCaptain.IsCelesteActive, PlayerCaptain.SuperMeter),
+            Gold, Lost);
     }
 }
