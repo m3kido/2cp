@@ -1018,7 +1018,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 282.3069, y: -13.714966}
+  m_AnchoredPosition: {x: 282.3069, y: -13.714844}
   m_SizeDelta: {x: -660.614, y: -187.43}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &117699114
@@ -2864,7 +2864,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HealSprite: {fileID: 6171599413253265824, guid: 99d8b1f8bd0e3e348a3aa4f52145e892, type: 3}
-  EnergySprite: {fileID: 0}
+  EnergySprite: {fileID: 3152682836615333836, guid: b39a9c629c53fc54abd15f3c06e4da50, type: 3}
   _captainSOList:
   - {fileID: 11400000, guid: 931cddd13b2ce1d4b9fc3fa290b7b792, type: 2}
   - {fileID: 11400000, guid: 21b4f33bfb8702949b16079a7eed822c, type: 2}

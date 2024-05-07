@@ -14,7 +14,6 @@ public class Captain
     public float CaptureMultiplier = 1.0f;
     public float PriceMultiplier = 1.0f;
     public float maxSuperMeter;
-
     private float _superMeter;
     public float SuperMeter
     {
@@ -25,7 +24,18 @@ public class Captain
 
         set
         {
-            _superMeter = Mathf.Clamp(value, 0, maxSuperMeter);
+            if(value < 0)
+            {
+                _superMeter = 0;
+            }
+            else if(value > maxSuperMeter) {
+                _superMeter = maxSuperMeter;
+            }
+            else
+            {
+                _superMeter = value; 
+            }
+
 
         }
     }
@@ -58,7 +68,7 @@ public class Captain
 
     public bool IsCelesteReady()
     {
-        return (SuperMeter >= this.maxSuperMeter);
+        return (SuperMeter == maxSuperMeter);
     }
 
     public Captain(Player player)
@@ -72,15 +82,15 @@ public class Captain
 
     }
 
-    public CaptainSaveData GetDataToSave()
-    {
-        return new CaptainSaveData(CaptainName, IsCelesteActive, SuperMeter);
-    }
+    //public CaptainSaveData GetDataToSave()
+    //{
+    //    return new CaptainSaveData(CaptainName, IsCelesteActive, SuperMeter);
+    //}
 
-    public void SetSaveData(CaptainSaveData captainData)
-    {
-        CaptainName = captainData.CaptainName;
-        IsCelesteActive = captainData.IsCelesteActive;
-        SuperMeter = captainData.SuperMeter;
-    }
+    //public void SetSaveData(CaptainSaveData captainData)
+    //{
+    //    CaptainName = captainData.CaptainName;
+    //    IsCelesteActive = captainData.IsCelesteActive;
+    //    SuperMeter = captainData.SuperMeter;
+    //}
 }
