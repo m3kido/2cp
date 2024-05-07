@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     // Auto-properties (the compiler automatically creates private fields for them)
     public TextMeshProUGUI PlayerTurnText;
     public GameObject Turn;
+    public GameObject winUi;
+    public TextMeshProUGUI WinnerText;
     public float DisplayDuration = 0.5f;
     private float _timer;
 
@@ -70,6 +72,7 @@ public class GameManager : MonoBehaviour
 
         if (isGameOver)
         {
+            Debug.Log("Winner index : " + winnerIdx);
             EndGame(winnerIdx);
         }
     }
@@ -137,8 +140,9 @@ public class GameManager : MonoBehaviour
     public void EndGame(int playerIndex)
     {
         CurrentStateOfPlayer= EPlayerStates.WinScreen;
-        PlayerTurnText.text = "Player " + Players[playerIndex] + " Have Won";
-        Turn.SetActive(true);
+        Debug.Log("Player index : " + playerIndex);
+        WinnerText.text = Players[playerIndex].PlayerCaptain.CaptainName + " Wins";
+        winUi.SetActive(true);
     }
 
     /*public void RemovePlayer(Player player)

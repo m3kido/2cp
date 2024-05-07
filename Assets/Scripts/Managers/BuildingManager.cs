@@ -140,7 +140,7 @@ public class BuildingManager : MonoBehaviour
         {
             if (BuildingFromPosition[pos].BuildingType == EBuildings.Castle)
             {
-                _gm.Players[_gm.PlayerTurn].Lost = true;
+                _gm.Players[_capturableBuildings[pos].Owner].Lost = true;
             }
 
             ChangeBuildingOwner(_capturableBuildings[pos], _gm.PlayerTurn);
