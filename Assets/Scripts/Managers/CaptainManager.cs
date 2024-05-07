@@ -42,7 +42,7 @@ public class CaptainManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.S) && Gm.CurrentStateOfPlayer == EPlayerStates.Idle)
         {
-
+            Debug.Log("SuperMeter : " + LivingCaptains[CurrentCaptain].SuperMeter);
             ActivateCeleste();
 
         }

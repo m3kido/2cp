@@ -140,7 +140,6 @@ public class UnitIconManager : MonoBehaviour
     {
         if (_unit is AttackingUnit unit)
         {
-            Debug.Log(unit.CurrentWeaponIndex);
             int energyOrbs = unit.Weapons[unit.CurrentWeaponIndex].EnergyOrbs;
             
             if (energyOrbs <= Mathf.FloorToInt(_unit.Data.MaxProvisions * 0.25f))

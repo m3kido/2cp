@@ -62,7 +62,7 @@ public class GameDataSaveManager : MonoBehaviour
             yield return null;
         }
 
-        LoadGame();
+        //LoadGame();
     }
 
     public void NewGame() // Method to initialize a new game

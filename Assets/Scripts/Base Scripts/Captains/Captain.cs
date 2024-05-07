@@ -14,8 +14,7 @@ public abstract class Captain
     public float CaptureMultiplier = 1.0f;
     public float PriceMultiplier = 1.0f;
     public float maxSuperMeter;
-
-    private float _superMeter=100;
+    private float _superMeter;
     public float SuperMeter
     {
         get
@@ -25,7 +24,18 @@ public abstract class Captain
 
         set
         {
-            _superMeter = Mathf.Clamp(value, 0, maxSuperMeter);
+            if(value < 0)
+            {
+                _superMeter = 0;
+            }
+            else if(value > maxSuperMeter) {
+                _superMeter = maxSuperMeter;
+            }
+            else
+            {
+                _superMeter = value; 
+            }
+
 
         }
     }
@@ -45,7 +55,7 @@ public abstract class Captain
 
     public bool IsCelesteReady()
     {
-        return SuperMeter == maxSuperMeter;
+        return (SuperMeter == maxSuperMeter);
     }
 
     public Captain(Player player)

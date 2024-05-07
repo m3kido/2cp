@@ -94,6 +94,7 @@ public class Melina : Captain
             yield return null;
         }
         ActionTaken = false;
+        selectedUnitIndex = -1; 
         gm.CurrentStateOfPlayer = EPlayerStates.Idle;
         Debug.Log("Action finished");
     }
