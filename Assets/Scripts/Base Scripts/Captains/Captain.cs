@@ -82,15 +82,15 @@ public class Captain
 
     }
 
-    //public CaptainSaveData GetDataToSave()
-    //{
-    //    return new CaptainSaveData(CaptainName, IsCelesteActive, SuperMeter);
-    //}
+    public CaptainSaveData GetDataToSave()
+    {
+        return new CaptainSaveData(CaptainName, IsCelesteActive, SuperMeter);
+    }
 
-    //public void SetSaveData(CaptainSaveData captainData)
-    //{
-    //    CaptainName = captainData.CaptainName;
-    //    IsCelesteActive = captainData.IsCelesteActive;
-    //    SuperMeter = captainData.SuperMeter;
-    //}
+    public void SetSaveData(CaptainSaveData captainData)
+    {
+        CaptainName = captainData.CaptainName;
+        IsCelesteActive = captainData.IsCelesteActive;
+        SuperMeter = captainData.SuperMeter;
+    }
 }

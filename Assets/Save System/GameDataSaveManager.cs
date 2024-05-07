@@ -74,26 +74,26 @@ public class GameDataSaveManager : MonoBehaviour
         Debug.Log("Initialized new game.");
     }
 
-    //public void LoadGame() // Method to load a game
-    //{
-    //    _gameData = _gameDataHandler.Load();
+    public void LoadGame() // Method to load a game
+    {
+        _gameData = _gameDataHandler.Load();
 
-    //    if (_gameData == null)
-    //    {
-    //        Debug.Log("No saved data was found, initializing data to defaults.");
-    //        NewGame();
-    //    }
-    //    else
-    //    {
-    //        // Load everything
-    //        LoadGameData();
-    //        LoadPlayers();
-    //        LoadUnits();
-    //        LoadBuildings();
+        if (_gameData == null)
+        {
+            Debug.Log("No saved data was found, initializing data to defaults.");
+            NewGame();
+        }
+        else
+        {
+            // Load everything
+            LoadGameData();
+            LoadPlayers();
+            LoadUnits();
+            LoadBuildings();
 
-    //        Debug.Log("Game Loaded.");
-    //    }
-    //}
+            Debug.Log("Game Loaded.");
+        }
+    }
 
     public void SaveGame() // Method to save a game
     {
@@ -149,24 +149,24 @@ public class GameDataSaveManager : MonoBehaviour
     }
 
     // Load data from _gameData to players
-    //public void LoadPlayers()
-    //{
-    //    _gm.Players.Clear();
+    public void LoadPlayers()
+    {
+        _gm.Players.Clear();
 
-    //    // Get saved players
-    //    foreach (var playerSave in _gameData.PlayerSaves)
-    //    {
-    //        // Create a new player object and assign the saved data to it
-    //        Player player = new(playerSave.ID, playerSave.PlayerNumber, playerSave.Name, playerSave.Color, playerSave.Team,
-    //            playerSave.CaptainData.CaptainName, playerSave.Gold, playerSave.Lost);
+        // Get saved players
+        foreach (var playerSave in _gameData.PlayerSaves)
+        {
+            // Create a new player object and assign the saved data to it
+            Player player = new(playerSave.ID, playerSave.PlayerNumber, playerSave.Name, playerSave.Color, playerSave.Team,
+                playerSave.CaptainData.CaptainName, playerSave.Gold, playerSave.Lost);
 
-    //        player.PlayerCaptain.SetSaveData(playerSave.CaptainData);
+            player.PlayerCaptain.SetSaveData(playerSave.CaptainData);
 
-    //        // Add it to the game
-    //        _gm.Players.Add(player);
-    //    }
-    //    Debug.Log("Players loaded.");
-    //}
+            // Add it to the game
+            _gm.Players.Add(player);
+        }
+        Debug.Log("Players loaded.");
+    }
 
     // Put the units data in _gameData
     public void ExtractUnitsData()
