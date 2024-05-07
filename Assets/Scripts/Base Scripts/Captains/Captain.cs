@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Captain
+public abstract class Captain
 {
     public ECaptains CaptainName;
     public CaptainDataSO Data;
@@ -10,12 +10,12 @@ public class Captain
     public int PassiveDefense;
     public float AttackMultiplier = 1.0f;
     public float DefenseMultiplier = 1.0f;
-    private int _attackRangeAdditioner = 0;
+    public int AttackRangeAdditioner = 0;
     public float CaptureMultiplier = 1.0f;
     public float PriceMultiplier = 1.0f;
     public float maxSuperMeter;
 
-    private float _superMeter;
+    private float _superMeter=100;
     public float SuperMeter
     {
         get
@@ -27,19 +27,6 @@ public class Captain
         {
             _superMeter = Mathf.Clamp(value, 0, maxSuperMeter);
 
-        }
-    }
-
-    public int AttackRangeAdditioner
-    {
-        get
-        {
-            return _attackRangeAdditioner;
-        }
-        set
-        {
-            _attackRangeAdditioner = value;
-            UnityEngine.Debug.Log("AttackRangeAdditioner : " + value);
         }
     }
 
@@ -58,7 +45,7 @@ public class Captain
 
     public bool IsCelesteReady()
     {
-        return (SuperMeter >= this.maxSuperMeter);
+        return SuperMeter == maxSuperMeter;
     }
 
     public Captain(Player player)
@@ -67,10 +54,8 @@ public class Captain
         CaptainManager.LivingCaptains.Add(this);
     }
 
-    public virtual void UnsubscribeWhenDestroyed()
-    {
-
-    }
+    public virtual void UnsubscribeWhenDestroyed() { }
+    
 
     public CaptainSaveData GetDataToSave()
     {

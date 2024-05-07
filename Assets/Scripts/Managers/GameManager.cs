@@ -8,10 +8,10 @@ public class GameManager : MonoBehaviour
 {
     #region Variables
     // Auto-properties (the compiler automatically creates private fields for them)
-    public TextMeshProUGUI playerTurnText;
+    public TextMeshProUGUI PlayerTurnText;
     public GameObject Turn;
-    public float displayDuration = 0.5f;
-    private float timer;
+    public float DisplayDuration = 0.5f;
+    private float _timer;
 
     private int _playerTurn = 0;
     public int Day { get; set; } = 1;
@@ -50,11 +50,11 @@ public class GameManager : MonoBehaviour
     {
         if (Turn.activeSelf)
         {
-            timer += Time.deltaTime;
-            if (timer >= displayDuration)
+            _timer += Time.deltaTime;
+            if (_timer >= DisplayDuration)
             {
                 Turn.SetActive(false);
-                timer = 0f;
+                _timer = 0f;
             }
         }
 
@@ -62,8 +62,15 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C) && CurrentStateOfPlayer == EPlayerStates.Idle && !Turn.activeSelf)
         {
             EndTurn();
-            Turn.SetActive(!Turn.activeSelf);
-            timer = 0f;
+            Turn.SetActive(true);
+            _timer = 0f;
+        }
+
+        (bool isGameOver, int winnerIdx) = IsGameOver();
+
+        if (isGameOver)
+        {
+            EndGame(winnerIdx);
         }
     }
     #endregion
@@ -77,25 +84,6 @@ public class GameManager : MonoBehaviour
 
             return _playerTurn;
         }
-
-        /*set
-        {
-            int i = value;
-
-            while (Players[i].Lost) // advance in Players list till finding a valid player
-            {
-                i = (i + 1) % Players.Count;
-                OnTurnEnd?.Invoke();
-                if (i == 0)
-                {
-                    Day++;
-                    OnDayEnd?.Invoke();
-                };
-                OnTurnStart?.Invoke();
-            }
-
-            _playerTurn = i;
-        }*/
 
         set
         {
@@ -117,7 +105,7 @@ public class GameManager : MonoBehaviour
     public void EndTurn()
     {
         PlayerTurn = (PlayerTurn + 1) % Players.Count;
-        playerTurnText.text = "Player " + (PlayerTurn + 1) + "'s turn";
+        PlayerTurnText.text = "Player " + (PlayerTurn + 1) + "'s turn";
         OnTurnEnd?.Invoke();
         if (PlayerTurn == 0)
         {
@@ -129,14 +117,28 @@ public class GameManager : MonoBehaviour
         OnTurnStart?.Invoke();
     }
 
-    /*public void EndTurn()
+    public (bool, int) IsGameOver()
     {
-        PlayerTurn = (PlayerTurn + 1) % Players.Count;
-    }*/
 
-    public void CheckGameStatus()
+        int activePlayersCount = 0;
+        int idx = 0;
+        foreach (var player in Players)
+        {
+            if (!player.Lost)
+            {
+                activePlayersCount++;
+                idx = player.PlayerNumber;
+            }
+        }
+        return (activePlayersCount == 1, idx);
+
+    }
+
+    public void EndGame(int playerIndex)
     {
-        //Players[]
+        CurrentStateOfPlayer= EPlayerStates.WinScreen;
+        PlayerTurnText.text = "Player " + Players[playerIndex] + " Have Won";
+        Turn.SetActive(true);
     }
 
     /*public void RemovePlayer(Player player)

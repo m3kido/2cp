@@ -18,6 +18,11 @@ public class Player
         set
         {
             //if (value == true) GameManager.Instance.RemovePlayer(this);
+            if (value == true)
+                foreach (var unit in UnitManager.Instance.Units)
+                {
+                    if (unit.Owner == PlayerNumber) UnitManager.Instance.DestroyUnit(unit);
+                }
             _lost = value;
         }
     }

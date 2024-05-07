@@ -3,9 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using System;
-using Unity.VisualScripting;
-using UnityEngine.Serialization;
 
 // This script handles _unit interactions
 // Keeps track of units and the path drawn by the cursor
@@ -26,6 +23,17 @@ public class UnitManager : MonoBehaviour
     public List<GameObject> UnitPrefabs { get => _unitPrefabs; set => _unitPrefabs = value; }
 
     public static event Action OnMoveEnd;
+
+    public static UnitManager Instance
+    {
+        get
+        {
+            return FindObjectOfType<UnitManager>();
+        }
+        private set
+        {
+        }
+    }
     #endregion
 
     #region UnityMethods
@@ -39,7 +47,7 @@ public class UnitManager : MonoBehaviour
         Units = FindObjectsOfType<Unit>().ToList();
         Pathfinder = FindObjectOfType<Pathfinding>();
     }
-   
+
     private void OnEnable()
     {
         // Subscribe to the day end event
@@ -282,6 +290,10 @@ public class UnitManager : MonoBehaviour
         }
     }
 
+    public void DestroyUnit(Unit unit) // necessary for removing a Unit from a Player Script
+    {
+        Destroy(unit.gameObject);
+    }
 
 }
 #endregion

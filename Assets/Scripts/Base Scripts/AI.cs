@@ -75,7 +75,7 @@ public class AiPlayer : MonoBehaviour
 
     private List<Unit> FindNearestEnemy(Unit unit, List<Unit> enemyUnits)
     {
-        List<(Unit, float)> enemies = new List<(Unit, float)>();
+        List<(Unit, float)> enemies = new();
         Unit nearestEnemy = null;
         float minDistance = float.MaxValue;
         var attackerPos = unit.GetGridPosition();
@@ -107,7 +107,7 @@ public class AiPlayer : MonoBehaviour
 
     private List<Unit> FindBestEnemies(Unit unit, List<Unit> enemyUnits)
     {
-        List<(Unit, float)> evaluatedEnemies = new List<(Unit, float)>();
+        List<(Unit, float)> evaluatedEnemies = new();
 
         var attackerPos = unit.GetGridPosition();
         foreach (Unit enemy in enemyUnits)
@@ -137,7 +137,7 @@ public class AiPlayer : MonoBehaviour
     }
 
 
-    private bool actionDecision(Unit unit)
+    private bool ActionDecision(Unit unit)
     {
         List<Unit> enemyUnits;
         if (unit is AttackingUnit)
