@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class Captain
 {
     public ECaptains CaptainName;
@@ -11,9 +13,9 @@ public class Captain
     private int _attackRangeAdditioner = 0;
     public float CaptureMultiplier = 1.0f;
     public float PriceMultiplier = 1.0f;
-    public int maxSuperMeter;
+    public float maxSuperMeter;
 
-    private float _superMeter; 
+    private float _superMeter;
     public float SuperMeter
     {
         get
@@ -23,19 +25,8 @@ public class Captain
 
         set
         {
-            if (value <= 0)
-            {
-                _superMeter = 0;
-            }
-            else if (value > maxSuperMeter)
-            {
+            _superMeter = Mathf.Clamp(value, 0, maxSuperMeter);
 
-                _superMeter = maxSuperMeter;
-            }
-            else
-            {
-                _superMeter = value;
-            }
         }
     }
 
@@ -54,7 +45,7 @@ public class Captain
 
     public virtual void EnableCeleste()
     {
-        
+
         IsCelesteActive = true;
 
     }

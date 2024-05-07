@@ -7,14 +7,16 @@ public class CaptainManager : MonoBehaviour
 {
     public static GameManager Gm;
     public static UnitManager Um;
-    public static CaptainBar Cp;
+    public static CaptainBar Cb;
     public static Dictionary<ECaptains, CaptainDataSO> CaptainsDict = new();
     public GameObject HealSprite;
     public GameObject EnergySprite;
     [SerializeField] List<CaptainDataSO> _captainSOList = new();
 
     public static List<Captain> LivingCaptains = new();
-    int _currentCaptain = 0;
+    
+
+    public int CurrentCaptain { get { return Gm.PlayerTurn; } private set { } }
 
     public static CaptainManager Instance
     {
@@ -27,7 +29,7 @@ public class CaptainManager : MonoBehaviour
     {
         Gm = FindObjectOfType<GameManager>();
         Um = FindObjectOfType<UnitManager>();
-        Cp = FindObjectOfType<CaptainBar>();
+        Cb = FindObjectOfType<CaptainBar>();
         for (int i = 0; i < _captainSOList.Count; i++)
         {
             CaptainsDict.Add((ECaptains)i, _captainSOList[i]);
@@ -36,14 +38,8 @@ public class CaptainManager : MonoBehaviour
 
     }
 
-    private void Start()
-    {
-
-    }
-
     private void Update()
     {
-        _currentCaptain = Gm.PlayerTurn;
         if (Input.GetKeyDown(KeyCode.S) && Gm.CurrentStateOfPlayer == EPlayerStates.Idle)
         {
 
@@ -54,7 +50,8 @@ public class CaptainManager : MonoBehaviour
 
     public void ActivateCeleste()
     {
-        Captain captain = LivingCaptains[_currentCaptain];
+        Captain captain = LivingCaptains[CurrentCaptain];
+
         captain.EnableCeleste(); Debug.Log("MIMI");
         if (captain is Melina)
         {
@@ -62,12 +59,12 @@ public class CaptainManager : MonoBehaviour
             Melina melina = captain as Melina;
             StartCoroutine(melina.ReviveSelectionCoroutine(Gm));
         }
-        Cp.UpdateSuperMeter();
+        Cb.UpdateSuperMeter();
     }
 
     public void DeactivateCeleste()
     {
-        LivingCaptains[_currentCaptain].DisableCeleste();
+        LivingCaptains[CurrentCaptain].DisableCeleste();
     }
 
     public static void DeleteCaptain(Captain captain)

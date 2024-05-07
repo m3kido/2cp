@@ -44,7 +44,6 @@ public class Melina : Captain
         {
             if (CaptainManager.Gm.Players[unit.Owner] == Player)
             {
-                UnityEngine.Debug.Log("zebi");
                 if (unit is AttackingUnit)
                 {
                     var attacker = unit as AttackingUnit;
@@ -97,7 +96,6 @@ public class Melina : Captain
         ActionTaken = false;
         gm.CurrentStateOfPlayer = EPlayerStates.Idle;
         Debug.Log("Action finished");
-        ActionTaken = true;
     }
 
     private void HandleInput()
