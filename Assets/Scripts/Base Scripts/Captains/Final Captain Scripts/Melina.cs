@@ -29,8 +29,8 @@ public class Melina : Captain
         PassiveDefense = Data.PassiveDefense;
         PassiveAttack = Data.PassiveAttack;
         PriceMultiplier -= 0.1f;
-        SuperMeter = 40000;
-        maxSuperMeter = 40000;
+        maxSuperMeter = 50000;
+        SuperMeter = maxSuperMeter/2;
     }
 
     public override void EnableCeleste()

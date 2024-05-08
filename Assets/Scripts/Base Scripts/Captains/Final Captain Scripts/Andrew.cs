@@ -7,8 +7,8 @@ public class Andrew : Captain
         Data = CaptainManager.CaptainsDict[ECaptains.Andrew];
         PassiveDefense = Data.PassiveDefense;
         PassiveAttack = Data.PassiveAttack;
-        maxSuperMeter = 50000; 
-        SuperMeter = 50000;
+        maxSuperMeter = 40000;
+        SuperMeter = maxSuperMeter / 2;
         GameManager.OnTurnEnd += DisableCeleste;
     }
 

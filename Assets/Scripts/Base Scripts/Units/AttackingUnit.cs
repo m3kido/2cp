@@ -35,12 +35,11 @@ public class AttackingUnit : Unit
         }
     }
 
-    private int CurrentWeaponAmmo
+    public int CurrentWeaponAmmo
     {
         get { return _weapons[CurrentWeaponIndex].EnergyOrbs; }
         set
         {
-            if (value <= 0 && CurrentWeaponIndex < _weapons.Count-1)
             if (value <= 0 && CurrentWeaponIndex < _weapons.Count-1)
             {
                 CurrentWeaponIndex++;
@@ -97,7 +96,6 @@ public class AttackingUnit : Unit
             var currentWeapon = Weapons[CurrentWeaponIndex]; // Getting the current weapon from the attacker
             Player player = _gm.Players[Owner];
             Captain captain = player.PlayerCaptain;
-            //Kyn smth stupid bezzaaf hna 
             bool IsInRange = (L1Distance2D(attackerPos, potentialTargetPos) >= currentWeapon.MinRange) && (L1Distance2D(attackerPos, potentialTargetPos) < (currentWeapon.MaxRange + captain.AttackRangeAdditioner + moveRange));
             bool IsEnemy = Owner != unit.Owner;
             bool IsDamageable = Weapons[CurrentWeaponIndex].DamageList[(int)unit.Data.UnitType] != 0;

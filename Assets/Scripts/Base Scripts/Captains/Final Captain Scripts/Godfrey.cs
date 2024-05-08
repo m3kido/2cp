@@ -13,8 +13,8 @@ public class Godfrey : Captain
         PassiveAttack = Data.PassiveAttack;
         DefenseMultiplier += 0.05f;
         GameManager.OnDayEnd += DisableCeleste;
-        SuperMeter = 30000;
         maxSuperMeter = 30000;
+        SuperMeter = maxSuperMeter / 2;
     }
     public override void EnableCeleste()
     {

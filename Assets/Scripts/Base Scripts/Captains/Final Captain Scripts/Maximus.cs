@@ -10,8 +10,8 @@ public class Maximus : Captain
         CaptureMultiplier += 0.2f;
         AttackRangeAdditioner = 0;
         GameManager.OnTurnEnd += DisableCeleste;
-        SuperMeter = 25000;
         maxSuperMeter = 25000;
+        SuperMeter = maxSuperMeter / 2;
 
     }
     public override void EnableCeleste()
