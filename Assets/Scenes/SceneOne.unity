@@ -13899,6 +13899,7 @@ MonoBehaviour:
   - {fileID: 8770609183450820968, guid: f88e98b5bb2e0ad42988eb4988861898, type: 3}
   - {fileID: 2606192104923136195, guid: 398cf07255c40cd40acd6061a9a06698, type: 3}
   - {fileID: 8481236441836822687, guid: e5d3973058fc69e49adcdbe6f341d4bf, type: 3}
+  SpawnEffect: {fileID: 6731186973408705377, guid: 290dd4a06a90af04db9b06c4eadf08db, type: 3}
   Path: []
 --- !u!1 &2110874118
 GameObject:
