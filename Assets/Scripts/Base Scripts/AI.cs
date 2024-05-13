@@ -76,8 +76,6 @@ public class AiPlayer : MonoBehaviour
     private List<Unit> FindNearestEnemy(Unit unit, List<Unit> enemyUnits)
     {
         List<(Unit, float)> enemies = new();
-        Unit nearestEnemy = null;
-        float minDistance = float.MaxValue;
         var attackerPos = unit.GetGridPosition();
         foreach (Unit enemy in enemyUnits)
         {
@@ -95,7 +93,6 @@ public class AiPlayer : MonoBehaviour
                     enemies.Add((enemy, distance));
                 }
             }
-
         }
 
         // Sort evaluated enemies by evaluation value in descending order
@@ -137,7 +134,6 @@ public class AiPlayer : MonoBehaviour
         return bestEnemies;
     }
 
-
     private bool ActionDecision(Unit unit)
     {
         List<Unit> enemyUnits;
@@ -173,7 +169,7 @@ public class AiPlayer : MonoBehaviour
                         }
                     }
 
-                    break;
+                break;
 
                 case 2:
 
@@ -196,9 +192,9 @@ public class AiPlayer : MonoBehaviour
                             }
                         }
                     }
-                    break;
-            }
 
+                break;
+            }
         }
         return false;
     }
