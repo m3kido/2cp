@@ -17,7 +17,7 @@ public class SettingMenu : MonoBehaviour
     [SerializeField] GameObject OptionsSetting;
     [SerializeField] GameObject EndSetting;
 
-    [SerializeField] private Color32 textColor = new Color32(115, 42, 28,255);
+    [SerializeField] private Color32 textColor = new(115, 42, 28,255);
     #endregion
 
     #region UnityMethods

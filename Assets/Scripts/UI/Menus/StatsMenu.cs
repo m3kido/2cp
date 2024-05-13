@@ -118,7 +118,7 @@ public class StatsMenu : MonoBehaviour
 
         if (RefUnit != null)
         {
-            _unitStats.gameObject.SetActive(true);
+            _unitStats.SetActive(true);
             _unitName.GetComponent<TextMeshProUGUI>().text = RefUnit.Data.UnitType.ToString();
             _unitSprite.GetComponent<Image>().sprite = RefUnit.GetComponent<SpriteRenderer>().sprite;
             _healthValue.GetComponent<TextMeshProUGUI>().text = RefUnit.Health.ToString();
@@ -127,7 +127,7 @@ public class StatsMenu : MonoBehaviour
         }
         else
         {
-            _unitStats.gameObject.SetActive(false);
+            _unitStats.SetActive(false);
         }
         if(_gm.CurrentStateOfPlayer == EPlayerStates.Attacking)
         {
