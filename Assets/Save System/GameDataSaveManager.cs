@@ -62,7 +62,7 @@ public class GameDataSaveManager : MonoBehaviour
             yield return null;
         }
 
-        //LoadGame();
+        LoadGame();
     }
 
     public void NewGame() // Method to initialize a new game
@@ -234,7 +234,7 @@ public class GameDataSaveManager : MonoBehaviour
             {
                 // Instantiate it in the right saved position
                 GameObject unitObject = Instantiate(unitPrefab, _mm.Map.CellToWorld(loadingUnitSave.Position),
-                    Quaternion.identity);
+                    Quaternion.identity, _um.transform);
                 if (unitObject.TryGetComponent<LoadingUnit>(out var unitComponent))
                 {
                     // Assign saved data to that prefab

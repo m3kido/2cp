@@ -35,7 +35,7 @@ public class LoadingUnit : Unit
         LoadedUnit.gameObject.SetActive(true);
         LoadedUnit.transform.position = spot;
         LoadedUnit.HasMoved = true;
-        Instantiate(LoadedUnit.transform);
+        Instantiate(_um.SpawnEffect, LoadedUnit.transform);
         LoadedUnit = null;
         LoadedUnitPosition = new Vector3Int(0, 0, -1);
     }

@@ -180,7 +180,7 @@ public class BuildingManager : MonoBehaviour
         newUnit.HasMoved = true;
         if (newUnit == null) { return; }
         _um.Units.Add(newUnit);
-        Instantiate(newUnit.transform);
+        Instantiate(_um.SpawnEffect, newUnit.transform);
     }
 
     // Gain gold every day
