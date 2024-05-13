@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class Pathfinding : MonoBehaviour 
 {
@@ -12,26 +10,25 @@ public class Pathfinding : MonoBehaviour
     }
     public List<Vector3Int> FindPath(Unit unit, Vector3Int start, Vector3Int end)
     {
-        List<PathNode> Queue = new List<PathNode>();
-        List<PathNode> Visited = new List<PathNode>();
-        List<PathNode> possibleNodes = new List<PathNode>();
-        PathNode currNode = new PathNode(start,null,0,Calculatehcost(start,end));
+        List<PathNode> Queue = new();
+        List<PathNode> Visited = new();
+        List<PathNode> possibleNodes = new();
+        PathNode currNode = new(start, null, 0, Calculatehcost(start, end));
 
         Queue.Add(currNode);
         while (Queue.Count>0)
         {
             currNode = GetLowestfcost(Queue);
             
-            if(currNode.pos ==end ) { return CalculatePath(currNode); }
+            if(currNode.pos == end ) { return CalculatePath(currNode); }
 
             Queue.Remove(currNode);
             Visited.Add(currNode);
 
-
-            PathNode rightNode = ExplorePos(unit, currNode.pos + Vector3Int.right, end,Queue,Visited);
-            PathNode leftNode = ExplorePos(unit, currNode.pos + Vector3Int.left, end,Queue,Visited);
-            PathNode upNode = ExplorePos(unit, currNode.pos + Vector3Int.up ,end,Queue,Visited);
-            PathNode downNode = ExplorePos(unit, currNode.pos + Vector3Int.down, end,Queue,Visited);
+            PathNode rightNode = ExplorePos(unit, currNode.pos + Vector3Int.right, end, Queue, Visited);
+            PathNode leftNode = ExplorePos(unit, currNode.pos + Vector3Int.left, end, Queue, Visited);
+            PathNode upNode = ExplorePos(unit, currNode.pos + Vector3Int.up, end, Queue, Visited);
+            PathNode downNode = ExplorePos(unit, currNode.pos + Vector3Int.down, end, Queue, Visited);
 
             if(rightNode != null)
             {                
@@ -52,8 +49,6 @@ public class Pathfinding : MonoBehaviour
             
             foreach(var node in possibleNodes)
             {
-                
-               
                 int newgcost = currNode.gcost + Calculategcost(unit, node.pos);
                 if(newgcost < node.gcost)
                 {
@@ -68,13 +63,10 @@ public class Pathfinding : MonoBehaviour
                 }
             }
             possibleNodes.Clear();
-
-            
-           
         }
-        print("no way");
         return null;
     }
+
     private PathNode ContainsPos(List<PathNode> list, Vector3Int pos)
     {
         foreach(var node in list)
@@ -83,6 +75,7 @@ public class Pathfinding : MonoBehaviour
         }
         return null;
     }
+
     private PathNode GetLowestfcost(List<PathNode> queue)
     {
         PathNode lowest = queue[0];
@@ -95,6 +88,7 @@ public class Pathfinding : MonoBehaviour
         }
         return lowest;
     }
+
     private PathNode ExplorePos(Unit unit, Vector3Int pos, Vector3Int end, List<PathNode> queue, List<PathNode> visited )
     {
         if (ContainsPos(queue, pos)!=null)
@@ -115,6 +109,7 @@ public class Pathfinding : MonoBehaviour
             return null;
         }
     }
+
     private int Calculategcost(Unit unit,Vector3Int pos)
     {
         TerrainDataSO data = _mm.GetTileData(pos);
@@ -128,14 +123,15 @@ public class Pathfinding : MonoBehaviour
         }
         return -1;
     }
-    private int Calculatehcost(Vector3Int start,Vector3Int end) {
 
+    private int Calculatehcost(Vector3Int start, Vector3Int end)
+    {
         return Mathf.Abs(start.x - end.x) + Mathf.Abs(start.y - end.y);
-
     }
+
     private List<Vector3Int> CalculatePath(PathNode last)
     {
-        List<Vector3Int > path = new List<Vector3Int>();
+        List<Vector3Int > path = new();
         PathNode curr= last;
         while (curr.lastpos != null)
         {
@@ -145,5 +141,4 @@ public class Pathfinding : MonoBehaviour
         path.Reverse();
         return path ;
     }
-    
 }

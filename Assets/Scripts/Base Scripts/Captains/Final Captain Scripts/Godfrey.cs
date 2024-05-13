@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Godfrey : Captain
 {
-    public Godfrey(Player player): base(player)
+    public Godfrey(Player player) : base(player)
     {
         CaptainName = ECaptains.Godfrey;
         Player = player;
@@ -16,6 +12,7 @@ public class Godfrey : Captain
         maxSuperMeter = 30000;
         SuperMeter = maxSuperMeter / 2;
     }
+
     public override void EnableCeleste()
     {
         if (!IsCelesteReady())
@@ -26,12 +23,10 @@ public class Godfrey : Captain
         {
             if (CaptainManager.Gm.Players[unit.Owner] != Player)
             {
-                unit.MoveRange --;
-                //Augmemnter PROVISION
+                unit.MoveRange--;
+                // increase provisions
             }
         }
-
-        UnityEngine.Debug.Log("Godfrey");
     }
 
     public override void DisableCeleste()
@@ -43,7 +38,6 @@ public class Godfrey : Captain
             if (CaptainManager.Gm.Players[unit.Owner] != Player)
             {
                 unit.MoveRange = unit.Data.MoveRange ;
-                
             }
         }
     }
@@ -52,5 +46,4 @@ public class Godfrey : Captain
     {
         GameManager.OnTurnStart -= DisableCeleste;
     }
-
 }

@@ -1,5 +1,1 @@
-
-
-public class Lancer : AttackingUnit
-{
-}
+public class Lancer : AttackingUnit { }

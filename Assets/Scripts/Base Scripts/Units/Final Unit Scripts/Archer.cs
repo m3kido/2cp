@@ -1,4 +1,1 @@
-public class Archer : AttackingUnit
-{
-     
-}
+public class Archer : AttackingUnit {}

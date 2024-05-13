@@ -128,8 +128,8 @@ public class ShopMenu : MonoBehaviour
             {
                 _unitDetails.transform.GetChild(1).GetComponent<Image>().sprite = unit.GetComponent<SpriteRenderer>().sprite;
                 _unitDetails.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text=unit.Data.MoveRange.ToString();
-                //_unitDetails.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text
-                //_unitDetails.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text
+                // _unitDetails.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text
+                // _unitDetails.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text
                 return;
             }
         }

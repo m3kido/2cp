@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class AttackManager : MonoBehaviour
 {
+    #region Variables
     protected GameManager _gm;
     protected UnitManager _um;
     protected MapManager _mm;
@@ -14,6 +14,7 @@ public class AttackManager : MonoBehaviour
     public AttackingUnit Attacker;
     private int selectedTargetIndex = -1;
     private bool _actionTaken = false;
+
     public bool ActionTaken
     {
         get
@@ -25,7 +26,9 @@ public class AttackManager : MonoBehaviour
             _actionTaken = value;
         }
     }
+    #endregion
 
+    #region UnityMethods
     private void Awake()
     {
         _gm = FindAnyObjectByType<GameManager>();
@@ -33,10 +36,12 @@ public class AttackManager : MonoBehaviour
         _mm = FindAnyObjectByType<MapManager>();
         _cb = FindAnyObjectByType<CaptainBar>();
     }
+    #endregion
 
+    #region Methods
     public bool UnitCanAttack(AttackingUnit attacker)
     {
-        if (attacker == null) print("NO ATTACKER FOUND ");
+        if (attacker == null) Debug.Log("No attacker found !");
         return attacker.CheckAttack();
     }
 
@@ -47,24 +52,19 @@ public class AttackManager : MonoBehaviour
         int superMeterAdd ; 
         if (target == null || attacker == null)
         {
-            Debug.LogError("Target or attacker is null.");
+ 
             return;
         }
         float damageToTarget = CalculateDamage(target, attacker);
         damageApplied = (int)damageToTarget; 
-        Debug.Log("Damage to target: " + damageToTarget);
         target.Health -= (int)damageApplied;
 
         superMeterAdd = (int)((damageApplied * attacker.Data.Cost / 10) * 0.5 );
-        print("hawhaw");
-        print(superMeterAdd);
         Attacker.PlayerCaptain.SuperMeter += superMeterAdd;
-        
-
-
+   
         attacker.ConsumeAmmo();   
-        Debug.Log("Target has been damaged!");
-        if (target.Health > 0 && target is AttackingUnit && !directAttacker.Contains(attacker.Data.UnitType)) // We need to check if target unit can attack the attacker
+        if (target.Health > 0 && target is AttackingUnit &&
+            !directAttacker.Contains(attacker.Data.UnitType)) // We need to check if target unit can attack the attacker
         {
             Player Defender = _gm.Players[target.Owner];
             AttackingUnit newAttacker = target as AttackingUnit;
@@ -75,15 +75,11 @@ public class AttackManager : MonoBehaviour
                 attacker.Health -= damageApplied;
                 superMeterAdd = (int)((damageApplied * newAttacker.Data.Cost / 10));
                 Defender.PlayerCaptain.SuperMeter += superMeterAdd;
-                print("meow");
-                print(superMeterAdd);
 
                 if (attacker.CurrentWeaponIndex < attacker.Weapons.Count)
                 {
                     attacker.ConsumeAmmo();
                 }
-                Debug.Log("Damage to attacker: " + damageToAttacker);                       
-                Debug.Log("Attacker has been damaged!");
             }
         }
         
@@ -92,7 +88,6 @@ public class AttackManager : MonoBehaviour
 
     public void InitiateAttack()
     {
-        Debug.Log("Initiating Attack from the AM");
         if (Attacker == null)
         {
             Debug.LogWarning("Cannot initiate attack. Attacker is null.");
@@ -104,12 +99,10 @@ public class AttackManager : MonoBehaviour
         Attacker.IsAttacking = true;
         Attacker.HasAttacked = false;
 
-
         List<Unit> targets = Attacker.ScanTargets();
 
         if (targets.Count > 0)
         {
-            Debug.Log(Attacker + " can attack : " + targets.Count + " targets");
             selectedTargetIndex = 0;
 
             // Start target selection process
@@ -133,8 +126,6 @@ public class AttackManager : MonoBehaviour
             yield return null;
         }
         ActionTaken = false;
-
-        Debug.Log("Action finished");
     }
 
     private void HandleTargetSelectionInput(AttackingUnit attacker, List<Unit> targets)
@@ -146,6 +137,7 @@ public class AttackManager : MonoBehaviour
             Debug.LogWarning("No targets available for selection.");
             return;
         }
+
         CursorManager _cm = FindAnyObjectByType<CursorManager>();
         Vector3Int saveCursor = _cm.HoveredOverTile;
         if (targets.Count == 1)
@@ -244,12 +236,12 @@ public class AttackManager : MonoBehaviour
         int baseDamage = attacker.Weapons[attacker.CurrentWeaponIndex].DamageList[(int)target.Data.UnitType];
         Captain attackerCaptain = attacker.GetUnitCaptain;
         int celesteAttack = attackerCaptain.IsCelesteActive ? attackerCaptain.Data.CelesteDefense : 0;
-        float attackDamage = baseDamage * (1 + attackerCaptain.PassiveAttack) * (1 + celesteAttack) * attackerCaptain.AttackMultiplier; Debug.Log("AttackMultiplier" + attackerCaptain.AttackMultiplier);
+        float attackDamage = baseDamage * (1 + attackerCaptain.PassiveAttack) * (1 + celesteAttack) * attackerCaptain.AttackMultiplier;
 
         int terrainStars = _mm.GetTileData(_mm.Map.WorldToCell(target.transform.position)).DefenceStars;
         Captain targetCaptain = target.GetUnitCaptain;
         int celesteDefense = targetCaptain.IsCelesteActive ? targetCaptain.Data.CelesteDefense : 0;
-        float defenseDamage = (1 - terrainStars * target.Health / 1000) * (1 - targetCaptain.PassiveDefense) * (1 - celesteDefense) * targetCaptain.DefenseMultiplier; Debug.Log("DefenseMultiplier : " + targetCaptain.DefenseMultiplier);
+        float defenseDamage = (1 - terrainStars * target.Health / 1000) * (1 - targetCaptain.PassiveDefense) * (1 - celesteDefense) * targetCaptain.DefenseMultiplier;
 
         int chance = (attackerCaptain.Data.Name == ECaptains.Andrew) ? UnityEngine.Random.Range(2, 10) : UnityEngine.Random.Range(1, 10);
         float totalDamage = (float)attacker.Health / 100 * attackDamage * defenseDamage * (1 + (float)chance / 100);
@@ -258,15 +250,14 @@ public class AttackManager : MonoBehaviour
 
     public float CheckCounterAttack(Unit target , AttackingUnit attacker)
     {
-        if (target.Health > 0 && target is AttackingUnit && !directAttacker.Contains(attacker.Data.UnitType)) //We need to check if target unit can attack the attacker)
+        if (target.Health > 0 && target is AttackingUnit &&
+            !directAttacker.Contains(attacker.Data.UnitType)) // We need to check if target unit can attack the attacker)
         {
             AttackingUnit newAttacker = target as AttackingUnit;
             if (newAttacker.CanAttackThis(attacker))
             {
                return CalculateDamage(attacker, newAttacker);
             }
-           
-
         }
         return 0; 
     }
@@ -281,8 +272,8 @@ public class AttackManager : MonoBehaviour
         {
             Attacker.animator.SetTrigger("attacking");
         }
-     
         
         Attacker = null;
     }
+    #endregion
 }

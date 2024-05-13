@@ -1,8 +1,1 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Cog : AttackingUnit
-{
-    
-}
+public class Cog : AttackingUnit { }

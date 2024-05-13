@@ -121,14 +121,14 @@ public class UnitManager : MonoBehaviour
             {
                 if (i == 0)
                 {
-                    //start case because the start point is not in the path list
+                    // Start case because the start point is not in the path list
                     _mm.DrawArrow(_mm.Map.WorldToCell(SelectedUnit.transform.position), Path[0], Path[Mathf.Clamp(1, 0, Path.Count - 1)]);
                     continue;
                 }
-                //the clamp is for capping the i at its max (path.count -1)
+                // The clamp is for clamping the i at its max (path.count -1)
                 _mm.DrawArrow(Path[i - 1], Path[i], Path[Mathf.Clamp(i + 1, 0, Path.Count - 1)]);
             }
-            //the clamp is for capping the i at its max (path.count -1)
+            // The clamp is for clamping the i at its max (path.count -1)
             _mm.DrawArrow(Path[i - 1], Path[i], Path[Mathf.Clamp(i + 1, 0, Path.Count - 1)]);
         }
     }
@@ -142,7 +142,7 @@ public class UnitManager : MonoBehaviour
         }
     }
 
-    // select a given _unit
+    // Select a given unit
     public void SelectUnit(Unit unit)
     {
         SelectedUnit = unit;
@@ -151,7 +151,7 @@ public class UnitManager : MonoBehaviour
         _gm.CurrentStateOfPlayer = EPlayerStates.Selecting;
     }
 
-    // Deselect the selected _unit
+    // Deselect the selected unit
     public void DeselectUnit()
     {
         SelectedUnit.ResetTiles();
@@ -162,7 +162,7 @@ public class UnitManager : MonoBehaviour
         _gm.CurrentStateOfPlayer = EPlayerStates.Idle;
     }
 
-    // Move the selected _unit
+    // Move the selected unit
     public IEnumerator MoveUnit()
     {
         SelectedUnit.IsMoving = true;
@@ -175,11 +175,8 @@ public class UnitManager : MonoBehaviour
 
             if (SelectedUnit.animator != null)
             {
-
-
                 if (offset != lastoffset)
                 {
-
                     if (offset.x == 1)
                     {
                         SelectedUnit.animator.SetTrigger("right");
@@ -195,12 +192,9 @@ public class UnitManager : MonoBehaviour
                     else if (offset.y == -1)
                     {
                         SelectedUnit.animator.SetTrigger("down");
-
                     }
                     lastoffset = offset;
                 }
-
-
             }
             SelectedUnit.transform.position = pos;
 
@@ -216,9 +210,9 @@ public class UnitManager : MonoBehaviour
 
         _gm.CurrentStateOfPlayer = EPlayerStates.InActionsMenu;
     }
+
     public void CallPathfinding(Vector3Int end)
     {
-
         List<Vector3Int> paths = new();
         paths = Pathfinder.FindPath(SelectedUnit, SelectedUnit.GetGridPosition(), end);
         if (paths.Count > 0)
@@ -226,14 +220,15 @@ public class UnitManager : MonoBehaviour
             UndrawPath();
             Path.Clear();
             PathCost = 0;
+
             foreach (var pos in paths)
             {
                 Path.Add(pos);
                 PathCost += _mm.GetTileData(pos).ProvisionsCost;
             }
+
             DrawPath();
         }
-
     }
 
     // Runs at the end of the day 
@@ -291,10 +286,9 @@ public class UnitManager : MonoBehaviour
         }
     }
 
-    public void DestroyUnit(Unit unit) // necessary for removing a Unit from a Player Script
+    public void DestroyUnit(Unit unit) // necessary for removing a unit from a Player Script
     {
         Destroy(unit.gameObject);
     }
-
+    #endregion
 }
-#endregion

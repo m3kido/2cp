@@ -1,5 +1,3 @@
-using System;
-using TMPro;
 using UnityEngine;
 
 // Script that display icons near the units

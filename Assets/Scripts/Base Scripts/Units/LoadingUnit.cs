@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+// Class to represent a loading unit
 public class LoadingUnit : Unit
 {
+    #region Variables
     public Unit LoadedUnit;
     public Vector3Int LoadedUnitPosition = new(0, 0, -1);
     public List<Vector3Int> DropTiles;
+    #endregion
 
+    #region Methods
     public void LoadUnit(Unit unit)
     {
         LoadedUnit = unit;
@@ -109,9 +112,7 @@ public class LoadingUnit : Unit
         var tile = _mm.GetTileData(pos);
         if(tile == null) { return; }
         bool walkable = LoadedUnit.Data.WalkableTerrains.Contains(tile.TerrainType);
-        print(walkable);
         bool clear = _um.FindUnit(pos) == null;
-        print(clear);
         if(walkable && clear) { DropTiles.Add(pos); }
     }
 
@@ -137,4 +138,5 @@ public class LoadingUnit : Unit
             LoadedUnit.gameObject.SetActive(false);
         }
     }
+    #endregion
 }

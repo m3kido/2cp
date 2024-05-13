@@ -6,7 +6,6 @@ using UnityEngine;
 public class ActionMenu : MonoBehaviour
 {
     #region Variables
-    // Managers will be needed
     private CursorManager _cm;
     private GameManager _gm;
     private UnitManager _um;
@@ -28,7 +27,6 @@ public class ActionMenu : MonoBehaviour
     [SerializeField] private GameObject _loadOption;
     [SerializeField] private GameObject _dropOption;
     [SerializeField] private GameObject _refillOption;
-    // public GameObject FireOption;
 
     private GameObject _waitOptionInstance;
     private GameObject _captureOptionInstance;
@@ -70,8 +68,6 @@ public class ActionMenu : MonoBehaviour
 
         _refillOptionInstance = Instantiate(_refillOption, _options.transform);
         _refillOptionInstance.SetActive(false);
-
-        
     }
 
     private void OnEnable()
@@ -138,10 +134,7 @@ public class ActionMenu : MonoBehaviour
                 if (_um.SelectedUnit is AttackingUnit)
                 {
                     _am.Attacker = _um.SelectedUnit as AttackingUnit;
-
-                    Debug.Log("We're attacking");
                     _am.InitiateAttack();
-                    Debug.Log("Done attacking");
                 }
             }
             else if (_optionsList[_selectedOption] == _captureOptionInstance)
@@ -162,15 +155,15 @@ public class ActionMenu : MonoBehaviour
                 (_um.SelectedUnit as LoadingUnit).InisitateDropUnit();
             }
         }
-        //change selected option
+        // Change selected option
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            //getting the cursor image and  hiding it
+            // Get the cursor image and hide it
             _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(false);
 
             _selectedOption = (_selectedOption - 1 + _optionsList.Count) % _optionsList.Count;
 
-            //getting the cursor image and  showing it
+            // Get the cursor image and show it
             _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(true);
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
@@ -213,7 +206,6 @@ public class ActionMenu : MonoBehaviour
 
         if (_um.SelectedUnit is AttackingUnit)
         {
-           
             _am.Attacker = _um.SelectedUnit as AttackingUnit;
             if (_am.Attacker == null)
             {
@@ -221,10 +213,9 @@ public class ActionMenu : MonoBehaviour
             }
             else
             {
-                print($"{_am.Attacker} Value(CanAttack) = {_am.Attacker.CheckAttack()}");
                 if (_am.Attacker.CheckAttack())
                 {
-                    if(    ((_am.Attacker).IndirectUnit && _um.Path.Count == 0) || !(_am.Attacker).IndirectUnit)
+                    if(((_am.Attacker).IndirectUnit && _um.Path.Count == 0) || !(_am.Attacker).IndirectUnit)
                     {
                         _attackOptionInstance.SetActive(true);
                         _optionsList.Add(_attackOptionInstance);
@@ -254,7 +245,6 @@ public class ActionMenu : MonoBehaviour
         var village = _bm.CapturableBuildings.ContainsKey(_cm.HoveredOverTile) ? _bm.CapturableBuildings[_cm.HoveredOverTile] : null;
         if (village != null && village.Owner != _gm.PlayerTurn)
         {
-            Debug.Log("HI");
             if (_um.SelectedUnit.Data.UnitType == EUnits.Infantry || _um.SelectedUnit.Data.UnitType == EUnits.Lancers)
             {
                 _captureOptionInstance.SetActive(true);

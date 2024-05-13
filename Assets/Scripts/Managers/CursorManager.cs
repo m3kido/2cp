@@ -2,7 +2,6 @@ using System;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-
 using System.Collections;
 
 // Class to manage the cursor
@@ -126,7 +125,7 @@ public class CursorManager : MonoBehaviour
             return;
         }
         // Making sure that a diagonal movement works nicely
-        bool diff = ((_offset.x == 0 || _offset.y==0)&& (_lastOffset.x != 0 && _lastOffset.y!=0) )|| ((_lastOffset.x == 0 || _lastOffset.y == 0) && (_offset.x != 0 && _offset.y != 0));
+        bool diff = ((_offset.x == 0 || _offset.y == 0) && (_lastOffset.x != 0 && _lastOffset.y != 0) ) || ((_lastOffset.x == 0 || _lastOffset.y == 0) && (_offset.x != 0 && _offset.y != 0));
  
         if ((_offset != _lastOffset && !diff ) || _duration <= 0 )
         {
@@ -211,6 +210,7 @@ public class CursorManager : MonoBehaviour
         MoveCamera(offset);
         InvokeMove();
     }
+
     public void InvokeMove()
     {
         OnCursorMove?.Invoke();
@@ -310,7 +310,8 @@ public class CursorManager : MonoBehaviour
         var ydistance = HoveredOverTile.y - _camera.transform.position.y;
 
         // If we hit a certain tile move the camera with it
-        if ((xdistance > 5 && offset.x > 0) || (xdistance < -6 && offset.x < 0) || (ydistance > 2 && offset.y > 0) || (ydistance < -3 && offset.y < 0))
+        if ((xdistance > 5 && offset.x > 0) || (xdistance < -6 && offset.x < 0) || (ydistance > 2 && offset.y > 0) ||
+            (ydistance < -3 && offset.y < 0))
         {
             // Move the camera and make sure to not go out of bounds
             _camera.transform.position = new Vector3(math.clamp(_camera.transform.position.x + offset.x, bounds.xMin + 9, bounds.xMax - 9),

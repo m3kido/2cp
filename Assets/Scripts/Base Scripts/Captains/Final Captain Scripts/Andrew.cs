@@ -22,16 +22,12 @@ public class Andrew : Captain
         {
             if (CaptainManager.Gm.Players[unit.Owner] == Player)
             {
-
                 unit.Health += (int)(0.2 * Unit.MaxHealth);
                 CaptainManager.Instance.HealSpr(unit);
-
-
             }
         }
         
         DefenseMultiplier += 0.2f;
-        UnityEngine.Debug.Log("Andrew");
     }
 
     public override void DisableCeleste()
@@ -39,12 +35,10 @@ public class Andrew : Captain
         if (!IsCelesteActive) { return; }
         base.DisableCeleste();
         DefenseMultiplier -= 0.2f;
-
     }
 
     public override void UnsubscribeWhenDestroyed()
     {
         GameManager.OnTurnEnd -= DisableCeleste;
     }
-
 }

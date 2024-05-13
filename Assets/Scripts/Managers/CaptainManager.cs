@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CaptainManager : MonoBehaviour
 {
+    #region Variables
     public static GameManager Gm;
     public static UnitManager Um;
     public static CaptainBar Cb;
@@ -14,8 +15,6 @@ public class CaptainManager : MonoBehaviour
     [SerializeField] List<CaptainDataSO> _captainSOList = new();
 
     public static List<Captain> LivingCaptains = new();
-    
-
     public int CurrentCaptain { get { return Gm.PlayerTurn; } private set { } }
 
     public static CaptainManager Instance
@@ -23,8 +22,9 @@ public class CaptainManager : MonoBehaviour
         get { return FindObjectOfType<CaptainManager>(); }
         private set { }
     }
+    #endregion
 
-
+    #region UnityMethods
     private void Awake()
     {
         Gm = FindObjectOfType<GameManager>();
@@ -34,28 +34,25 @@ public class CaptainManager : MonoBehaviour
         {
             CaptainsDict.Add((ECaptains)i, _captainSOList[i]);
         }
-        print(CaptainsDict);
-
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.S) && Gm.CurrentStateOfPlayer == EPlayerStates.Idle)
         {
-            Debug.Log("SuperMeter : " + LivingCaptains[CurrentCaptain].SuperMeter);
             ActivateCeleste();
-
         }
     }
+    #endregion
 
+    #region Methods
     public void ActivateCeleste()
     {
         Captain captain = LivingCaptains[CurrentCaptain];
 
-        captain.EnableCeleste(); Debug.Log("MIMI");
+        captain.EnableCeleste();
         if (captain is Melina)
         {
-            Debug.Log("MELINAA");
             Melina melina = captain as Melina;
             StartCoroutine(melina.ReviveSelectionCoroutine(Gm));
         }
@@ -81,6 +78,7 @@ public class CaptainManager : MonoBehaviour
         }
 
     }
+
     public void HealSpr()
     {
         foreach (var unit in Um.Units)
@@ -104,9 +102,7 @@ public class CaptainManager : MonoBehaviour
 
     public void EnergySpr(Unit unit)
     {
-        
         Instantiate(EnergySprite, unit.transform);
-
     }
-
+    #endregion
 }

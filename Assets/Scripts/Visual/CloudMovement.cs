@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+// Script attached to every cloud
 public class CloudMovement : MonoBehaviour
 {
     private float _speed;

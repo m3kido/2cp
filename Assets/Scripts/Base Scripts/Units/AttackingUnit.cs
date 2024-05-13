@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 [Serializable]
 public class AttackingUnit : Unit
 {
+    #region Variables
     [SerializeField] List<Weapon> _weapons;
     public List<Weapon> Weapons { get => _weapons; set => _weapons = value; }
 
@@ -50,13 +51,15 @@ public class AttackingUnit : Unit
             }
         }
     }
+    #endregion
 
+    #region Methods
     public void ConsumeAmmo()
     {
         CurrentWeaponAmmo-=Weapons[CurrentWeaponIndex].EnergyConsumption;
     }
 
-    // scans area for targets in an Intervall [min range, max range]
+    // Scans area for targets in an Intervall [min range, max range]
     // Assumed that every unit can be in one tile which can be in one grid position
     public List<Unit> ScanTargets()
     {
@@ -75,7 +78,6 @@ public class AttackingUnit : Unit
             bool IsDamageable = Weapons[CurrentWeaponIndex].DamageList[(int)unit.Data.UnitType] != 0;
             if (IsInRange && IsEnemy && IsDamageable)
             {
-
                 targets.Add(unit);
             }
         }
@@ -93,7 +95,7 @@ public class AttackingUnit : Unit
 
             var potentialTargetPos = _mm.Map.WorldToCell(unit.transform.position);
 
-            var currentWeapon = Weapons[CurrentWeaponIndex]; // Getting the current weapon from the attacker
+            var currentWeapon = Weapons[CurrentWeaponIndex]; // Gett the current weapon from the attacker
             Player player = _gm.Players[Owner];
             Captain captain = player.PlayerCaptain;
             bool IsInRange = (L1Distance2D(attackerPos, potentialTargetPos) >= currentWeapon.MinRange) && (L1Distance2D(attackerPos, potentialTargetPos) < (currentWeapon.MaxRange + captain.AttackRangeAdditioner + moveRange));
@@ -133,7 +135,7 @@ public class AttackingUnit : Unit
             return false;
         }
 
-        // Now, check if the attacker has any valid targets to attack
+        // Now check if the attacker has any valid targets to attack
         if (targets.Count > 0)
         {
             return true;
@@ -254,24 +256,24 @@ public class AttackingUnit : Unit
         AttackFromTiles(list, right, range - 1);
     }
 
-    //public void InitiateTargetSelection()
-    //{
-    //    Debug.Log("Initiating target selection from the AU");
-    //    AttackManager.Instance.InitiateTargetSelection(this);
-    //    Debug.Log("Finished");
-    //}
+    /*public void InitiateTargetSelection()
+    {
+        Debug.Log("Initiating target selection from the AU");
+        AttackManager.Instance.InitiateTargetSelection(this);
+        Debug.Log("Finished");
+    }
 
-    //// Method to handle keyboard input for navigating through targets
-    //private void HandleTargetSelectionInput()
-    //{
-    //    AttackManager.Instance.HandleTargetSelectionInput();
-    //}
+    // Method to handle keyboard input for navigating through targets
+    private void HandleTargetSelectionInput()
+    {
+        AttackManager.Instance.HandleTargetSelectionInput();
+    }
 
     // Update method to handle target selection input
-    //private void Update()
-    //{
-    //    HandleTargetSelectionInput();
-    //}
+    private void Update()
+    {
+        HandleTargetSelectionInput();
+    }*/
 
     public AttackingUnitSaveData GetDataToSave()
     {
@@ -290,7 +292,5 @@ public class AttackingUnit : Unit
         CurrentWeaponIndex = saveData.CurrentWeaponIndex;
         IsCapturing = saveData.IsCapturing;
     }
+    #endregion
 }
-
-
-
