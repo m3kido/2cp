@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // Class to handle the game logic
 public class GameManager : MonoBehaviour
@@ -13,7 +14,9 @@ public class GameManager : MonoBehaviour
     public GameObject winUi;
     public TextMeshProUGUI WinnerText;
     public float DisplayDuration = 0.5f;
+    public float EndGameDuration = 2f;
     private float _timer;
+    private float _endtimer;
 
     private int _playerTurn = 0;
     public int Day { get; set; } = 1;
@@ -76,6 +79,13 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Winner index : " + winnerIdx);
             EndGame(winnerIdx);
+           /* _endtimer += Time.deltaTime;
+            if (_endtimer >= EndGameDuration)
+            {
+                SceneManager.LoadScene("Main Menu");
+                _endtimer = 0f;
+            }
+*/
         }
     }
     #endregion
