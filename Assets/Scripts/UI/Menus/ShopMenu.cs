@@ -90,7 +90,6 @@ public class ShopMenu : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            
             _unitElements.Keys.ToList()[_selectedUnit].transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = textColor;
 
             _selectedUnit = (_selectedUnit - 1 + _unitElements.Count) % _unitElements.Count;

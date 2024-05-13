@@ -48,8 +48,6 @@ public class GameManager : MonoBehaviour
         {
             new("9999", 0, "Mohamed", ETeamColors.Amber, ETeams.A, ECaptains.Andrew, 0, false),
             new("9998", 1, "Oussama", ETeamColors.Azure, ETeams.B, ECaptains.Melina, 0, false),
-
-
         };
     }
 
@@ -96,7 +94,6 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-
             return _playerTurn;
         }
 
