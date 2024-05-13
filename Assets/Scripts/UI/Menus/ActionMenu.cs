@@ -223,10 +223,6 @@ public class ActionMenu : MonoBehaviour
                 }
             }
         }
-        else
-        {
-            Debug.LogWarning("SelectedUnit is not an AttackingUnit. Unable to check attack option.");
-        }
     }
 
     private void CheckDrop()
