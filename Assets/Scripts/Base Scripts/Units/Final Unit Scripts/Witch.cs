@@ -1,7 +1,1 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Witch : AttackingUnit
-{
-}
+public class Witch : AttackingUnit { }

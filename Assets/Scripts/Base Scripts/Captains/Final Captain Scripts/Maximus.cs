@@ -12,8 +12,8 @@ public class Maximus : Captain
         GameManager.OnTurnEnd += DisableCeleste;
         maxSuperMeter = 25000;
         SuperMeter = maxSuperMeter / 2;
-
     }
+
     public override void EnableCeleste()
     {
         if (!IsCelesteReady())
@@ -23,9 +23,7 @@ public class Maximus : Captain
 
         DefenseMultiplier -= 0.2f;
         AttackMultiplier += 0.25f;
-        AttackRangeAdditioner++; 
-        UnityEngine.Debug.Log("Maximus");
-
+        AttackRangeAdditioner++;
     }
 
     public override void DisableCeleste()

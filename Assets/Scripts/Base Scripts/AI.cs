@@ -6,6 +6,7 @@ using UnityEngine;
 // Class to represent an AI player
 public class AiPlayer : MonoBehaviour
 {
+    #region Variables
     Player player; 
     GameManager _gm;
     UnitManager _um;
@@ -17,12 +18,12 @@ public class AiPlayer : MonoBehaviour
 
     // Constructor for AI player
     public AiPlayer(string name, ETeamColors color, ETeams teamSide, ECaptains captain)
-        
     {
         // Initialize any additional properties or settings specific to AI players if needed
     }
+    #endregion
 
-    //Unity Methods 
+    #region UnityMethods
     private void Awake()
     {
         _gm = FindAnyObjectByType<GameManager>();
@@ -47,18 +48,18 @@ public class AiPlayer : MonoBehaviour
     {
 
     }
+    #endregion
 
+    #region Methods
     public void AiPlay(List<Unit> allUnits, List<Unit> enemyUnits)
     {
-        //Level 0 STUID ASU
-
         // Decide which units to move and where to move them
-
         // Example: AI decides to end its turn after performing actions
+
         EndTurn();
     }
 
-    //Worth attack 
+    // Worth attacking
     private bool WorthAttack(AttackingUnit attacker, Unit enemy, float threshold)
     {
         float evaluation = float.MinValue;
@@ -72,12 +73,9 @@ public class AiPlayer : MonoBehaviour
     }
 
     // Function to find the nearest enemy appraoch 
-
     private List<Unit> FindNearestEnemy(Unit unit, List<Unit> enemyUnits)
     {
         List<(Unit, float)> enemies = new();
-        Unit nearestEnemy = null;
-        float minDistance = float.MaxValue;
         var attackerPos = unit.GetGridPosition();
         foreach (Unit enemy in enemyUnits)
         {
@@ -86,15 +84,15 @@ public class AiPlayer : MonoBehaviour
                 AttackingUnit attacker = unit as AttackingUnit;
                 var potentialTargetPos = _mm.Map.WorldToCell(unit.transform.position);
                 float distance = 0;
-                bool IsInRange = (attacker.L2Distance2D(attackerPos, potentialTargetPos) >= attacker.Weapons[attacker.CurrentWeaponIndex].MinRange) && (attacker.L2Distance2D(attackerPos, potentialTargetPos) < (attacker.Weapons[attacker.CurrentWeaponIndex].MaxRange + this.player.PlayerCaptain.AttackRangeAdditioner)); ;
+                bool IsInRange = (attacker.L2Distance2D(attackerPos, potentialTargetPos) >= attacker.Weapons[attacker.CurrentWeaponIndex].MinRange)
+                    && (attacker.L2Distance2D(attackerPos, potentialTargetPos) < (attacker.Weapons[attacker.CurrentWeaponIndex].MaxRange +
+                    this.player.PlayerCaptain.AttackRangeAdditioner)); ;
                 if (IsInRange && WorthAttack(attacker, enemy, 0.4f))
                 {
                     distance = unit.L2Distance2D(attackerPos, potentialTargetPos);
                     enemies.Add((enemy, distance));
-
                 }
             }
-
         }
 
         // Sort evaluated enemies by evaluation value in descending order
@@ -136,13 +134,11 @@ public class AiPlayer : MonoBehaviour
         return bestEnemies;
     }
 
-
     private bool ActionDecision(Unit unit)
     {
         List<Unit> enemyUnits;
         if (unit is AttackingUnit)
         {
-
             AttackingUnit attacker = unit as AttackingUnit;
             if (attacker == null) return false;
             var attackerPos = attacker.GetGridPosition();
@@ -173,7 +169,7 @@ public class AiPlayer : MonoBehaviour
                         }
                     }
 
-                    break;
+                break;
 
                 case 2:
 
@@ -192,15 +188,13 @@ public class AiPlayer : MonoBehaviour
                         {
                             if (attacker.ValidTiles.ContainsKey(position))
                             {
-                                //WE NEED TO DECIDE TO WHICH TILE WE WILL MOVE
-                                //GO TO THAT UNIT USING THE PATHFINDER 
-                                //ATTACK 
+                                // !!!! Not handled yet
                             }
                         }
                     }
-                    break;
-            }
 
+                break;
+            }
         }
         return false;
     }
@@ -209,6 +203,7 @@ public class AiPlayer : MonoBehaviour
     private void EndTurn()
     {
         // Perform any cleanup or end-of-turn actions here
-        Console.WriteLine("AI player " + player.Name + " has ended its turn.");
+        Console.WriteLine("AI player " + player.Name + " has ended his turn.");
     }
+    #endregion
 }

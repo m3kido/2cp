@@ -6,6 +6,7 @@ using UnityEngine;
 // Save system
 public class GameDataSaveManager : MonoBehaviour
 {
+    #region Variables
     private GameManager _gm;
     private MapManager _mm;
     private UnitManager _um;
@@ -23,7 +24,9 @@ public class GameDataSaveManager : MonoBehaviour
 
     public static GameDataSaveManager Instance { get; private set; }
     private bool _mapScanComplete = false;
+    #endregion
 
+    #region UnityMethods
     private void Awake()
     {
         if (Instance != null)
@@ -31,15 +34,6 @@ public class GameDataSaveManager : MonoBehaviour
             Debug.LogError("Found more than one game data save manager in the scene.");
         }
         Instance = this;
-    }
-
-    // Method called when map scanning is complete
-    private void OnMapScanComplete()
-    {
-        _mapScanComplete = true;
-
-        // Unsubscribe from the event
-        _bm.MapScanComplete -= OnMapScanComplete;
     }
 
     private IEnumerator Start()
@@ -65,6 +59,25 @@ public class GameDataSaveManager : MonoBehaviour
         LoadGame();
     }
 
+    public void OnApplicationQuit() // When the player leaves the game
+    {
+        // Ask if player wants to save first
+        // SaveGame();
+
+        // DestroyAllUnits();
+    }
+    #endregion
+
+    #region Methods
+    // Method called when map scanning is complete
+    private void OnMapScanComplete()
+    {
+        _mapScanComplete = true;
+
+        // Unsubscribe from the event
+        _bm.MapScanComplete -= OnMapScanComplete;
+    }
+
     public void NewGame() // Method to initialize a new game
     {
         _gameData = new GameData();
@@ -80,7 +93,7 @@ public class GameDataSaveManager : MonoBehaviour
 
         if (_gameData == null)
         {
-            Debug.Log("No saved data was found, initializing data to defaults.");
+            Debug.Log("No saved data was found.");
             NewGame();
         }
         else
@@ -108,20 +121,10 @@ public class GameDataSaveManager : MonoBehaviour
         Debug.Log("Game Saved.");
     }
 
-    public void OnApplicationQuit() // When the player leaves the game
-    {
-        // Ask if player wants to save first
-        // SaveGame();
-
-        // DestroyAllUnits();
-    }
-
     // Put the game data in _gameData
     public void ExtractGameData()
     {
         _gameData.GameLogicSave = new GameSaveData(_gm.Day, _gm.PlayerTurn);
-
-        Debug.Log("Extracted game data.");
     }
 
     // Load data from _gameData to game
@@ -130,8 +133,6 @@ public class GameDataSaveManager : MonoBehaviour
         _gm.Day = _gameData.GameLogicSave.Day;
         _gm.PlayerTurn = _gameData.GameLogicSave.PlayerTurn;
         _capBar.UpdateCaptain();
-
-        Debug.Log("Game data loaded.");
     }
 
     // Put the players data in _gameData
@@ -144,8 +145,6 @@ public class GameDataSaveManager : MonoBehaviour
         }
 
         _gameData.PlayerSaves = playerSaves;
-
-        Debug.Log("Extracted playes data.");
     }
 
     // Load data from _gameData to players
@@ -165,7 +164,6 @@ public class GameDataSaveManager : MonoBehaviour
             // Add it to the game
             _gm.Players.Add(player);
         }
-        Debug.Log("Players loaded.");
     }
 
     // Put the units data in _gameData
@@ -189,8 +187,6 @@ public class GameDataSaveManager : MonoBehaviour
 
         _gameData.AttackingUnitSaves = attackingUnitSaves;
         _gameData.LoadingUnitSaves = loadingUnitSaves;
-
-        Debug.Log("Extracted units data.");
     }
 
     // Load data from _gameData to units
@@ -253,7 +249,6 @@ public class GameDataSaveManager : MonoBehaviour
                 Debug.LogError($"Prefab for unit type {loadingUnitSave.UnitType} not found.");
             }
         }
-        Debug.Log("Units loaded.");
     }
 
     // Gets unit prefab from unit type (used to create unit object based on the saved data)
@@ -297,8 +292,6 @@ public class GameDataSaveManager : MonoBehaviour
                 Destroy(unit.gameObject);
             }
         }
-
-        Debug.Log("Destroyed all units: " + (attackingUnits.Length + loadingUnits.Length));
     }
 
     // Put the buildings data in _gameData
@@ -311,8 +304,6 @@ public class GameDataSaveManager : MonoBehaviour
         }
     
         _gameData.BuildingSaves = buildingSaves;
-
-        Debug.Log("Extracted buildings data.");
     }
 
     // Load data from _gameData to buildings
@@ -322,7 +313,6 @@ public class GameDataSaveManager : MonoBehaviour
         {
             if (_bm.CapturableBuildings.TryGetValue(buildingSave.Position, out Building building))
             {
-                Debug.Log("Buildings loaded.");
                 _bm.ChangeBuildingOwner(building, buildingSave.Owner);
                 building.SetSaveData(buildingSave);
 
@@ -334,4 +324,5 @@ public class GameDataSaveManager : MonoBehaviour
             }
         }
     }
+    #endregion
 }

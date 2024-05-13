@@ -1,4 +1,1 @@
-public class Infantry : AttackingUnit
-{
-
-}
+public class Infantry : AttackingUnit { }

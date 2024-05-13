@@ -57,7 +57,6 @@ public class Melina : Captain
                 }
                 if (unit.HasMoved)
                 {
-                    UnityEngine.Debug.Log(unit.HasMoved.ToString());
                     _tiredUnits.Add(unit);
                 }
             }
@@ -67,25 +66,19 @@ public class Melina : Captain
         {
             selectedUnitIndex = 0;
         }
-        //Starting a coroutine via the captin manager ; 
-
-        Debug.Log("Melina");
+        // Starting a coroutine via the captin manager ; 
     }
 
     public override void DisableCeleste()
     {
         base.DisableCeleste();
-
     }
-
-
 
     public IEnumerator ReviveSelectionCoroutine(GameManager gm)
     {
-        yield return null;// skip 1 frame so the space clicked to confirm the attack option 
-                          // selection doesn't confirm the target selection instantly 
+        yield return null; // Skip one frame so the space clicked to confirm the attack option 
+                           // selection doesn't confirm the target selection instantly 
         gm.CurrentStateOfPlayer = EPlayerStates.SuperPower;
-        UnityEngine.Debug.Log("Couroutine started ");
         while (!ActionTaken)
         {
             HandleInput();
@@ -96,7 +89,6 @@ public class Melina : Captain
         ActionTaken = false;
         selectedUnitIndex = -1; 
         gm.CurrentStateOfPlayer = EPlayerStates.Idle;
-        Debug.Log("Action finished");
     }
 
     private void HandleInput()
@@ -153,18 +145,12 @@ public class Melina : Captain
             HighlightSelectedTarget(_tiredUnits[selectedUnitIndex], Color.gray);
             
             ActionTaken = true;
-
         }
     }
 
     private void HighlightSelectedTarget(Unit unit, Color color)
     {
-
         // Try to get the Renderer component of the target's GameObject
         unit._rend.color = color;
     }
-
-
 }
-
-

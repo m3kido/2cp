@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
+// Class to manage the main menu
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] private GameObject[] Screens;

@@ -1,7 +1,1 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Carrack : AttackingUnit
-{
-}
+public class Carrack : AttackingUnit { }

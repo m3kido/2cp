@@ -17,5 +17,5 @@ MonoBehaviour:
   _maxProvisions: 99
   _lineOfSight: 0
   _cost: 12000
-  _walkableTerrains: 040000000500000006000000
+  _walkableTerrains: 05000000060000000400000008000000
   _loadableUnits: 00000000010000000200000003000000

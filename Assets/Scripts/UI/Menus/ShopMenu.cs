@@ -90,7 +90,6 @@ public class ShopMenu : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            
             _unitElements.Keys.ToList()[_selectedUnit].transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = textColor;
 
             _selectedUnit = (_selectedUnit - 1 + _unitElements.Count) % _unitElements.Count;
@@ -129,8 +128,8 @@ public class ShopMenu : MonoBehaviour
             {
                 _unitDetails.transform.GetChild(1).GetComponent<Image>().sprite = unit.GetComponent<SpriteRenderer>().sprite;
                 _unitDetails.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text=unit.Data.MoveRange.ToString();
-                //_unitDetails.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text
-                //_unitDetails.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text
+                // _unitDetails.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text
+                // _unitDetails.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text
                 return;
             }
         }

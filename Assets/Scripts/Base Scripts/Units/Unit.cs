@@ -233,16 +233,16 @@ public class Unit : MonoBehaviour
         SeekTile(left, currentProvisions, count + 1);
         SeekTile(right, currentProvisions, count + 1);
     }
+
     public void Die()
     {
-        print("I'm Going To Die!");
         _um.Units.Remove(this);
         Destroy(gameObject);
     }
 
     public static float L1Distance2D(Vector3 A, Vector3 B)
     {
-        return Mathf.Abs(A.x - B.x) + Mathf.Abs(A.y - B.y);//+ Mathf.Abs(A.z - B.z)
+        return Mathf.Abs(A.x - B.x) + Mathf.Abs(A.y - B.y); //+ Mathf.Abs(A.z - B.z)
     }
 
     public Vector3Int GetGridPosition()
@@ -260,6 +260,7 @@ public class Unit : MonoBehaviour
 
         private set {}
     }
+
     public float L2Distance2D(Vector3 A, Vector3 B)
     {
         float dx = A.x - B.x;

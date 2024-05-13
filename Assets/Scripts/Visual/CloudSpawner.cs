@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+// Script to spawn clouds
 public class CloudSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] _cloudPrefabs; // Array to hold different cloud prefabs

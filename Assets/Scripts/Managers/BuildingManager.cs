@@ -135,7 +135,6 @@ public class BuildingManager : MonoBehaviour
     public void CaptureBuilding(Vector3Int pos)
     {
         _capturableBuildings[pos].Health -= (int)(_um.SelectedUnit.Health * _gm.Players[_gm.PlayerTurn].PlayerCaptain.CaptureMultiplier);
-        print(_capturableBuildings[pos].Health);
         if (_capturableBuildings[pos].Health <= 0)
         {
             if (BuildingFromPosition[pos].BuildingType == EBuildings.Castle)
@@ -206,8 +205,6 @@ public class BuildingManager : MonoBehaviour
             {
                 if (unit.Health < 100)
                 {
-                    print(unit.Health);
-                    print(unit.transform.position);
                     Instantiate(HealSprite, unit.transform);
                 }
                 unit.Health += 20;

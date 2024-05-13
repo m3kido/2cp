@@ -1,7 +1,7 @@
-using UnityEngine;
-
+// Class to represent a captain
 public abstract class Captain
 {
+    #region Fields
     public ECaptains CaptainName;
     public CaptainDataSO Data;
     public Player Player;
@@ -35,11 +35,11 @@ public abstract class Captain
             {
                 _superMeter = value; 
             }
-
-
         }
     }
+    #endregion
 
+    #region Methods
     public virtual void EnableCeleste()
     {
 
@@ -78,4 +78,5 @@ public abstract class Captain
         IsCelesteActive = captainData.IsCelesteActive;
         SuperMeter = captainData.SuperMeter;
     }
+    #endregion
 }

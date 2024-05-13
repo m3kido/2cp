@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 // Class to handle the game logic
 public class GameManager : MonoBehaviour
 {
     #region Variables
-    // Auto-properties (the compiler automatically creates private fields for them)
+    // public static GameManager Instance { get { return FindObjectOfType<GameManager>(); } private set { } }
+
     public TextMeshProUGUI PlayerTurnText;
     public GameObject Turn;
     public GameObject winUi;
@@ -33,7 +33,31 @@ public class GameManager : MonoBehaviour
     // Event to let know that the state of the player has changed
     public static event Action OnStateChange;
 
+    public int PlayerTurn
+    {
+        get
+        {
+            return _playerTurn;
+        }
 
+        set
+        {
+            int i = value;
+            while (Players[i].Lost)
+            {
+                i = ++i % Players.Count;
+            }
+            _playerTurn = i;
+        }
+    }
+
+    // Declare turn end and day end events
+    public static event Action OnTurnEnd;
+    public static event Action OnTurnStart;
+    public static event Action OnDayEnd;
+    #endregion
+
+    #region UnityMethods 
     private void Awake()
     {
         CurrentStateOfPlayer = EPlayerStates.Idle;
@@ -48,8 +72,6 @@ public class GameManager : MonoBehaviour
         {
             new("9999", 0, "Mohamed", ETeamColors.Amber, ETeams.A, ECaptains.Andrew, 0, false),
             new("9998", 1, "Oussama", ETeamColors.Azure, ETeams.B, ECaptains.Melina, 0, false),
-
-
         };
     }
 
@@ -77,45 +99,18 @@ public class GameManager : MonoBehaviour
 
         if (isGameOver)
         {
-            Debug.Log("Winner index : " + winnerIdx);
             EndGame(winnerIdx);
-           /* _endtimer += Time.deltaTime;
-            if (_endtimer >= EndGameDuration)
-            {
-                SceneManager.LoadScene("Main Menu");
-                _endtimer = 0f;
-            }
-*/
+          /*_endtimer += Time.deltaTime;
+             if (_endtimer >= EndGameDuration)
+             {
+                 SceneManager.LoadScene("Main Menu");
+                 _endtimer = 0f;
+             }*/
         }
     }
     #endregion
 
-    //public static GameManager Instance { get { return FindObjectOfType<GameManager>(); } private set { } }
-
-    public int PlayerTurn
-    {
-        get
-        {
-
-            return _playerTurn;
-        }
-
-        set
-        {
-            int i = value;
-            while (Players[i].Lost)
-            {
-                i = ++i % Players.Count;
-            }
-            _playerTurn = i;
-        }
-    }
-
-    // Declare turn end and day end events
-    public static event Action OnTurnEnd;
-    public static event Action OnTurnStart;
-    public static event Action OnDayEnd;
-
+    #region Methods
     // Method to end a turn
     public void EndTurn()
     {
@@ -134,7 +129,6 @@ public class GameManager : MonoBehaviour
 
     public (bool, int) IsGameOver()
     {
-
         int activePlayersCount = 0;
         int idx = 0;
         foreach (var player in Players)
@@ -146,13 +140,11 @@ public class GameManager : MonoBehaviour
             }
         }
         return (activePlayersCount == 1, idx);
-
     }
 
     public void EndGame(int playerIndex)
     {
         CurrentStateOfPlayer= EPlayerStates.WinScreen;
-        Debug.Log("Player index : " + playerIndex);
         WinnerText.text = Players[playerIndex].PlayerCaptain.CaptainName + " Wins";
         winUi.SetActive(true);
     }
@@ -162,5 +154,5 @@ public class GameManager : MonoBehaviour
         player.RemoveCaptain();
         Players.Remove(player);
     }*/
-
+    #endregion
 }

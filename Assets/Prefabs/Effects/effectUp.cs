@@ -1,14 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class effectUp : MonoBehaviour
+// Script to make an effect icon go up
+public class EffectUp : MonoBehaviour
 {
-    public float speed=1;
+    public float speed = 0.8f;
+
     // Start is called before the first frame update
     void Start()
     {
-        Destroy(gameObject,1f);
+        Destroy(gameObject, 1f);
     }
 
     // Update is called once per frame

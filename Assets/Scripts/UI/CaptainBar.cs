@@ -45,9 +45,9 @@ public class CaptainBar : MonoBehaviour
         else 
         {
             _superMeterReady.SetActive(false);
-        }
-        
+        }  
     }
+
     public void UpdateCaptain()
     {
         var col = _gm.Players[_gm.PlayerTurn].Color;
@@ -89,7 +89,7 @@ public class CaptainBar : MonoBehaviour
     }
     public void UpdateGold()
     {
-        //_captainSprite.sprite = _gm.Players[_gm.PlayerTurn].PlayerCaptain.FrameSprite;
+        // _captainSprite.sprite = _gm.Players[_gm.PlayerTurn].PlayerCaptain.FrameSprite;
         if (_goldValue.TryGetComponent<TextMeshProUGUI>(out var textMesh))
         {
             textMesh.text = _gm.Players[_gm.PlayerTurn].Gold.ToString();
