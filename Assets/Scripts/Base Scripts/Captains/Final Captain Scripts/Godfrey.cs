@@ -24,7 +24,7 @@ public class Godfrey : Captain
             if (CaptainManager.Gm.Players[unit.Owner] != Player)
             {
                 unit.MoveRange--;
-                // increase provisions
+                // Increase provisions
             }
         }
     }
