@@ -288,6 +288,7 @@ public class UnitManager : MonoBehaviour
 
     public void DestroyUnit(Unit unit) // necessary for removing a unit from a Player Script
     {
+        this.Units.Remove(unit);
         Destroy(unit.gameObject);
     }
     #endregion
