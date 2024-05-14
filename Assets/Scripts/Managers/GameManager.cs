@@ -143,7 +143,7 @@ public class GameManager : MonoBehaviour
 
     public void EndGame(int playerIndex)
     {
-        CurrentStateOfPlayer= EPlayerStates.WinScreen;
+        CurrentStateOfPlayer = EPlayerStates.WinScreen;
         WinnerText.text = Players[playerIndex].PlayerCaptain.CaptainName + " Wins";
         winUi.SetActive(true);
     }

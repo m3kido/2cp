@@ -1183,7 +1183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerTurnText: {fileID: 246899099}
   Turn: {fileID: 1463863413}
-  winUi: {fileID: 594734787}
+  winUi: {fileID: 826521525}
   WinnerText: {fileID: 439620635}
   DisplayDuration: 0.5
   EndGameDuration: 2
