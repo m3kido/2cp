@@ -60,8 +60,14 @@ public class AttackManager : MonoBehaviour
         target.Health -= (int)damageApplied;
 
         superMeterAdd = (int)((damageApplied * attacker.Data.Cost / 10) * 0.5 );
-        Attacker.PlayerCaptain.SuperMeter += superMeterAdd;
-   
+        if (superMeterAdd > Attacker.PlayerCaptain.maxSuperMeter)
+        {
+            Attacker.PlayerCaptain.SuperMeter += Attacker.PlayerCaptain.maxSuperMeter * 0.25f ;
+        }
+        else
+        {
+            Attacker.PlayerCaptain.SuperMeter += superMeterAdd;
+        }
         attacker.ConsumeAmmo();   
         if (target.Health > 0 && target is AttackingUnit &&
             !directAttacker.Contains(attacker.Data.UnitType)) // We need to check if target unit can attack the attacker
