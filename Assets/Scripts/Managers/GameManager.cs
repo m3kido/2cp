@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 
@@ -146,6 +147,18 @@ public class GameManager : MonoBehaviour
         CurrentStateOfPlayer = EPlayerStates.WinScreen;
         WinnerText.text = Players[playerIndex].PlayerCaptain.CaptainName + " Wins";
         winUi.SetActive(true);
+
+        string filePath = Path.Combine(Application.persistentDataPath, FindAnyObjectByType<GameDataSaveManager>()._dataFileName);
+
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+            Debug.Log("File deleted successfully.");
+        }
+        else
+        {
+            Debug.LogWarning("File does not exist at: " + filePath);
+        }
     }
 
     /*public void RemovePlayer(Player player)

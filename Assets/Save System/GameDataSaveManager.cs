@@ -19,7 +19,7 @@ public class GameDataSaveManager : MonoBehaviour
     private GameDataFileHandler _gameDataHandler; // Class to handle writing game data in the file
 
     [Header("Data Storage File Configuartion")]
-    [SerializeField] private string _dataFileName;
+    [SerializeField] public string _dataFileName;
     [SerializeField] private bool _useEncryption;
 
     public static GameDataSaveManager Instance { get; private set; }
