@@ -231,10 +231,10 @@ TextureImporter:
       name: menu cursor_4
       rect:
         serializedVersion: 2
-        x: 767
-        y: 367
-        width: 50
-        height: 50
+        x: 721
+        y: 417
+        width: 46
+        height: 46
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -257,7 +257,7 @@ TextureImporter:
         width: 16
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -278,7 +278,7 @@ TextureImporter:
         width: 16
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -299,7 +299,7 @@ TextureImporter:
         width: 16
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -320,7 +320,7 @@ TextureImporter:
         width: 16
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -328,6 +328,48 @@ TextureImporter:
       bones: []
       spriteID: fb183932d5cc1ba40bbfdad066b58bf0
       internalID: -477985400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: menu cursor_9
+      rect:
+        serializedVersion: 2
+        x: 721
+        y: 369
+        width: 46
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4312f523b04ed44438479d1b020bb333
+      internalID: 1803373376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: menu cursor_10
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 176
+        width: 22
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83ddee8c8fc51664fbc354a7cbca7a5d
+      internalID: 1508530351
       vertices: []
       indices: 
       edges: []
@@ -346,6 +388,7 @@ TextureImporter:
       UI books & more_0: 1663116379
       menu cursor_0: 199199635
       menu cursor_1: 1049638191
+      menu cursor_10: 1508530351
       menu cursor_2: -686154339
       menu cursor_3: 839432462
       menu cursor_4: 1492420354
@@ -353,6 +396,7 @@ TextureImporter:
       menu cursor_6: -494935402
       menu cursor_7: -503660023
       menu cursor_8: -477985400
+      menu cursor_9: 1803373376
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

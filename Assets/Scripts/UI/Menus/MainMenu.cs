@@ -35,8 +35,8 @@ public class MainMenu : MonoBehaviour
 
     private ECaptains[] availableCaptains = { ECaptains.Andrew, ECaptains.Godfrey, ECaptains.Maximus, ECaptains.Melina };
     private ECaptains[] currentCaptains = { ECaptains.Andrew, ECaptains.Godfrey, ECaptains.Maximus, ECaptains.Melina };
-    private ETeamColors[] availableColors = { ETeamColors.Amber, ETeamColors.Azure, ETeamColors.Gilded, ETeamColors.Verdant };
-    private ETeamColors[] currentColors = { ETeamColors.Amber, ETeamColors.Azure, ETeamColors.Gilded, ETeamColors.Verdant };
+    private ETeamColors[] availableColors = { ETeamColors.Amber, ETeamColors.Azure, ETeamColors.Verdant, ETeamColors.Gilded };
+    private ETeamColors[] currentColors = { ETeamColors.Amber, ETeamColors.Azure, ETeamColors.Verdant, ETeamColors.Gilded };
 
     private int _currentScreen = 0;
     private int _mapIndex = 0;
@@ -55,6 +55,9 @@ public class MainMenu : MonoBehaviour
                 PlayGame();
                 switch (_mapIndex)
                 {
+                    case 2: _nbplayers=3; break;
+                    case 3: _nbplayers = 3; break;
+                    case 4: _nbplayers = 4; break;
                     default: _nbplayers = 2; break;
                 }
                 if (_nbplayers <= 3)
@@ -133,10 +136,12 @@ public class MainMenu : MonoBehaviour
                         if (_nbplayers != 4)
                         {
                             bool changed = false;
-                            ETeamColors newColor;
+                            ETeamColors newColor = currentColors[selectedPlayer];
                             while (!changed)
                             {
-                                newColor = (ETeamColors)(((int)currentColors[selectedPlayer] + 1) % 4);
+                                newColor = (ETeamColors)(((int)newColor + 1) % 5);
+                                if (newColor == currentColors[selectedPlayer]) { break; }
+                                if (newColor == ETeamColors.Neutral) { continue; }
                                 bool exists = false;
                                 for (int i = 0; i < _nbplayers; i++)
                                 {
@@ -150,8 +155,6 @@ public class MainMenu : MonoBehaviour
                                 }
                             }
                         }
-
-
 
                     }
                 }
@@ -175,17 +178,19 @@ public class MainMenu : MonoBehaviour
                     if (currentoption == 0)
                     {
                         currentCaptains[selectedPlayer] = (ECaptains)(((int)currentCaptains[selectedPlayer] + 3) % 4);
-                        //update ui
+                        ChangeCaptain();
                     }
                     else if (currentoption == 1)
                     {
                         if (_nbplayers != 4)
                         {
                             bool changed = false;
-                            ETeamColors newColor;
+                            ETeamColors newColor = currentColors[selectedPlayer] ;
                             while (!changed)
                             {
-                                newColor = (ETeamColors)(((int)currentColors[selectedPlayer] + 3) % 4);
+                                newColor = (ETeamColors)(((int)newColor + 4) % 5);
+                                if (newColor == currentColors[selectedPlayer] ) { break; }
+                                if( newColor == ETeamColors.Neutral) { continue; }
                                 bool exists = false;
                                 for (int i = 0; i < _nbplayers; i++)
                                 {
@@ -195,6 +200,7 @@ public class MainMenu : MonoBehaviour
                                 {
                                     currentColors[selectedPlayer] = newColor;
                                     changed = true;
+                                    ChangeColor();
                                 }
                             }
                         }
@@ -202,7 +208,9 @@ public class MainMenu : MonoBehaviour
                 }
                 else
                 {
+                    ChangeSelectionOff();
                     selectedPlayer = (selectedPlayer - 1 + _nbplayers) % _nbplayers;
+                    ChangeSelectionOn();
                 }
 
             }
@@ -239,7 +247,7 @@ public class MainMenu : MonoBehaviour
     }
     private void ChangeSelectionOn()
     {
-        if (currentoption == 3) { playBorder.gameObject.SetActive(true); }
+        if (currentoption == 2) { playBorder.gameObject.SetActive(true); }
         if (currentoption == 0)
         {
             _playerSpritesBorder[selectedPlayer].gameObject.SetActive(true);
@@ -251,7 +259,7 @@ public class MainMenu : MonoBehaviour
     }
     private void ChangeSelectionOff()
     {
-        if (currentoption == 3) { playBorder.gameObject.SetActive(false); ; }
+        if (currentoption == 2) { playBorder.gameObject.SetActive(false); ; }
         if (currentoption == 0)
         {
             _playerSpritesBorder[selectedPlayer].gameObject.SetActive(false);
