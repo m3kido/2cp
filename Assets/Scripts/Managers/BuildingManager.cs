@@ -198,7 +198,7 @@ public class BuildingManager : MonoBehaviour
 
     private void HealUnits()
     {
-        foreach (var building in BuildingFromPosition.Values)
+        foreach (var building in _capturableBuildings.Values)
         {
             var unit = _um.FindUnit(building.Position);
             if (unit && building.Owner == unit.Owner)
