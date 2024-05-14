@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
@@ -31,12 +32,9 @@ public class MainMenu : MonoBehaviour
     private int optionselected = 0;
     private int currentoption = 0;
 
-    private int _nbplayers = 2;
-
-    private ECaptains[] availableCaptains = { ECaptains.Andrew, ECaptains.Godfrey, ECaptains.Maximus, ECaptains.Melina };
-    private ECaptains[] currentCaptains = { ECaptains.Andrew, ECaptains.Godfrey, ECaptains.Maximus, ECaptains.Melina };
-    private ETeamColors[] availableColors = { ETeamColors.Amber, ETeamColors.Azure, ETeamColors.Verdant, ETeamColors.Gilded };
-    private ETeamColors[] currentColors = { ETeamColors.Amber, ETeamColors.Azure, ETeamColors.Verdant, ETeamColors.Gilded };
+    public static int _nbplayers = 2;
+    public static  ECaptains[] currentCaptains = { ECaptains.Andrew, ECaptains.Godfrey, ECaptains.Maximus, ECaptains.Melina };
+    public static ETeamColors[] currentColors = { ETeamColors.Amber, ETeamColors.Azure, ETeamColors.Verdant, ETeamColors.Gilded };
 
     private int _currentScreen = 0;
     private int _mapIndex = 0;
@@ -74,7 +72,7 @@ public class MainMenu : MonoBehaviour
             {
                 if (currentoption == 2)
                 {
-
+                    SceneManager.LoadScene(_mapIndex + 1);
                 }
                 else
                 {

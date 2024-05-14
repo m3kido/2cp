@@ -70,9 +70,13 @@ public class GameManager : MonoBehaviour
         // Initialize players
         Players = new List<Player>
         {
-            new("9999", 0, "Mohamed", ETeamColors.Amber, ETeams.A, ECaptains.Andrew, 0, false),
-            new("9998", 1, "Oussama", ETeamColors.Azure, ETeams.B, ECaptains.Melina, 0, false),
+           // new("9999", 0, "Mohamed", ETeamColors.Amber, ETeams.A, ECaptains.Andrew, 0, false),
+           // new("9998", 1, "Oussama", ETeamColors.Azure, ETeams.B, ECaptains.Melina, 0, false),
         };
+        for (int i = 0; i < MainMenu._nbplayers; i++) {
+            Player newplayer = new(i.ToString(), i, "Player  ".Insert(6, i.ToString()), MainMenu.currentColors[i], (ETeams)i, MainMenu.currentCaptains[i], 2500, false);
+            Players.Add(newplayer);
+        }
     }
 
     private void Update()
