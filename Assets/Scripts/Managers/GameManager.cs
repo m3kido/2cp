@@ -123,7 +123,6 @@ public class GameManager : MonoBehaviour
             OnDayEnd?.Invoke();
         };
 
-
         OnTurnStart?.Invoke();
     }
 
