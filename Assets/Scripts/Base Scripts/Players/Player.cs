@@ -4,13 +4,12 @@ public class Player
     public string ID { get; private set; }
     public int PlayerNumber { get; set; }
     public string Name { get; set; }
-    private bool _lost = false;
     public ETeamColors Color { get; set; }
     public ETeams TeamSide { get; set; }
     public Captain PlayerCaptain { get; set; }
-
     public int Gold { get; set; }
 
+    private bool _lost = false;
     public bool Lost
     {
         get => _lost;

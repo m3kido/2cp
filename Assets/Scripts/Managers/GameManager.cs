@@ -123,7 +123,6 @@ public class GameManager : MonoBehaviour
             OnDayEnd?.Invoke();
         };
 
-
         OnTurnStart?.Invoke();
     }
 
@@ -144,7 +143,7 @@ public class GameManager : MonoBehaviour
 
     public void EndGame(int playerIndex)
     {
-        CurrentStateOfPlayer= EPlayerStates.WinScreen;
+        CurrentStateOfPlayer = EPlayerStates.WinScreen;
         WinnerText.text = Players[playerIndex].PlayerCaptain.CaptainName + " Wins";
         winUi.SetActive(true);
     }
