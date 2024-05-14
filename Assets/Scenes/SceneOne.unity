@@ -6741,8 +6741,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unitDisposition: {fileID: 11400000, guid: 599fe2b6860ea2f43808bf3f82a9be3c, type: 2}
-  _dataFileName: game_data
-  _useEncryption: 0
+  _dataFileName: game_data1
+  _useEncryption: 1
 --- !u!4 &1465194640
 Transform:
   m_ObjectHideFlags: 0
