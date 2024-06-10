@@ -140,7 +140,7 @@ public class UnitIconManager : MonoBehaviour
         {
             int energyOrbs = unit.Weapons[unit.CurrentWeaponIndex].EnergyOrbs;
             
-            if (energyOrbs <= Mathf.FloorToInt(_unit.Data.MaxProvisions * 0.25f))
+            if (energyOrbs <= 1)
             {
                 // Blink only if energy orbs are not zero
                 _blinkE = energyOrbs != 0;
