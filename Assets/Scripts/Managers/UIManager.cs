@@ -1,55 +1,73 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
+// Class to manage UI
 public class UIManager : MonoBehaviour
 {
-    //this class should handle:
-    //the menu (appears after moving or selecting a tile) :
-    //lists options 
+    // This class should handle :
+    // The menu (appears after moving or selecting a tile)
+    // Info (appears when hovering on a tile):
+    // Display tile info and _unit info if a _unit is on the tile
+    // Captain bar
+    // Building menu
 
-    //info (appears when hovering on a tile):
-    //display tile info and unit info if a unit is on the tile
+    #region Variables
+    private GameManager _gm;
+   
+    [SerializeField] private GameObject _actionMenu;
 
-    //captain bar
+    [SerializeField] private GameObject _settingMenu;
 
-    //building menu
-    GameManager Gm;
-    [SerializeField]
-    private GameObject ActionMenu;
-    // Start is called before the first frame update
+    [SerializeField] private GameObject _statMenu;
+
+    [SerializeField] private GameObject _CaptainsBar;
+
+    [SerializeField] private GameObject _ShopMenu;
+    #endregion
+
+    #region UnityMethods
     private void OnEnable()
     {
         GameManager.OnStateChange += ChangeActiveUI;
     }
+
     private void OnDisable()
     {
         GameManager.OnStateChange -= ChangeActiveUI;
     }
+
     void Awake()
     {
-        Gm=FindAnyObjectByType<GameManager>();
-        
+        _gm = FindAnyObjectByType<GameManager>();
     }
+
     private void Start()
     {
-        ActionMenu.SetActive(false);
+        _actionMenu.SetActive(false);
+        _settingMenu.SetActive(false);
     }
+    #endregion
+
+    #region Methods
     private void ChangeActiveUI()
     {
-       
-        switch (Gm.LastState)
+        switch (_gm.LastStateOfPlayer)
         {
-            case EGameStates.ActionMenu: { ActionMenu.SetActive(false); break; }
+            case EPlayerStates.InActionsMenu: { _actionMenu.SetActive(false); break; }
+            case EPlayerStates.InSettingsMenu: { _settingMenu.SetActive(false); break; }
+            case EPlayerStates.Idle: { _statMenu.SetActive(false); _CaptainsBar.SetActive(false); break; }
+            case EPlayerStates.InBuildingMenu: { _ShopMenu.SetActive(false); _CaptainsBar.SetActive(false); break; }
+            case EPlayerStates.Attacking: { _statMenu.SetActive(false); break; }
             default: { break; }
         }
-        switch (Gm.GameState)
+        switch (_gm.CurrentStateOfPlayer)
         {
-            case EGameStates.ActionMenu: {  ActionMenu.SetActive(true); break; }
+            case EPlayerStates.InActionsMenu: {  _actionMenu.SetActive(true); break; }
+            case EPlayerStates.InSettingsMenu: { _settingMenu.SetActive(true); break; }
+            case EPlayerStates.Idle: { _statMenu.SetActive(true); _CaptainsBar.SetActive(true); break; }
+            case EPlayerStates.InBuildingMenu: { _ShopMenu.SetActive(true); _CaptainsBar.SetActive(true); break; }
+            case EPlayerStates.Attacking: { _statMenu.SetActive(true); break; }
             default: { break; }
         }
-        
     }
+    #endregion
 }

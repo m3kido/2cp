@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d30cbf5745505244a41e91f1a72a22c, type: 3}
+  m_Name: RoadSO
+  m_EditorClassIdentifier: 
+  _terrainType: 0
+  _terrainsOfSameType:
+  - {fileID: 11400000, guid: b9fb6284455835e4a8e0034aa4dbac63, type: 2}
+  - {fileID: 11400000, guid: a0e6f8989ab60f34390ce5167f3b84f3, type: 2}
+  - {fileID: 11400000, guid: dd8c0ac26e71ace4ca7b798e55417b74, type: 2}
+  - {fileID: 11400000, guid: ccd7f753fbc502641af03339dfbc1b0a, type: 2}
+  - {fileID: 11400000, guid: c2c4d84c956ae954385fa51547f6bd9a, type: 2}
+  - {fileID: 11400000, guid: db44463a1adb39940959abc66debeacc, type: 2}
+  - {fileID: 11400000, guid: 47d180bff4c606d489567dce34a680e2, type: 2}
+  - {fileID: 11400000, guid: beac379d9eb53cd4e9bdb61554f38ed5, type: 2}
+  - {fileID: 11400000, guid: 0bffffd325d1c304fb9b0f6618e5a4e8, type: 2}
+  - {fileID: 11400000, guid: 834c355fdb5720e4dac648723a191cb8, type: 2}
+  - {fileID: 11400000, guid: edec0db63167e69488554ba2192d587c, type: 2}
+  - {fileID: 11400000, guid: 2372aa7133c06374ab7201348645799a, type: 2}
+  - {fileID: 11400000, guid: af605249be0ea964f8a713694035eadf, type: 2}
+  - {fileID: 11400000, guid: 296e3d733d61b8a41ac3201f509cb7cb, type: 2}
+  - {fileID: 11400000, guid: c6c2f54e0dae0174d9a346cac9c14da4, type: 2}
+  - {fileID: 11400000, guid: 956e1c4e6b029424fb6161cac7c761d1, type: 2}
+  - {fileID: 11400000, guid: 58ba639c5a9a6c94ca6e4a71c77707ca, type: 2}
+  - {fileID: 11400000, guid: 68fde5139f167c64e97e2a532196ed41, type: 2}
+  - {fileID: 11400000, guid: 0991586a7784c7a49a7f96be9fe302d9, type: 2}
+  - {fileID: 11400000, guid: 9a7b3a3a83e197b4f89b4466abf11360, type: 2}
+  - {fileID: 11400000, guid: 92a57001fb974dc4a977d840984a3e4c, type: 2}
+  - {fileID: 11400000, guid: 8d13d27bee442fd489bcc49b8d4f0605, type: 2}
+  - {fileID: 11400000, guid: 02be7e42fcccfa34481d7d5769382c55, type: 2}
+  - {fileID: 11400000, guid: 28d940b69cd465a46ac134550045f104, type: 2}
+  - {fileID: 11400000, guid: 27857ad3d0eb9e6499de3165bb051d4d, type: 2}
+  - {fileID: 11400000, guid: dad93a7448a844b4baa98e5e324ce987, type: 2}
+  _provisionsCost: 1
+  _defenceStars: 0

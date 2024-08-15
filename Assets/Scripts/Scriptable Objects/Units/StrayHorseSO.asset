@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca34aedce99af674bba139dabc779452, type: 3}
+  m_Name: StrayHorseSO
+  m_EditorClassIdentifier: 
+  _unitType: 4
+  _moveRange: 5
+  _maxProvisions: 99
+  _lineOfSight: 0
+  _cost: 5000
+  _walkableTerrains: 00000000010000000500000008000000
+  _loadableUnits: 00000000020000000100000003000000
