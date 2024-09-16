@@ -1,132 +1,275 @@
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.UI;
 
+// Class to manage action selection menu
 public class ActionMenu : MonoBehaviour
 {
-    CursorController Cc;
-    GameManager Gm;
-    UnitManager Um;
-    BuildingManager Bm;
+    #region Variables
+    // Managers will be needed
+    private CursorManager _cm;
+    private GameManager _gm;
+    private UnitManager _um;
+    private BuildingManager _bm;
+    private AttackManager _am;
+    private Camera _camera;
+    private RectTransform _rect;
 
-    public Sprite Cursor;
-    public GameObject Options;
-    List<GameObject> OptionsList;
-    int SelectedOption;
+    private CaptainManager _cp;
 
-    public GameObject WaitOption;
-    //public GameObject FireOption;
-    // public GameObject CaptureOption;
+    [SerializeField] private Sprite _cursor;
+    [SerializeField] private GameObject _options;
+    private List<GameObject> _optionsList;
+    private int _selectedOption;
 
-    private GameObject WaitOptionInstance;
-    private GameObject WaitOptionInstance2;
-    //public GameObject FireOption;
-    // public GameObject CaptureOption;
+    [SerializeField] private GameObject _waitOption;
+    [SerializeField] private GameObject _captureOption;
+    [SerializeField] private GameObject _attackOption;
+    [SerializeField] private GameObject _loadOption;
+    [SerializeField] private GameObject _dropOption;
+    [SerializeField] private GameObject _refillOption;
+    // public GameObject FireOption;
+
+    private GameObject _waitOptionInstance;
+    private GameObject _captureOptionInstance;
+    private GameObject _attackOptionInstance;
+    private GameObject _loadOptionInstance;
+    private GameObject _dropOptionInstance;
+    private GameObject _refillOptionInstance;
+    #endregion
+
+    #region UnityMethods
     private void Awake()
     {
-        Cc = FindAnyObjectByType<CursorController>();
-        Um = FindAnyObjectByType<UnitManager>();
-        Gm = FindAnyObjectByType<GameManager>();
-        Bm = FindAnyObjectByType<BuildingManager>();
-        OptionsList = new List<GameObject>();
+        _cm = FindAnyObjectByType<CursorManager>();
+        _um = FindAnyObjectByType<UnitManager>();
+        _gm = FindAnyObjectByType<GameManager>();
+        _bm = FindAnyObjectByType<BuildingManager>();
+        _am = FindAnyObjectByType<AttackManager>();
+        _cp = FindAnyObjectByType<CaptainManager>();
 
-        WaitOptionInstance = Instantiate(WaitOption, Options.transform);
-        WaitOptionInstance.SetActive(false);
-        WaitOptionInstance2 = Instantiate(WaitOption, Options.transform);
-        WaitOptionInstance2.SetActive(false);
+        _camera = Camera.main;
+        _rect = GetComponent<RectTransform>();
 
+        _optionsList = new List<GameObject>();
+
+        _waitOptionInstance = Instantiate(_waitOption, _options.transform);
+        _waitOptionInstance.SetActive(false);
+
+        _captureOptionInstance = Instantiate(_captureOption, _options.transform);
+        _captureOptionInstance.SetActive(false);
+
+        _attackOptionInstance = Instantiate(_attackOption, _options.transform);
+        _attackOptionInstance.SetActive(false);
+
+        _loadOptionInstance = Instantiate(_loadOption, _options.transform);
+        _loadOptionInstance.SetActive(false);
+
+        _dropOptionInstance = Instantiate(_dropOption, _options.transform);
+        _dropOptionInstance.SetActive(false);
+
+        _refillOptionInstance = Instantiate(_refillOption, _options.transform);
+        _refillOptionInstance.SetActive(false);
+
+        
     }
+
     private void OnEnable()
     {
-        if (Bm.Buildings == null) { return; }
+        if (_gm.CurrentStateOfPlayer != EPlayerStates.InActionsMenu) { return; }
+        //this will be reusable
+        //this changes the location of the menu based on the cursor position
+        //local position returns the position considiring its parent(canvas) as the reference
+        //im adding the width because the pivot of action menu is on its top right
+        if (_camera.transform.position.x - _cm.transform.position.x >= 0)
+        {
+            //if the menu is on the left of the screen
+            if (_rect.localPosition.x < 0)
+            {
+                _rect.localPosition = new Vector3(-1 * _rect.localPosition.x + _rect.rect.width, _rect.localPosition.y, _rect.localPosition.z);
+            }
+        }
+        else
+        {
+            //if the menu is on the right of the screen
+            if (_rect.localPosition.x > 0)
+            {
+                _rect.localPosition = new Vector3(-1 * _rect.localPosition.x + _rect.rect.width, _rect.localPosition.y, _rect.localPosition.z);
+            }
+        }
         CalculateOptions();
-
     }
+
     private void OnDisable()
     {
-        if(OptionsList.Count == 0) { return; }
-        OptionsList[SelectedOption].transform.GetChild(0).GetComponent<Image>().color = Color.clear;
-        foreach (GameObject option in OptionsList) { option.SetActive(false); }
-        OptionsList.Clear();
+        if (_optionsList.Count == 0) { return; }
+        _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(false);
+        foreach (GameObject option in _optionsList) { option.SetActive(false); }
+        _optionsList.Clear();
     }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.X))
         {
-            Gm.GameState = EGameStates.Selecting;
-            Um.SelectedUnit.transform.position = Cc.SaveTile;
-            if (Um.Path.Count != 0)
-            {
-                Cc.HoverTile = Um.Path.Last();
-            }
+            _gm.CurrentStateOfPlayer = EPlayerStates.Selecting;
+            _um.SelectedUnit.transform.position = _cm.SaveTile;
 
-            Um.SelectUnit(Um.SelectedUnit);
+            if (_um.Path.Count != 0)
+            {
+                _cm.HoveredOverTile = _um.Path.Last();
+            }
+            _um.SelectUnit(_um.SelectedUnit);
         }
+
         else if (Input.GetKeyDown(KeyCode.Space))
         {
-
-            if (OptionsList[SelectedOption].name.Contains("Wait"))
+            if (_optionsList[_selectedOption] == _waitOptionInstance)
             {
-                Um.EndMove();
-                Gm.GameState = EGameStates.Idle;
+                _um.EndMove();
+            }
+            //Logic to do when the player choose to attack 
+            else if (_optionsList[_selectedOption] == _attackOptionInstance)
+            {
+
+                if (_um.SelectedUnit is AttackingUnit)
+                {
+                    _am.Attacker = _um.SelectedUnit as AttackingUnit;
+
+                    Debug.Log("We're attacking");
+                    _am.InitiateAttack();
+                    Debug.Log("Done attacking");
+
+
+
+
+
+                }
+            }
+            else if (_optionsList[_selectedOption] == _attackOptionInstance)
+            {
+
+                if (_um.SelectedUnit is AttackingUnit)
+                {
+                    _am.Attacker = _um.SelectedUnit as AttackingUnit;
+
+                    Debug.Log("We're attacking");
+                    _am.InitiateAttack();
+                    Debug.Log("Done attacking");
+                }
+            }
+            else if (_optionsList[_selectedOption] == _captureOptionInstance)
+            {
+                _bm.CaptureBuilding(_cm.HoveredOverTile);
+                _um.EndMove();
+                
+            }
+            else if (_optionsList[_selectedOption] == _captureOptionInstance)
+            {
+                _bm.CaptureBuilding(_cm.HoveredOverTile);
+                _um.EndMove();
+
+            }
+            else if (_optionsList[_selectedOption] == _loadOptionInstance)
+            {
+                (_um.FindUnit(_um.SelectedUnit.GetGridPosition()) as LoadingUnit).LoadUnit(_um.SelectedUnit);
+                _um.EndMove();
+
+            }
+            else if (_optionsList[_selectedOption] == _dropOptionInstance)
+            {
+                (_um.SelectedUnit as LoadingUnit).InisitateDropUnit();
+                
+
             }
         }
+        //change selected option
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            OptionsList[SelectedOption].transform.GetChild(0).GetComponent<Image>().color = Color.clear;
-            SelectedOption = (SelectedOption - 1 + OptionsList.Count) % OptionsList.Count;
-            OptionsList[SelectedOption].transform.GetChild(0).GetComponent<Image>().color = Color.white;
+            //getting the cursor image and  hiding it
+            _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(false);
+
+            _selectedOption = (_selectedOption - 1 + _optionsList.Count) % _optionsList.Count;
+
+            //getting the cursor image and  showing it
+            _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(true);
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            OptionsList[SelectedOption].transform.GetChild(0).GetComponent<Image>().color = Color.clear;
-            SelectedOption = (SelectedOption + 1 ) % OptionsList.Count;
-            OptionsList[SelectedOption].transform.GetChild(0).GetComponent<Image>().color = Color.white;
+            _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(false);
+
+            _selectedOption = (_selectedOption + 1) % _optionsList.Count;
+
+            _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(true);
         }
-
-
-
     }
+    #endregion
+
+    #region Methods
     private void CalculateOptions()
     {
-
-        //CheckFire();
-        CheckCapture();
-        WaitOptionInstance2.SetActive(true);
-        OptionsList.Add(WaitOptionInstance2);
-
-        if (OptionsList.Count > 0)
+        if (_um.FindUnit(_um.SelectedUnit.GetGridPosition()))
         {
-            SelectedOption = 0;
-            OptionsList[SelectedOption].transform.GetChild(0).GetComponent<Image>().color = Color.white;
+            _loadOptionInstance.SetActive(true);
+            _optionsList.Add(_loadOptionInstance);
 
-        }
-
-    }
-    /* private void CheckFire()
-      {
-          if (Um.SelectedUnit.CanAttack())
-          {
-              OptionsList.Add(FireOption);
-          }
-      }*/
-    private void CheckCapture()
-    {
-        if (Bm.Buildings == null) { return; }
-        var building = Bm.Buildings.ContainsKey(Cc.HoverTile) ? Bm.Buildings[Cc.HoverTile] : null;
-        if (building != null && building.Owner != Gm.PlayerTurn)
-        {
-            //OptionsList.Add( Instantiate(CaptureOption, Options.transform));
         }
         else
         {
-            WaitOptionInstance.SetActive(true);
-            OptionsList.Add(WaitOptionInstance);
+            CheckFire();// if is an attacking unit
 
+            CheckDrop();
+            CheckAbility();
+            
+        }
+        
+       
+        _selectedOption = 0;
+        _optionsList[_selectedOption].transform.GetChild(0).gameObject.SetActive(true);
+    }
 
+     private void CheckFire()
+      {
+          if (_um.SelectedUnit is AttackingUnit && _am.UnitCanAttack(_um.SelectedUnit as AttackingUnit))
+          {
+            _attackOptionInstance.SetActive(true);
+            _optionsList.Add(_attackOptionInstance);
+            return;
+        }
+      } 
+    private void CheckDrop()
+    {
+        if (_um.SelectedUnit is LoadingUnit && (_um.SelectedUnit as LoadingUnit).LoadedUnit != null&& (_um.SelectedUnit as LoadingUnit).GetDropTiles() )
+        {
+            _dropOptionInstance.SetActive(true);
+            _optionsList.Add(_dropOptionInstance);
+            return;
+        }
+    }
+    private void CheckAbility()
+    {
+        var building = _bm.BuildingFromPosition.ContainsKey(_cm.HoveredOverTile) ? _bm.BuildingFromPosition[_cm.HoveredOverTile] : null;
+        if (building != null)
+        {
+            if (building.Owner != _gm.PlayerTurn)
+            {
+                if (_um.SelectedUnit.Data.UnitType == EUnits.Infantry || _um.SelectedUnit.Data.UnitType == EUnits.Lancers)
+                {
+                    _captureOptionInstance.SetActive(true);
+                    _optionsList.Add(_captureOptionInstance);
+                    return;
+                }
+            }
+            else
+            {
+                //heal
+            }
         }
 
+        _waitOptionInstance.SetActive(true);
+        _optionsList.Add(_waitOptionInstance);
     }
+
+    
 }
+#endregion

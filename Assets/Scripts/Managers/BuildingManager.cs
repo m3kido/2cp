@@ -3,108 +3,155 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 
+// Class to manage Buildings
 public class BuildingManager : MonoBehaviour
 {
-    MapManager Mm;
-    UnitManager Um;
-    GameManager Gm;
+    #region Variables
+    // Managers will be needed
+    private MapManager _mm;
+    private UnitManager _um;
+    private GameManager _gm;
 
-
+    // List to store units that can be bought in the building (provided in the inspector)
     [FormerlySerializedAs("UnitPrefabs")] [SerializeField] private List<Unit> _unitPrefabs;
-    private Dictionary<Tile, BuildingData> _buildingTileData;
-    [SerializeField] private BuildingData[] _buildingDatas;
 
+    // Array containing building datas of all buildings (provided in the inspector)
+    [SerializeField] private BuildingDataSO[] _buildingDatas;
 
-    public Dictionary<Vector3Int, Building> Buildings;
+    // Dictionary mapping a tile (on which there's a building) to its building data
+    private Dictionary<Tile, BuildingDataSO> _buildingDataFromTile;
 
-    // Get Building datas of every building type from the inspector
+    // Dictionary mapping a position (on which there's a building) to its building
+    private Dictionary<Vector3Int, Building> _buildingFromPosition;
+
+    // Readonly Properties for the previous fields
+    public List<Unit> UnitPrefabs => _unitPrefabs;
+    public BuildingDataSO[] BuildingDatas => _buildingDatas;
+    public Dictionary<Tile, BuildingDataSO> BuildingDataFromTile => _buildingDataFromTile;
+    public Dictionary<Vector3Int, Building> BuildingFromPosition => _buildingFromPosition;
+    #endregion
+
+    #region UnityMethods
     private void Awake()
     {
-        _buildingTileData = new Dictionary<Tile, BuildingData>();
-
+        // Fill the _buildingDataFromTile dictionary
+        _buildingDataFromTile = new Dictionary<Tile, BuildingDataSO>();
         foreach (var buildingData in _buildingDatas)
         {
-            _buildingTileData.Add(buildingData.Building, buildingData);
+            // Put the Building tile as a key, and the building data as a value
+            _buildingDataFromTile.Add(buildingData.BuildingTile, buildingData);
         }
     }
 
     void Start()
     {
-        // Get the Map and Game Managers from the hierarchy
-        Mm = FindAnyObjectByType<MapManager>();
-        Gm = FindAnyObjectByType<GameManager>();
-        Um = FindAnyObjectByType<UnitManager>();
+        // Get the Map, Game and Unit Managers from the hierarchy
+        _mm = FindAnyObjectByType<MapManager>();
+        _gm = FindAnyObjectByType<GameManager>();
+        _um = FindAnyObjectByType<UnitManager>();
 
-        // Scan the map and put all the buldings in the _buildings dictionary
+        // Scan the map and put all the buldings in the Buildings dictionary
         ScanMapForBuildings();
-
     }
+
     private void OnEnable()
     {
-        GameManager.OnDayEnd += AddGold;
+        // GetGoldFromBuildings subscribes to day end event
+       GameManager.OnDayEnd += GetGoldFromBuildings;
     }
+
     private void OnDisable()
     {
-        GameManager.OnDayEnd -= AddGold;
+        // GetGoldFromBuildings unsubscribes from day end event
+       GameManager.OnDayEnd -= GetGoldFromBuildings;
     }
+    #endregion
 
-    // Scan the map and put all the buldings in the _buildings dictionary
+    #region Methods
+    // Scan the map and put all the buldings in the Buildings dictionary
     private void ScanMapForBuildings()
     {
-        Buildings = new Dictionary<Vector3Int, Building>();
-        foreach (var pos in Mm.Map.cellBounds.allPositionsWithin)
+        _buildingFromPosition = new Dictionary<Vector3Int, Building>();
+        foreach (var pos in _mm.Map.cellBounds.allPositionsWithin)
         {
-            TileData posTile = Mm.GetTileData(pos);
-
-
-            if (posTile != null && posTile.TileType == ETileTypes.Building)
+            TerrainDataSO posTile = _mm.GetTileData(pos);
+            if (posTile != null && posTile.TerrainType == ETerrains.Building)
             {
-                BuildingData currData = _buildingTileData[Mm.Map.GetTile<Tile>(pos)];
-                Buildings.Add(pos, new Building(pos, currData.BuildingType, (int)currData.Color));
-
+                BuildingDataSO currData = _buildingDataFromTile[_mm.Map.GetTile<Tile>(pos)];
+                foreach (var player in _gm.Players)
+                {
+                    if (player.Color == currData.Color)
+                    {
+                        if (!_buildingFromPosition.ContainsKey(pos))
+                        {
+                            _buildingFromPosition.Add(pos, new Building(currData.BuildingType, pos, _gm.Players.IndexOf(player)));
+                        }
+                    }
+                }
             }
         }
     }
 
-    // Get building data of given grid position
-    public BuildingData GetBuildingData(Vector3Int pos)
+    //change the sprite
+    private void ChangeBuildingOwner(Building building,int owner)
     {
-        return _buildingTileData[Mm.Map.GetTile<Tile>(pos)];
+       ;
+        foreach(var SO in _buildingDatas)
+        {
+            if(SO.Color == _gm.Players[_gm.PlayerTurn].Color && SO.BuildingType==building.BuildingType) {
+                _mm.Map.SetTile(building.Position, SO.BuildingTile);
+            }
+        }
+        building.Owner = owner;
+        building.Health = 200;
+    }
+    // Get building data of given grid position
+    public BuildingDataSO GetBuildingData(Vector3Int pos)
+    {
+        return _buildingDataFromTile[_mm.Map.GetTile<Tile>(pos)];
     }
 
     // Capture building
-    public void CaptureBuilding(Building building, Unit unit)
+    public void CaptureBuilding(Vector3Int pos)
     {
-        building.Health -= unit.Health;
-        if (building.Health <= 0)
+        
+        BuildingFromPosition[pos].Health -= _um.SelectedUnit.Health;
+        print(BuildingFromPosition[pos].Health);
+        if (BuildingFromPosition[pos].Health <= 0)
         {
-            building.Owner = unit.Owner;
-            building.Health = 20;
+            ChangeBuildingOwner(BuildingFromPosition[pos], _gm.PlayerTurn);
         }
     }
-
-    public void SpawnUnit(EUnitType unitType, Building building, int owner)
+    
+    // Spawn a unit from a building
+    public void SpawnUnit(EUnits unitType, Vector3Int pos, int owner)
     {
-
-        Unit newUnit = Instantiate<Unit>(_unitPrefabs[(int)unitType], building.Position, Quaternion.identity);
+        Unit unitPrefab = null ;
+        foreach(var prefab in _unitPrefabs)
+        {
+            if(prefab.Data.UnitType== unitType)
+            {
+                unitPrefab = prefab;
+            }
+        }
+        Unit newUnit = Instantiate<Unit>(unitPrefab, pos, Quaternion.identity,_um.transform);
         newUnit.Owner = owner;
         newUnit.HasMoved = true;
-        //outline this mf
-        if (newUnit == null) { print("d");return; }
-        Um.Units.Add(newUnit);
-
+        if (newUnit == null) { print("d"); return; }
+        _um.Units.Add(newUnit);
     }
-    private void AddGold()
+
+    // Gain gold every day
+    private void GetGoldFromBuildings()
     {
-        foreach (var building in Buildings.Values)
+        foreach (var building in _buildingFromPosition.Values)
         {
-            if(building.Owner < 4)
+            
+            if (building.Owner < 4 && building.BuildingType==EBuildings.Village)
             {
-                Gm.Players[building.Owner].Gold += 1000;
+                _gm.Players[building.Owner].Gold += 1000;
             }
-           
         }
-
     }
-
+    #endregion
 }

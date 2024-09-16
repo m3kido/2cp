@@ -1,7 +1,7 @@
 public enum EBuildings
 {
-    HQ,
-    City,
-    Barn,
+    Castle,
+    Village,
+    Camp,
     Port
 }
