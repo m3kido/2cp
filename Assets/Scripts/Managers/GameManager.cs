@@ -2,51 +2,83 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-//this handles the game logic
+// Class to handle the game logic
 public class GameManager : MonoBehaviour
 {
-    
-    public int PlayerTurn = 0;
-    public int Day = 1;
-    public List<Player> Players;
-    public static event Action OnStateChange;
-    private EGameStates _gameState;
-    public EGameStates GameState { 
-        get { return _gameState; } 
-        set {  _gameState = value;OnStateChange?.Invoke(); LastState = _gameState; }
+    #region Variables
+    // Auto-properties (the compiler automatically creates private fields for them)
+    public int PlayerTurn { get; set; }
+    public int Day { get; set; } = 1;
+    public List<Player> Players { get; set; }
+    public EPlayerStates LastStateOfPlayer { get; set; }
+
+    private EPlayerStates _currentStateOfPlayer;
+    public EPlayerStates CurrentStateOfPlayer // Property for the _currentStateOfPlayer field
+    {
+        get { return _currentStateOfPlayer; }
+        set { _currentStateOfPlayer = value; OnStateChange?.Invoke(); LastStateOfPlayer = _currentStateOfPlayer; }
     }
-    public EGameStates LastState;
+
+    // Event to let know that the state of the player has changed
+    public static event Action OnStateChange;
+
+    private void Awake()
+    {
+        CurrentStateOfPlayer = EPlayerStates.Idle;
+        LastStateOfPlayer = EPlayerStates.Idle;
+        // Initialize players
+       
+
+
+    }
 
     private void Start()
     {
-        GameState = EGameStates.Idle;
         // Initialize players
         Players = new List<Player>
         {
-            new("Andrew",EPlayerColors.Amber, ETeams.A, null),
-            new("Freya",EPlayerColors.Azure, ETeams.B, null)
+            new("Mohamed", ETeamColors.Amber, ETeams.A, ECaptains.Andrew),
+            new("Oussama1", ETeamColors.Azure, ETeams.B, ECaptains.Melina),
+
         };
-        
     }
 
     private void Update()
     {
+
         // Handle input for turn end
-        if (Input.GetKeyDown(KeyCode.C)) EndTurn();
+        if (Input.GetKeyDown(KeyCode.C) && CurrentStateOfPlayer == EPlayerStates.Idle) EndTurn();
+
+        //if (Input.GetKeyDown(KeyCode.C)) EndTurn();
+
+
     }
+    #endregion
 
     // Declare turn end and day end events
     public static event Action OnTurnEnd;
+    public static event Action OnTurnStart;
     public static event Action OnDayEnd;
 
-    // Method to end turn
-    private void EndTurn()
+    // Method to end a turn
+    public void EndTurn()
     {
         PlayerTurn = (PlayerTurn + 1) % Players.Count;
         OnTurnEnd?.Invoke();
-        if (PlayerTurn != 0) return;
-        Day++;
-        OnDayEnd?.Invoke();
+        if (PlayerTurn == 0)
+        {
+            Day++;
+            OnDayEnd?.Invoke();
+        };
+
+
+        OnTurnStart?.Invoke();
     }
-    
+
+    public void RemovePlayer(Player player)
+    {
+        player.RemoveCaptain();
+        Players.Remove(player);
+    }
+
 }

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d30cbf5745505244a41e91f1a72a22c, type: 3}
+  m_Name: RiverSO
+  m_EditorClassIdentifier: 
+  _terrainType: 4
+  _terrainsOfSameType:
+  - {fileID: 11400000, guid: 0a4088b5d075cc64b998829f3786e213, type: 2}
+  - {fileID: 11400000, guid: 7b37337bfac1f37449d98921d6201112, type: 2}
+  - {fileID: 11400000, guid: 37ad188f86b6f464abc6f136a9a21a80, type: 2}
+  - {fileID: 11400000, guid: c23b8cacba394414c959f155b3fc4483, type: 2}
+  - {fileID: 11400000, guid: 2f42d44c76414724aa7801a33ae7a34b, type: 2}
+  - {fileID: 11400000, guid: 5abff89d30c7dc24bafe5acab8ad4fe5, type: 2}
+  - {fileID: 11400000, guid: 95759bca90d73724a8a99046222fc9da, type: 2}
+  - {fileID: 11400000, guid: 7ef81a4ec9b43ea4d8e515cf71578966, type: 2}
+  - {fileID: 11400000, guid: af8a887ac7092ad45bb8e4016ab4e5cf, type: 2}
+  - {fileID: 11400000, guid: 2f8ccc710837db1409cfadaf60a63ad0, type: 2}
+  - {fileID: 11400000, guid: 2d68fd6d1541bd44f8c1b04064a728aa, type: 2}
+  - {fileID: 11400000, guid: 5ba35c9e0b578724faad51eae28b79af, type: 2}
+  - {fileID: 11400000, guid: 7fc639e6ad738f64c8ea9f1fc09b83b8, type: 2}
+  - {fileID: 11400000, guid: 787e62a77195f8549bde1bc42e6385f3, type: 2}
+  - {fileID: 11400000, guid: 0c112cf592f08c14581a73c7cce28216, type: 2}
+  _provisionsCost: 1
+  _defenceStars: 0

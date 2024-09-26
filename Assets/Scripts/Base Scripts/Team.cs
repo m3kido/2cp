@@ -1,8 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
+// Class to represent a team of players (allies)
 public class Team
 {
-    public List<Player> TeamMates;
+    // Auto-property (the compiler automatically creates a private field to it)
+    public List<Player> TeamMates { get; set; }
 }

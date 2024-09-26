@@ -1,19 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Building 
-{  
-    public Vector3Int Position;
-    public int Owner;
-    public EBuildings BuildingType;
-    public int Health = 20;
+// We have to discuss this 
+public class Building
+{
+    // Auto-properties (the compiler automatically creates private fields for them)
+    public EBuildings BuildingType { get; set; }
+    public Vector3Int Position { get; set; }
+    public int Health { get; set; }
+    public int Owner { get; set; }
 
     // Building constructor
-    public Building(Vector3Int position, EBuildings buildingType, int owner)
+    public Building(EBuildings buildingType, Vector3Int position, int owner)
     {
-        Position = position;
         BuildingType = buildingType;
-        Owner = owner;  
+        Position = position;
+        Owner = owner;
+        Health = 200;
     }
 }
+
